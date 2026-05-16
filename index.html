@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoniq Finance - Hero Section</title>
+    <style>
+        /* --- RESET & FONT STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #050b14; /* Warna Navy Gelap Premium */
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* --- HERO SECTION CONTAINER --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at 80% 20%, rgba(0, 242, 195, 0.07) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.05) 0%, transparent 50%);
+        }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            gap: 50px;
+        }
+
+        /* --- TEXT CONTENT (SISI KIRI) --- */
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .tagline-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(0, 242, 195, 0.1);
+            border: 1px solid rgba(0, 242, 195, 0.3);
+            border-radius: 20px;
+            color: #00f2c3; /* Hijau Toska */
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 60%, #00f2c3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            color: #a0aec0; /* Abu-abu Elegan */
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        /* --- BUTTONS --- */
+        .cta-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #00f2c3;
+            color: #050b14;
+            box-shadow: 0 4px 20px rgba(0, 242, 195, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #00d1a7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0, 242, 195, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            border-color: #00f2c3;
+            color: #00f2c3;
+            transform: translateY(-2px);
+        }
+
+        /* --- VISUAL LOGO ANIMATION (SISI KANAN) --- */
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Representasi Logo Z Modern dengan efek pendaran cahaya */
+        .logo-glow-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(135deg, #0066ff, #00f2c3);
+            border-radius: 24% 76% 35% 65% / 49% 45% 55% 51%; /* Bentuk Geometris Organik */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 60px rgba(0, 242, 195, 0.2);
+            animation: floatAnimation 6s ease-in-out infinite;
+        }
+
+        .logo-inner-text {
+            font-size: 7rem;
+            font-weight: 900;
+            color: #050b14;
+            user-select: none;
+        }
+
+        /* Efek Gerakan Mengambang */
+        @keyframes floatAnimation {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* --- RESPONSIVE LAYOUT (UNTUK HP) --- */
+        @media (max-width: 968px) {
+            .hero {
+                padding: 80px 5%;
+                text-align: center;
+            }
+            .hero-container {
+                flex-direction: column-reverse;
+                gap: 60px;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .cta-group {
+                justify-content: center;
+            }
+            .logo-glow-wrapper {
+                width: 200px;
+                height: 200px;
+            }
+            .logo-inner-text {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-container">
+            
+            <!-- SISI KIRI: BAHASA PEMASARAN -->
+            <div class="hero-content">
+                <div class="tagline-badge">Layer-2 DeFi Aggregator</div>
+                <h1>Zoniq Finance: DeFi Semudah Pakai Email.</h1>
+                <p>Protokol agregator DeFi-RWA berbiaya rendah di jaringan Base & Arbitrum. Jaminkan aset dunia nyata Anda secara permissionless untuk mendapatkan likuiditas instan dengan biaya gas di bawah $0.01.</p>
+                
+                <div class="cta-group">
+                    <a href="#" class="btn btn-primary">Buka Aplikasi</a>
+                    <a href="#" class="btn btn-secondary">Baca One-Pager</a>
+                </div>
+            </div>
+
+            <!-- SISI KANAN: VISUAL LOGO MODERN -->
+            <div class="hero-visual">
+                <div class="logo-glow-wrapper">
+                    <div class="logo-inner-text">Z</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE HTML INI DI BAWAH </section> -->
+<!-- ========================================== -->
+
+<section class="features-section">
+    <div class="features-container">
+        
+        <!-- KARTU 1 -->
+        <div class="feature-card">
+            <div class="feature-icon">⛽</div>
+            <h3>Gas Fee Hemat 99%</h3>
+            <p>Didukung penuh oleh arsitektur Layer-2 (Base & Arbitrum) untuk memastikan setiap transaksi berjalan instan dengan biaya di bawah $0.01.</p>
+        </div>
+
+        <!-- KARTU 2 -->
+        <div class="feature-card">
+            <div class="feature-icon">🔄</div>
+            <h3>Jaminan Silang RWA</h3>
+            <p>Gunakan aset dunia nyata yang telah ditokenisasi secara aman sebagai agunan di pasar uang DeFi tanpa batas birokrasi tradisional.</p>
+        </div>
+
+        <!-- KARTU 3 -->
+        <div class="feature-card">
+            <div class="feature-icon">✉️</div>
+            <h3>Masuk Lewat Email</h3>
+            <p>Hilangkan kerumitan seed phrase. Buat dompet Web3 baru Anda dalam hitungan detik menggunakan akun Google atau Apple Anda.</p>
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE CSS INI DI DALAM TAG <style> -->
+<!-- Tempelkan tepat sebelum tag penutup </style> -->
+<!-- ========================================== -->
+<style>
+    .features-section {
+        padding: 100px 10%;
+        background-color: #03070d; /* Background sedikit lebih gelap untuk kontras */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .features-container {
+        display: flex;
+        gap: 30px;
+        width: 100%;
+        max-width: 1200px;
+        justify-content: space-between;
+    }
+
+    .feature-card {
+        flex: 1;
+        background: rgba(5, 11, 20, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 40px 30px;
+        border-radius: 16px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Efek Interaktif Saat Kursor Diarahkan (Hover) */
+    .feature-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(0, 242, 195, 0.4);
+        box-shadow: 0 12px 40px rgba(0, 242, 195, 0.1);
+        background: rgba(5, 11, 20, 0.9);
+    }
+
+    .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 24px;
+        display: inline-block;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #ffffff;
+        transition: color 0.3s ease;
+    }
+
+    .feature-card:hover h3 {
+        color: #00f2c3; /* Judul berubah warna jadi hijau toska saat di-hover */
+    }
+
+    .feature-card p {
+        font-size: 0.95rem;
+        color: #a0aec0;
+        line-height: 1.6;
+    }
+
+    /* Tampilan Responsif untuk Layar HP */
+    @media (max-width: 968px) {
+        .features-section {
+            padding: 60px 5%;
+        }
+        .features-container {
+            flex-direction: column;
+            gap: 24px;
+        }
+        .feature-card {
+            padding: 30px 24px;
+        }
+    }
+</style>
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE HTML INI DI BAWAH </section> CARD FEATURES -->
+<!-- ========================================== -->
+
+<section class="tokenomics-section">
+    <div class="tokenomics-container">
+        
+        <!-- SISI KIRI: PENJELASAN TEKS & LEGENDA -->
+        <div class="tokenomics-content">
+            <h2>Alokasi Tokenomik $ZNQ</h2>
+            <p class="token-desc">Total pasokan Zoniq Finance dibatasi sebanyak <strong>100.000.000 $ZNQ</strong> dengan mekanisme deflasioner otomatis untuk menjaga nilai ekosistem jangka panjang.</p>
+            
+            <div class="legend-list">
+                <div class="legend-item">
+                    <span class="color-box pub-liq"></span>
+                    <span class="legend-text"><strong>40%</strong> - Publik & Likuiditas (DEX/CEX)</span>
+                </div>
+                <div class="legend-item">
+                    <span class="color-box stake-eco"></span>
+                    <span class="legend-text"><strong>25%</strong> - Staking & Insentif Ekosistem</span>
+                </div>
+                <div class="legend-item">
+                    <span class="color-box dev-mkt"></span>
+                    <span class="legend-text"><strong>15%</strong> - Pengembangan & Pemasaran</span>
+                </div>
+                <div class="legend-item">
+                    <span class="color-box priv-sale"></span>
+                    <span class="legend-text"><strong>10%</strong> - Private / Seed Sale</span>
+                </div>
+                <div class="legend-item">
+                    <span class="color-box team-adv"></span>
+                    <span class="legend-text"><strong>10%</strong> - Alokasi Tim & Penasihat (Vesting)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SISI KANAN: VISUAL DIAGRAM LINGKARAN MURNI -->
+        <div class="tokenomics-visual">
+            <div class="pie-chart">
+                <div class="inner-circle">
+                    <span class="total-supply-text">100M<br><small>$ZNQ</small></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE CSS INI DI DALAM TAG <style> -->
+<!-- Tempelkan tepat sebelum tag penutup </style> -->
+<!-- ========================================== -->
+<style>
+    .tokenomics-section {
+        padding: 100px 10%;
+        background-color: #050b14;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tokenomics-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        max-width: 1200px;
+        gap: 80px;
+    }
+
+    .tokenomics-content {
+        flex: 1.2;
+    }
+
+    .tokenomics-content h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #ffffff 60%, #00f2c3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .token-desc {
+        color: #a0aec0;
+        line-height: 1.6;
+        margin-bottom: 35px;
+        font-size: 1.05rem;
+    }
+
+    /* --- GAYA DAFTAR LEGENDA --- */
+    .legend-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .color-box {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        flex-shrink: 0;
+    }
+
+    /* Kode Warna Berdasarkan Alokasi */
+    .pub-liq   { background-color: #00f2c3; } /* Hijau Toska */
+    .stake-eco { background-color: #0066ff; } /* Biru Terang */
+    .dev-mkt   { background-color: #7928ca; } /* Ungu */
+    .priv-sale { background-color: #ff007a; } /* Merah Muda */
+    .team-adv  { background-color: #4a5568; } /* Abu-abu */
+
+    .legend-text {
+        font-size: 1rem;
+        color: #e2e8f0;
+    }
+
+    /* --- GAYA DIAGRAM VISUAL (PIE CHART) --- */
+    .tokenomics-visual {
+        flex: 0.8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Membuat lingkaran donat menggunakan conic-gradient sesuai persentase */
+    .pie-chart {
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: conic-gradient(
+            #00f2c3 0% 40%, 
+            #0066ff 40% 65%, 
+            #7928ca 65% 80%, 
+            #ff007a 80% 90%, 
+            #4a5568 90% 100%
+        );
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 50px rgba(0, 102, 255, 0.15);
+    }
+
+    /* Lingkaran dalam untuk efek Donat Chart */
+    .inner-circle {
+        width: 180px;
+        height: 180px;
+        background-color: #050b14;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .total-supply-text {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.1;
+    }
+
+    .total-supply-text small {
+        font-size: 0.9rem;
+        color: #00f2c3;
+        letter-spacing: 1px;
+    }
+
+    /* --- RESPONSIVE LAYOUT (UNTUK HP) --- */
+    @media (max-width: 968px) {
+        .tokenomics-section {
+            padding: 60px 5%;
+        }
+        .tokenomics-container {
+            flex-direction: column;
+            gap: 50px;
+            text-align: left;
+        }
+        .pie-chart {
+            width: 260px;
+            height: 260px;
+        }
+        .inner-circle {
+            width: 140px;
+            height: 140px;
+        }
+    }
+</style>
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE HTML INI DI BAWAH </section> TOKENOMIK -->
+<!-- ========================================== -->
+
+<section class="roadmap-section">
+    <div class="roadmap-wrapper">
+        <h2 class="roadmap-title">Peta Jalan Strategis</h2>
+        <p class="roadmap-subtitle">Lini masa rencana eksekusi dan pengembangan ekosistem Zoniq Finance secara global.</p>
+        
+        <div class="timeline">
+            <!-- KUARTAL 1 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <span class="quarter-tag">Kuartal 1</span>
+                    <h3>Fondasi & Pengamanan</h3>
+                    <ul>
+                        <li>Audit keamanan smart contract token $ZNQ.</li>
+                        <li>Peluncuran situs resmi & One-Pager.</li>
+                        <li>Penerbitan token di jaringan uji coba (Testnet).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- KUARTAL 2 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <span class="quarter-tag">Kuartal 2</span>
+                    <h3>Akses & Likuiditas</h3>
+                    <ul>
+                        <li>Integrasi masuk aplikasi via akun sosial/email.</li>
+                        <li>Peluncuran token di jaringan utama (Mainnet DEX).</li>
+                        <li>Pembukaan program staking awal & hadiah insentif.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- KUARTAL 3 -->
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <span class="quarter-tag">Kuartal 3</span>
+                    <h3>Protokol RWA & Agunan</h3>
+                    <ul>
+                        <li>Tokenisasi aset dunia nyata (RWA) gelombang pertama.</li>
+                        <li>Peluncuran modul Jaminan Silang (Cross-Collateral).</li>
+                        <li>Kemitraan dengan penyedia kustodian fisik teregulasi.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- KUARTAL 4 -->
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <span class="quarter-tag">Kuartal 4</span>
+                    <h3>Ekspansi & Skala Massal</h3>
+                    <ul>
+                        <li>Pendaftaran token $ZNQ di bursa kripto global (CEX).</li>
+                        <li>Fitur bayar biaya gas langsung dengan USDC/USDT.</li>
+                        <li>Transisi penuh ke sistem tata kelola komunitas (DAO).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE CSS INI DI DALAM TAG <style> -->
+<!-- Tempelkan tepat sebelum tag penutup </style> -->
+<!-- ========================================== -->
+<style>
+    .roadmap-section {
+        padding: 100px 10%;
+        background-color: #03070d;
+        display: flex;
+        justify-content: center;
+    }
+
+    .roadmap-wrapper {
+        width: 100%;
+        max-width: 1200px;
+        text-align: center;
+    }
+
+    .roadmap-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #ffffff 60%, #00f2c3 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .roadmap-subtitle {
+        color: #a0aec0;
+        font-size: 1.05rem;
+        margin-bottom: 60px;
+    }
+
+    /* --- TIMELINE CORE CORE STRUCTURE --- */
+    .timeline {
+        position: relative;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Garis Tengah Vertikal */
+    .timeline::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        background: linear-gradient(to bottom, #00f2c3, #0066ff, rgba(121, 40, 202, 0.1));
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -1px;
+    }
+
+    /* Wadah Baris Item */
+    .timeline-item {
+        padding: 10px 40px;
+        position: relative;
+        background-color: transparent;
+        width: 50%;
+    }
+
+    /* Titik Penanda di Garis Tengah */
+    .timeline-item::after {
+        content: '';
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        right: -8px;
+        background-color: #03070d;
+        border: 3px solid #00f2c3;
+        top: 30px;
+        border-radius: 50%;
+        z-index: 1;
+        transition: all 0.3s ease;
+    }
+
+    .timeline-item.right::after {
+        left: -8px;
+        border-color: #0066ff;
+    }
+
+    /* Pengaturan Posisi Kiri dan Kanan */
+    .timeline-item.left { left: 0; text-align: right; }
+    .timeline-item.right { left: 50; text-align: left; left: 50%; }
+
+    /* Gaya Kotak Konten */
+    .timeline-content {
+        padding: 30px;
+        background: rgba(5, 11, 20, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .timeline-item:hover .timeline-content {
+        border-color: rgba(0, 242, 195, 0.2);
+        background: rgba(5, 11, 20, 0.9);
+        box-shadow: 0 10px 30px rgba(0, 102, 255, 0.05);
+    }
+
+    .timeline-item:hover::after {
+        transform: scale(1.3);
+        background-color: #00f2c3;
+    }
+
+    .quarter-tag {
+        display: inline-block;
+        padding: 4px 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #00f2c3;
+        background: rgba(0, 242, 195, 0.1);
+        border-radius: 4px;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+    }
+
+    .timeline-item.right .quarter-tag {
+        color: #0066ff;
+        background: rgba(0, 102, 255, 0.1);
+    }
+
+    .timeline-content h3 {
+        font-size: 1.4rem;
+        margin-bottom: 16px;
+        color: #ffffff;
+    }
+
+    .timeline-content ul {
+        list-style: none;
+        color: #a0aec0;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .timeline-content ul li {
+        margin-bottom: 8px;
+    }
+
+    /* Penyesuaian List untuk Sisi Kiri */
+    .timeline-item.left ul li::after { content: ''; }
+    
+    /* --- RESPONSIVE LAYOUT (UNTUK HP) --- */
+    @media (max-width: 768px) {
+        .roadmap-section { padding: 60px 5%; }
+        
+        /* Pindahkan Garis Tengah Ke Sisi Kiri */
+        .timeline::after { left: 31px; }
+        
+        .timeline-item {
+            width: 100%;
+            padding-left: 70px;
+            padding-right: 25px;
+        }
+        
+        .timeline-item.left { text-align: left; left: 0; }
+        .timeline-item.right { left: 0; }
+        
+        /* Pindahkan Semua Titik ke Sisi Kiri */
+        .timeline-item::after { left: 23px; right: auto; }
+        .timeline-item.right::after { left: 23px; }
+    }
+</style>
+
+</body>
+</html>
