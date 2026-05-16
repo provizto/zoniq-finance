@@ -487,6 +487,50 @@
             height: 140px;
         }
     }
+        /* --- GAYA TAMPILAN FOOTER --- */
+    .main-footer {
+        background-color: #050b14;
+        padding: 40px 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+        padding: 0 5%;
+    }
+
+    .footer-copy {
+        color: #4a5568;
+        font-size: 0.9rem;
+    }
+
+    .footer-links a {
+        color: #4a5568;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+        color: #00f2c3; /* Berubah jadi hijau toska saat disentuh kursor */
+    }
+
+    /* Responsif untuk HP */
+    @media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+    }
+
 </style>
 <!-- ========================================== -->
 <!-- TAMBAHKAN KODE HTML INI DI BAWAH </section> TOKENOMIK -->
@@ -552,7 +596,18 @@
         </div>
     </div>
 </section>
-
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE HTML FOOTER INI -->
+<!-- ========================================== -->
+<footer class="main-footer">
+    <div class="footer-container">
+        <p class="footer-copy">© 2026 Zoniq Finance. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="terms.html" id="link-terms">Ketentuan Layanan</a>
+        </div>
+    </div>
+</footer>
+    
 <!-- ========================================== -->
 <!-- TAMBAHKAN KODE CSS INI DI DALAM TAG <style> -->
 <!-- Tempelkan tepat sebelum tag penutup </style> -->
@@ -715,7 +770,6 @@
         .timeline-item.right::after { left: 23px; }
     }
 </style>
-
     
     <!-- LOGIKA JAVASCRIPT MULTIBAHASA -->
     <script>
@@ -755,6 +809,6 @@
             if(lang === 'en') buttons[1].classList.add('active');
         }
     </script>
-<a href="terms.html" style="color: #4a5568; text-decoration: none; margin-left: 15px;">Ketentuan Layanan</a>
+    
 </body>
 </html>
