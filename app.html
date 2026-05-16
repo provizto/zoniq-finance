@@ -291,6 +291,51 @@
             </div>
         </section>
     </main>
+<!-- ========================================== -->
+<!-- TAMBAHKAN KODE JAVASCRIPT INI SEBELUM </body> -->
+<!-- ========================================== -->
+<script>
+    // Mengunci elemen tombol dari halaman HTML
+    const walletBtn = document.querySelector('.wallet-btn');
+
+    // Fungsi utama untuk menghubungkan dompet MetaMask
+    async function connectWallet() {
+        // 1. Memeriksa apakah ekstensi MetaMask terpasang di browser
+        if (typeof window.ethereum !== 'undefined') {
+            try {
+                // Teks loading saat pengguna membuka pop-up MetaMask
+                walletBtn.innerText = "Menghubungkan...";
+                
+                // 2. Meminta izin pengguna untuk membuka dan menghubungkan akun dompet
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                
+                // 3. Mengambil alamat dompet pertama yang terhubung
+                const walletAddress = accounts[0];
+                
+                // 4. Memformat alamat agar ringkas (Contoh: 0x1234...abcd)
+                const formattedAddress = walletAddress.substring(0, 6) + "..." + walletAddress.substring(walletAddress.length - 4);
+                
+                // 5. Mengubah tampilan teks tombol menjadi alamat dompet
+                walletBtn.innerText = formattedAddress;
+                walletBtn.style.background = "#00f2c3"; // Mengubah warna tombol menjadi hijau toska solid
+                walletBtn.style.color = "#03070d";
+                
+                console.log("Dompet sukses terhubung: ", walletAddress);
+            } catch (error) {
+                // Menangani kondisi jika pengguna membatalkan koneksi
+                console.error("Pengguna menolak koneksi dompet:", error);
+                walletBtn.innerText = "Hubungkan Dompet";
+            }
+        } else {
+            // 6. Antisipasi jika pengguna tidak memiliki MetaMask
+            alert("MetaMask tidak terdeteksi! Silakan instal ekstensi MetaMask di browser Anda untuk menggunakan fitur Web3 ini.");
+            walletBtn.innerText = "Hubungkan Dompet";
+        }
+    }
+
+    // Memasang detektor klik pada tombol di dashboard
+    walletBtn.addEventListener('click', connectWallet);
+</script>
 
 </body>
 </html>
