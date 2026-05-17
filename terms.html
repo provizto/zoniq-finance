@@ -12,10 +12,8 @@
             --accent-color: #38bdf8;
             --card-bg: #1e293b;
             --border-color: #334155;
-            --btn-bg: #334155;
-            --btn-text: #f8fafc;
-            --btn-active: #38bdf8;
-            --btn-active-text: #0f172a;
+            --select-bg: #334155;
+            --select-text: #f8fafc;
         }
 
         body {
@@ -33,27 +31,30 @@
         .controls {
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
             margin-bottom: 30px;
         }
-        button {
-            padding: 8px 16px;
-            border: 1px solid var(--border-color);
-            background-color: var(--btn-bg);
-            color: var(--btn-text);
-            border-radius: 6px;
-            cursor: pointer;
+        /* DROP-DOWN STYLING */
+        .lang-dropdown {
+            padding: 10px 35px 10px 15px;
+            font-size: 0.9rem;
             font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.2s;
+            color: var(--select-text);
+            background-color: var(--select-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://w3.org' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2338bdf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
         }
-        button:hover {
-            opacity: 0.9;
-        }
-        button.active {
-            background-color: var(--btn-active);
-            color: var(--btn-active-text);
-            border-color: var(--btn-active);
+        .lang-dropdown:focus {
+            border-color: var(--accent-color);
         }
         .header {
             text-align: center;
@@ -124,11 +125,13 @@
 <body>
 
 <div class="container">
-    <!-- CONTROLS PANEL -->
+    <!-- DROP-DOWN CONTROLS -->
     <div class="controls">
-        <button id="btn-all" class="active" onclick="filterLang('all')">ID &amp; EN</button>
-        <button id="btn-id" onclick="filterLang('id')">Indonesia</button>
-        <button id="btn-en" onclick="filterLang('en')">English</button>
+        <select class="lang-dropdown" onchange="filterLang(this.value)">
+            <option value="all">Bahasa: ID &amp; EN</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="en">English</option>
+        </select>
     </div>
 
     <!-- HEADER -->
@@ -200,27 +203,19 @@
         const sectId = document.getElementById('sect-id');
         const sectEn = document.getElementById('sect-en');
         const grid = document.getElementById('content-grid');
-        
-        // Hapus kelas aktif dari semua tombol
-        document.getElementById('btn-all').classList.remove('active');
-        document.getElementById('btn-id').classList.remove('active');
-        document.getElementById('btn-en').classList.remove('active');
 
         if (lang === 'all') {
             sectId.classList.remove('hidden');
             sectEn.classList.remove('hidden');
-            grid.classList.add('dual-col'); // Kembali jadi 2 kolom berdampingan
-            document.getElementById('btn-all').classList.add('active');
+            grid.classList.add('dual-col');
         } else if (lang === 'id') {
             sectId.classList.remove('hidden');
-            sectEn.classList.add('hidden'); // Sembunyikan EN
-            grid.classList.remove('dual-col'); // Kolom melebar full-width
-            document.getElementById('btn-id').classList.add('active');
+            sectEn.classList.add('hidden');
+            grid.classList.remove('dual-col');
         } else if (lang === 'en') {
-            sectId.classList.add('hidden'); // Sembunyikan ID
+            sectId.classList.add('hidden');
             sectEn.classList.remove('hidden');
-            grid.classList.remove('dual-col'); // Kolom melebar full-width
-            document.getElementById('btn-en').classList.add('active');
+            grid.classList.remove('dual-col');
         }
     }
 </script>
