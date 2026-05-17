@@ -412,36 +412,62 @@
             if (lang === 'en') document.getElementById('btn-lang-en').classList.add('active');
         }
 
-        // 3. LOGIKA INTERAKSI METAMASK
-        const walletBtn = document.getElementById('btn-connect');
+        <!-- 1. Muat SDK Widget Gabungan dari CDN Resmi -->
+<script src="https://unpkg.com"></script>
 
-        async function connectWallet() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    walletBtn.innerText = appTranslations[currentLang].btnConnecting;
-                    
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    walletAddress = accounts[0];
-                    isConnected = true;
-                    
-                    // Format alamat dompet agar ringkas (Contoh: 0x1234...abcd)
-                    const formatted = walletAddress.substring(0, 6) + "..." + walletAddress.substring(walletAddress.length - 4);
-                    
-                    walletBtn.innerText = formatted;
-                    walletBtn.style.background = "#00f2c3";
-                    walletBtn.style.color = "#03070d";
-                } catch (error) {
-                    console.error("Koneksi dibatalkan:", error);
-                    isConnected = false;
-                    walletBtn.innerText = appTranslations[currentLang].btnConnect;
-                }
-            } else {
-                alert(appTranslations[currentLang].metaError);
-                walletBtn.innerText = appTranslations[currentLang].btnConnect;
-            }
+<script>
+  window.addEventListener('DOMContentLoaded', async () => {
+    // 2. Inisialisasi Konteks Gabungan (Web3 Wallets + Web2 Auth)
+    const dynamicContext = window.DynamicLabs.initialize({
+      environmentId: 'aa2826df-2ff7-4e4d-9c2c-4978c580aa08',
+      settings: {
+        // Menampilkan pilihan dompet kripto & opsi email sekaligus dalam satu layar
+        walletConnectors: [ window.DynamicLabs.EthereumWalletConnectors ],
+        initialAuthenticationByEmail: true
+      }
+    });
+
+    const walletBtn = document.getElementById('btn-connect');
+
+    // 3. Logika Mengubah Teks Tombol Berdasarkan Status Hubung
+    function checkConnection() {
+        const primaryWallet = dynamicContext.walletManager.primaryWallet;
+        if (primaryWallet) {
+            const addr = primaryWallet.address;
+            walletBtn.innerText = addr.substring(0, 6) + "..." + addr.substring(addr.length - 4);
+            walletBtn.style.background = "#00f2c3"; // Warna hijau toska saat aktif
+            walletBtn.style.color = "#03070d";
+        } else {
+            // Menyesuaikan teks dengan bahasa web yang sedang aktif (ID/EN)
+            walletBtn.innerText = typeof currentLang !== 'undefined' && currentLang === 'en' ? "Connect Wallet" : "Hubungkan Dompet";
+            walletBtn.style.background = "linear-gradient(135deg, #0066ff, #00f2c3)";
+            walletBtn.style.color = "#03070d";
         }
+    }
 
-        walletBtn.addEventListener('click', connectWallet);
-    </script>
+    // 4. Picu Jendela Login All-in-One Saat Tombol Diklik
+    walletBtn.addEventListener('click', () => {
+      if (!dynamicContext.walletManager.primaryWallet) {
+          dynamicContext.auth.showAuthFlow();
+      } else {
+          // Jika diklik saat sudah terhubung, akan membuka menu log out / profil
+          dynamicContext.ui.showUserMenu();
+      }
+    });
+
+    // 5. Pantau Perubahan Status Koneksi Dompet secara Real-Time
+    dynamicContext.events.on('authSuccess', () => {
+        checkConnection();
+    });
+    
+    dynamicContext.events.on('logout', () => {
+        checkConnection();
+    });
+
+    // Jalankan pengecekan otomatis saat halaman pertama kali dimuat
+    setTimeout(checkConnection, 1000);
+  });
+</script>
+
 </body>
 </html>
