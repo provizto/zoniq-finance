@@ -3,208 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoniq Finance - Ketentuan Layanan (Beta)</title>
+    <title>Zoniq Finance - Terms of Service</title>
     <style>
-        /* --- CORE CONFIGURATION --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #cbd5e1;
+            --title-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --card-bg: #1e293b;
+            --border-color: #334155;
         }
-
         body {
-            background-color: #03070d;
-            color: #ffffff;
-            line-height: 1.7;
-            padding: 80px 20px 60px 20px;
-            display: flex;
-            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
         }
-
-        /* --- LANG SWITCHER --- */
-        .lang-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 8px;
-            background: rgba(5, 11, 20, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            color: #a0aec0;
-            padding: 6px 14px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 16px;
-            transition: all 0.2s ease;
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
         }
-
-        .lang-btn.active {
-            background-color: #00f2c3;
-            color: #050b14;
-        }
-
-        /* --- TERMS CONTAINER --- */
-        .terms-card {
-            width: 100%;
-            max-width: 800px;
-            background-color: #050b14;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 50px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 30px;
-            margin-bottom: 30px;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 60%, #00f2c3 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .header h1 {
+            color: var(--title-color);
+            font-size: 2rem;
             margin-bottom: 10px;
         }
-
-        header p {
-            color: #00f2c3;
-            font-size: 0.9rem;
+        .header p {
+            color: var(--accent-color);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-size: 0.9rem;
         }
-
-        section { margin-bottom: 30px; }
-        h3 { font-size: 1.2rem; color: #ffffff; margin-bottom: 12px; font-weight: 700; }
-        p.text-block { color: #a0aec0; font-size: 1rem; text-align: justify; }
-        .highlight { color: #00f2c3; font-weight: 600; }
-
-        footer {
-            margin-top: 40px;
-            padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
         }
-
-        .back-link { color: #00f2c3; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
-        .back-link:hover { text-decoration: underline; }
-        .date-tag { font-size: 0.85rem; color: #4a5568; }
-
-        @media (max-width: 768px) {
-            body { padding: 80px 10px 40px 10px; }
-            .terms-card { padding: 30px 20px; }
-            header h1 { font-size: 1.8rem; }
-            .lang-switcher { position: relative; top: auto; right: auto; margin: -50px auto 30px auto; width: fit-content; }
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .lang-section {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .lang-title {
+            color: var(--title-color);
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+        ol {
+            padding-left: 20px;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 25px;
+        }
+        li strong {
+            color: var(--title-color);
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        .highlight {
+            color: var(--accent-color);
+            font-family: monospace;
+            background-color: rgba(56, 189, 248, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-    <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-t-id" onclick="switchLang('id')">ID</button>
-        <button class="lang-btn" id="btn-t-en" onclick="switchLang('en')">EN</button>
+<div class="container">
+    <div class="header">
+        <h1>Zoniq Finance</h1>
+        <p>Protocol Testing Phase (Beta Testnet / Alpha)</p>
     </div>
 
-    <article class="terms-card">
-        <header>
-            <h1 id="t-title">Ketentuan Layanan Zoniq Finance</h1>
-            <p id="t-phase">Fase Pengujian Protokol (Beta Testnet / Alpha)</p>
-        </header>
-
-        <section>
-            <h3 id="t-h1">1. Status Platform Eksperimental</h3>
-            <p class="text-block" id="t-p1">Zoniq Finance saat ini beroperasi dalam fase <span class="highlight">Beta / Testnet</span> untuk tujuan pengujian teknologi blockchain Layer-2, sistem jaminan silang (Cross-Collateralization), dan fungsionalitas Abstraksi Akun. Seluruh kode, interaksi kontrak pintar (*smart contract*), dan dasbor aplikasi disediakan "apa adanya" (as-is) tanpa jaminan komersial dalam bentuk apa pun.</p>
+    <div class="grid">
+        <!-- BAHASA INDONESIA -->
+        <section class="lang-section" lang="id">
+            <h2 class="lang-title">Ketentuan Layanan</h2>
+            <ol>
+                <li>
+                    <strong>1. Status Platform Eksperimental</strong>
+                    Zoniq Finance saat ini beroperasi dalam fase Beta / Testnet untuk tujuan pengujian teknologi blockchain Layer-2, sistem jaminan silang (Cross-Collateralization), dan fungsionalitas Abstraksi Akun. Seluruh kode, interaksi kontrak pintar (<em>smart contract</em>), dan dasbor aplikasi disediakan "apa adanya" (as-is) tanpa jaminan komersial dalam bentuk apa pun.
+                </li>
+                <li>
+                    <strong>2. Tidak Ada Nilai Finansial Riil</strong>
+                    Seluruh token, saldo, dan aset tiruan dunia nyata (RWA) yang ditampilkan atau digunakan dalam ekosistem uji coba ini tidak memiliki nilai finansial dunia nyata. Token uji coba (<span class="highlight">$ZNQ testnet</span>) tidak dapat ditukarkan dengan uang fiat, kripto sah, atau hak kepemilikan fisik apa pun.
+                </li>
+                <li>
+                    <strong>3. Batasan Tanggung Jawab (Disclaimer)</strong>
+                    Tim pengembang Zoniq Finance tidak bertanggung jawab atas kerugian, kerusakan data, kegagalan fungsi dompet Web3 (MetaMask), atau kesalahan teknis jaringan Layer-2 yang timbul akibat partisipasi pengguna dalam fase uji coba ini. Pengguna bertanggung jawab penuh atas keamanan perangkat dan koneksi masing-masing.
+                </li>
+                <li>
+                    <strong>4. Privasi &amp; Abstraksi Akun</strong>
+                    Bagi pengguna yang memanfaatkan fitur login sosial (email/Google/Apple), data tersebut hanya digunakan oleh protokol penyedia infrastruktur <em>Account Abstraction</em> untuk keperluan pembuatan kunci publik dompet digital yang aman. Zoniq Finance berkomitmen untuk tidak memperjualbelikan atau menyalahgunakan data identitas digital pengguna.
+                </li>
+                <li>
+                    <strong>5. Perubahan Ketentuan</strong>
+                    Ketentuan Layanan ini dapat diperbarui atau diubah sewaktu-waktu seiring dengan transisi protokol Zoniq Finance dari jaringan uji coba menuju peluncuran jaringan utama (<em>Mainnet</em>) yang diatur oleh badan hukum resmi nantinya.
+                </li>
+            </ol>
         </section>
 
-        <section>
-            <h3>2. <span id="t-h2">Tidak Ada Nilai Finansial Riil</span></h3>
-            <p class="text-block" id="t-p2">Seluruh token, saldo, dan aset tiruan dunia nyata (RWA) yang ditampilkan atau digunakan dalam ekosistem uji coba ini tidak memiliki nilai finansial dunia nyata. Token uji coba ($ZNQ testnet) tidak dapat ditukarkan dengan uang fiat, kripto sah, atau hak kepemilikan fisik apa pun.</p>
+        <!-- ENGLISH TRANSLATION -->
+        <section class="lang-section" lang="en">
+            <h2 class="lang-title">Terms of Service</h2>
+            <ol>
+                <li>
+                    <strong>1. Experimental Platform Status</strong>
+                    Zoniq Finance is currently operating in a Beta / Testnet phase for the purpose of testing Layer-2 blockchain technology, Cross-Collateralization systems, and Account Abstraction functionalities. All code, smart contract interactions, and application dashboards are provided "as-is" without any commercial warranties of any kind.
+                </li>
+                <li>
+                    <strong>2. No Real Financial Value</strong>
+                    All tokens, balances, and simulated real-world assets (RWA) displayed or used within this testing ecosystem have no real-world financial value. Testnet tokens (<span class="highlight">$ZNQ testnet</span>) cannot be redeemed for fiat money, legal cryptocurrency, or any physical ownership rights.
+                </li>
+                <li>
+                    <strong>3. Limitation of Liability (Disclaimer)</strong>
+                    The Zoniq Finance development team is not liable for any losses, data corruption, Web3 wallet (MetaMask) malfunctions, or Layer-2 network technical errors arising from user participation in this testing phase. Users bear full responsibility for the security of their respective devices and connections.
+                </li>
+                <li>
+                    <strong>4. Privacy &amp; Account Abstraction</strong>
+                    For users utilizing social login features (email/Google/Apple), such data is exclusively used by the Account Abstraction infrastructure provider protocol to generate secure digital wallet public keys. Zoniq Finance is committed to not selling or misusing users' digital identity data.
+                </li>
+                <li>
+                    <strong>5. Changes to Terms</strong>
+                    These Terms of Service may be updated or amended at any time inline with the transition of the Zoniq Finance protocol from the test network to the official Mainnet launch, which will be governed by a legal entity in the future.
+                </li>
+            </ol>
         </section>
+    </div>
+</div>
 
-        <section>
-            <h3 id="t-h3">3. Batasan Tanggung Jawab (Disclaimer)</h3>
-            <p class="text-block" id="t-p3">Tim pengembang Zoniq Finance tidak bertanggung jawab atas kerugian, kerusakan data, kegagalan fungsi dompet Web3 (MetaMask), atau kesalahan teknis jaringan Layer-2 yang timbul akibat partisipasi pengguna dalam fase uji coba ini. Pengguna bertanggung jawab penuh atas keamanan perangkat dan koneksi masing-masing.</p>
-        </section>
-
-        <section>
-            <h3 id="t-h4">4. Privasi & Abstraksi Akun</h3>
-            <p class="text-block" id="t-p4">Bagi pengguna yang memanfaatkan fitur login sosial (email/Google/Apple), data tersebut hanya digunakan oleh protokol penyedia infrastruktur *Account Abstraction* untuk keperluan pembuatan kunci publik dompet digital yang aman. Zoniq Finance berkomitmen untuk tidak memperjualbelikan atau menyalahgunakan data identitas digital pengguna.</p>
-        </section>
-
-        <section>
-            <h3 id="t-h5">5. Perubahan Ketentuan</h3>
-            <p class="text-block" id="t-p5">Ketentuan Layanan ini dapat diperbarui atau diubah sewaktu-waktu seiring dengan transisi protokol Zoniq Finance dari jaringan uji coba menuju peluncuran jaringan utama (*Mainnet*) yang diatur oleh badan hukum resmi nantinya.</p>
-        </section>
-
-        <footer>
-            <a href="index.html" class="back-link" id="btn-t-back">← Kembali ke Beranda</a>
-            <span class="date-tag" id="t-date">Terakhir Diperbarui: Mei 2026</span>
-        </footer>
-    </article>
-
-    <script>
-        const termsTranslations = {
-            id: {
-                title: "Ketentuan Layanan Zoniq Finance",
-                phase: "Fase Pengujian Protokol (Beta Testnet / Alpha)",
-                h1: "1. Status Platform Eksperimental",
-                p1: "Zoniq Finance saat ini beroperasi dalam fase Beta / Testnet untuk tujuan pengujian teknologi blockchain Layer-2, sistem jaminan silang (Cross-Collateralization), dan fungsionalitas Abstraksi Akun. Seluruh kode, interaksi kontrak pintar (*smart contract*), dan dasbor aplikasi disediakan \"apa adanya\" (as-is) tanpa jaminan komersial dalam bentuk apa pun.",
-                h2: "Tidak Ada Nilai Finansial Riil",
-                p2: "Seluruh token, saldo, dan aset tiruan dunia nyata (RWA) yang ditampilkan atau digunakan dalam ekosistem uji coba ini tidak memiliki nilai finansial dunia nyata. Token uji coba ($ZNQ testnet) tidak dapat ditukarkan dengan uang fiat, kripto sah, atau hak kepemilikan fisik apa pun.",
-                h3: "3. Batasan Tanggung Jawab (Disclaimer)",
-                p3: "Tim pengembang Zoniq Finance tidak bertanggung jawab atas kerugian, kerusakan data, kegagalan fungsi dompet Web3 (MetaMask), atau kesalahan teknis jaringan Layer-2 yang timbul akibat partisipasi pengguna dalam fase uji coba ini. Pengguna bertanggung jawab penuh atas keamanan perangkat dan koneksi masing-masing.",
-                h4: "4. Privasi & Abstraksi Akun",
-                p4: "Bagi pengguna yang memanfaatkan fitur login sosial (email/Google/Apple), data tersebut hanya digunakan oleh protokol penyedia infrastruktur *Account Abstraction* untuk keperluan pembuatan kunci publik dompet digital yang aman. Zoniq Finance berkomitmen untuk tidak memperjualbelikan atau menyalahgunakan data identitas digital pengguna.",
-                h5: "5. Perubahan Ketentuan",
-                p5: "Ketentuan Layanan ini dapat diperbarui atau diubah sewaktu-waktu seiring dengan transisi protokol Zoniq Finance dari jaringan uji coba menuju peluncuran jaringan utama (*Mainnet*) yang diatur oleh badan hukum resmi nantinya.",
-                btnBack: "← Kembali ke Beranda",
-                date: "Terakhir Diperbarui: Mei 2026"
-            },
-            en: {
-                title: "Zoniq Finance Terms of Service",
-                phase: "Protocol Testing Phase (Beta Testnet / Alpha)",
-                h1: "1. Experimental Platform Status",
-                p1: "Zoniq Finance currently operates under a Beta / Testnet phase for the strictly experimental testing of Layer-2 blockchain architecture, cross-collateralization engines, and Account Abstraction frameworks. All underlying source code, smart contract integrations, and front-end interface deployment are provided on an \"as-is\" and \"as-available\" basis without warranties of any kind.",
-                h2: "Absence of Real Financial Value",
-                p2: "All virtual tokens, balance notations, and tokenized real-world asset (RWA) simulations visualized within this testnet ecosystem possess zero real-world economic value. Testnet tokens ($ZNQ testnet) cannot be liquidated, redeemed for fiat currency, or claimed against any physical asset ownership rights.",
-                h3: "3. Limitation of Liability & Disclaimers",
-                p3: "The core development team of Zoniq Finance disclaims all institutional liability for any data corruption, security exploits, loss of non-custodial Web3 wallet (MetaMask) credentials, or systemic Layer-2 network failures incurred through testnet interaction. Users assume 100% computational risk and responsibility.",
-                h4: "4. User Privacy & Account Abstraction",
-                p4: "For participants utilizing Web2 social authentication vectors (Google/Apple email integration), such parameters are exclusively routed through secure node layers for cryptographic public-key generation. Zoniq Finance guarantees data custody protocols and will never commercialize identity logs.",
-                h5: "5. Amendments of Terms",
-                p5: "These Terms of Service remain subject to continuous structural adjustment or absolute override as the Zoniq Finance protocol migrates from testing testnets to official mainnet infrastructure overseen by our registered legal entity.",
-                btnBack: "← Back to Home",
-                date: "Last Updated: May 2026"
-            }
-        };
-
-        function switchLang(lang) {
-            document.getElementById('t-title').innerText = termsTranslations[lang].title;
-            document.getElementById('t-phase').innerText = termsTranslations[lang].phase;
-            document.getElementById('t-h1').innerText = termsTranslations[lang].h1;
-            document.getElementById('t-p1').innerHTML = termsTranslations[lang].p1.replace('Beta / Testnet', '<span class="highlight">Beta / Testnet</span>');
-            document.getElementById('t-h2').innerText = termsTranslations[lang].h2;
-            document.getElementById('t-p2').innerText = termsTranslations[lang].p2;
-            document.getElementById('t-h3').innerText = termsTranslations[lang].h3;
-            document.getElementById('t-p3').innerText = termsTranslations[lang].p3;
-            document.getElementById('t-h4').innerText = termsTranslations[lang].h4;
-            document.getElementById('t-p4').innerText = termsTranslations[lang].p4;
-            document.getElementById('t-h5').innerText = termsTranslations[lang].h5;
-            document.getElementById('t-p5').innerText = termsTranslations[lang].p5;
-            document.getElementById('btn-t-back').innerText = termsTranslations[lang].btnBack
+</body>
+</html>
