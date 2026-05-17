@@ -412,14 +412,46 @@
             if (lang === 'en') document.getElementById('btn-lang-en').classList.add('active');
         }
 
-        <!-- 1. Muat SDK Widget Gabungan dari CDN Resmi -->
+        // 3. LOGIKA INTERAKSI METAMASK
+        const walletBtn = document.getElementById('btn-connect');
+
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    walletBtn.innerText = appTranslations[currentLang].btnConnecting;
+                    
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    walletAddress = accounts[0];
+                    isConnected = true;
+                    
+                    // Format alamat dompet agar ringkas (Contoh: 0x1234...abcd)
+                    const formatted = walletAddress.substring(0, 6) + "..." + walletAddress.substring(walletAddress.length - 4);
+                    
+                    walletBtn.innerText = formatted;
+                    walletBtn.style.background = "#00f2c3";
+                    walletBtn.style.color = "#03070d";
+                } catch (error) {
+                    console.error("Koneksi dibatalkan:", error);
+                    isConnected = false;
+                    walletBtn.innerText = appTranslations[currentLang].btnConnect;
+                }
+            } else {
+                alert(appTranslations[currentLang].metaError);
+                walletBtn.innerText = appTranslations[currentLang].btnConnect;
+            }
+        }
+
+        walletBtn.addEventListener('click', connectWallet);
+    </script>
+    
+    <!-- 1. Muat SDK Widget Gabungan dari CDN Resmi -->
 <script src="https://unpkg.com"></script>
 
 <script>
   window.addEventListener('DOMContentLoaded', async () => {
     // 2. Inisialisasi Konteks Gabungan (Web3 Wallets + Web2 Auth)
     const dynamicContext = window.DynamicLabs.initialize({
-      environmentId: 'aa2826df-2ff7-4e4d-9c2c-4978c580aa08',
+      environmentId: 'MASUKKAN_ENVIRONMENT_ID_DYNAMIC_ANDA_DI_SINI',
       settings: {
         // Menampilkan pilihan dompet kripto & opsi email sekaligus dalam satu layar
         walletConnectors: [ window.DynamicLabs.EthereumWalletConnectors ],
