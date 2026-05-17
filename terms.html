@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoniq Finance - Terms of Service</title>
     <style>
+        /* CSS VARIABLES FOR THEMES */
         :root {
             --bg-color: #0f172a;
             --text-color: #cbd5e1;
@@ -12,18 +13,63 @@
             --accent-color: #38bdf8;
             --card-bg: #1e293b;
             --border-color: #334155;
+            --btn-bg: #334155;
+            --btn-text: #f8fafc;
+            --btn-active: #38bdf8;
+            --btn-active-text: #0f172a;
         }
+
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --title-color: #0f172a;
+            --accent-color: #0284c7;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --btn-bg: #e2e8f0;
+            --btn-text: #334155;
+            --btn-active: #0284c7;
+            --btn-active-text: #ffffff;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
             margin: 0;
             padding: 40px 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
+        }
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button.active {
+            background-color: var(--btn-active);
+            color: var(--btn-active-text);
+            border-color: var(--btn-active);
         }
         .header {
             text-align: center;
@@ -31,23 +77,25 @@
         }
         .header h1 {
             color: var(--title-color);
-            font-size: 2rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
         }
         .header p {
             color: var(--accent-color);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             font-size: 0.9rem;
+            margin: 0;
         }
         .grid {
             display: grid;
             grid-template-columns: 1fr;
             gap: 30px;
+            transition: all 0.3s;
         }
         @media (min-width: 768px) {
-            .grid {
+            .grid.dual-col {
                 grid-template-columns: 1fr 1fr;
             }
         }
@@ -56,6 +104,10 @@
             padding: 30px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .lang-section.hidden {
+            display: none;
         }
         .lang-title {
             color: var(--title-color);
@@ -90,14 +142,24 @@
 <body>
 
 <div class="container">
+    <!-- CONTROLS PANEL -->
+    <div class="controls">
+        <button id="btn-all" class="active" onclick="filterLang('all')">ID &amp; EN</button>
+        <button id="btn-id" onclick="filterLang('id')">Indonesia</button>
+        <button id="btn-en" onclick="filterLang('en')">English</button>
+        <button id="btn-theme" onclick="toggleTheme()" style="margin-left: 15px;">☀️ Mode Terang</button>
+    </div>
+
+    <!-- HEADER -->
     <div class="header">
         <h1>Zoniq Finance</h1>
         <p>Protocol Testing Phase (Beta Testnet / Alpha)</p>
     </div>
 
-    <div class="grid">
+    <!-- CONTENT GRID -->
+    <div id="content-grid" class="grid dual-col">
         <!-- BAHASA INDONESIA -->
-        <section class="lang-section" lang="id">
+        <section id="sect-id" class="lang-section" lang="id">
             <h2 class="lang-title">Ketentuan Layanan</h2>
             <ol>
                 <li>
@@ -124,7 +186,7 @@
         </section>
 
         <!-- ENGLISH TRANSLATION -->
-        <section class="lang-section" lang="en">
+        <section id="sect-en" class="lang-section" lang="en">
             <h2 class="lang-title">Terms of Service</h2>
             <ol>
                 <li>
@@ -151,6 +213,52 @@
         </section>
     </div>
 </div>
+
+<script>
+    // LANGUAGE SWITCHER LOGIC
+    function filterLang(lang) {
+        const sectId = document.getElementById('sect-id');
+        const sectEn = document.getElementById('sect-en');
+        const grid = document.getElementById('content-grid');
+        
+        // Reset active classes on buttons
+        document.getElementById('btn-all').classList.remove('active');
+        document.getElementById('btn-id').classList.remove('active');
+        document.getElementById('btn-en').classList.remove('active');
+
+        if (lang === 'all') {
+            sectId.classList.remove('hidden');
+            sectEn.classList.remove('hidden');
+            grid.classList.add('dual-col');
+            document.getElementById('btn-all').classList.add('active');
+        } else if (lang === 'id') {
+            sectId.classList.remove('hidden');
+            sectEn.classList.add('hidden');
+            grid.classList.remove('dual-col');
+            document.getElementById('btn-id').classList.add('active');
+        } else if (lang === 'en') {
+            sectId.classList.add('hidden');
+            sectEn.classList.remove('hidden');
+            grid.classList.remove('dual-col');
+            document.getElementById('btn-en').classList.add('active');
+        }
+    }
+
+    // DARK / LIGHT THEME TOGGLE LOGIC
+    function toggleTheme() {
+        const body = document.documentElement;
+        const themeBtn = document.getElementById('btn-theme');
+        const currentTheme = body.getAttribute('data-theme');
+
+        if (currentTheme === 'light') {
+            body.removeAttribute('data-theme');
+            themeBtn.innerHTML = '☀️ Mode Terang';
+        } else {
+            body.setAttribute('data-theme', 'light');
+            themeBtn.innerHTML = '🌙 Mode Gelap';
+        }
+    }
+</script>
 
 </body>
 </html>
