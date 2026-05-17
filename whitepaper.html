@@ -22,7 +22,7 @@
             justify-content: center;
         }
 
-        /* --- LANG SWITCHER FIXED BUTTON --- */
+        /* --- LANG SWITCHER --- */
         .lang-switcher {
             position: fixed;
             top: 20px;
@@ -163,19 +163,25 @@
             p, li { color: #2d3748 !important; }
             li::before { color: #008066 !important; }
         }
+
+        @media (max-width: 768px) {
+            body { padding: 80px 10px 40px 10px; }
+            .whitepaper-card { padding: 30px 20px; }
+            header h1 { font-size: 2rem; }
+            .lang-switcher { position: relative; top: auto; right: auto; margin: -50px auto 30px auto; width: fit-content; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- TOMBOL PENGUBAH BAHASA -->
     <div class="lang-switcher">
-        <button class="lang-btn active" onclick="switchLang('id')">ID</button>
-        <button class="lang-btn" onclick="switchLang('en')">EN</button>
+        <button class="lang-btn active" id="btn-id" onclick="switchLang('id')">ID</button>
+        <button class="lang-btn" id="btn-en" onclick="switchLang('en')">EN</button>
     </div>
 
     <article class="whitepaper-card">
         <header>
-            <h1 id="wp-brand">ZONIQ FINANCE ($ZNQ)</h1>
+            <h1>ZONIQ FINANCE ($ZNQ)</h1>
             <h3 id="wp-subtitle">Next-Gen DeFi-RWA Aggregator</h3>
         </header>
 
@@ -254,7 +260,7 @@
                 lit3: "3. Account Abstraction UI/UX Integration",
                 lid3: "Removes psychological barriers for Web2 users. Mainstream investors can spin up Web3 wallets and authenticate into the platform instantly using social logins (Google/Apple) while flexibly paying transaction gas fees with stablecoins (USDC/USDT).",
                 hTok: "Streamlined Tokenomics ($ZNQ)",
-                ptok1: "The total supply is strictly capped at 100,000.000 $ZNQ, implementing an automated deflationary model via periodic token burn mechanisms to foster long-term asset scarcity.",
+                ptok1: "The total supply is strictly capped at 100,000,000 $ZNQ, implementing an automated deflationary model via periodic token burn mechanisms to foster long-term asset scarcity.",
                 ptok2: "Core Token Utility: Protocol governance voting rights, robust staking reward incentives, native asset liquidity backing, and substantial transaction fee discounts on the platform.",
                 hSec: "Security Architecture & Ecosystem Vision",
                 pSec: "Zoniq Finance deploys OpenZeppelin-standard smart contracts, routinely verified by leading independent security auditing firms. Synthesizing institutional-grade protection with the effortless usability of Web2, Zoniq Finance is positioned to become the premier gateway for global Real World Asset liquidity in the modern era.",
@@ -286,8 +292,8 @@
 
             const buttons = document.querySelectorAll('.lang-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
-            if(lang === 'id') buttons[0].classList.add('active');
-            if(lang === 'en') buttons[1].classList.add('active');
+            if(lang === 'id') document.getElementById('btn-id').classList.add('active');
+            if(lang === 'en') document.getElementById('btn-en').classList.add('active');
         }
     </script>
 </body>
