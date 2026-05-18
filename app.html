@@ -1,824 +1,398 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="appNode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoniq Finance Dashboard</title>
-    <!-- Font Awesome untuk ikon sosial/wallet -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-    
+    <title>ZONIQ Finance - dApp Dashboard</title>
     <style>
-        /* ==================== GAYA CSS (STYLE) ==================== */
+        /* ==========================================================================
+           1. RESET & VARIABEL TEMA (MURNI CSS)
+           ========================================================================== */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
-            background-color: #03090e;
-            color: #ffffff;
+            background-color: #080b11;
+            color: #f3f4f6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* --- SIDEBAR NAVIGASI --- */
-        .sidebar {
-            width: 240px;
-            background-color: #050e14;
-            padding: 30px 20px;
+        /* LOGIKA DUA BAHASA */
+        html[lang="en"] .lang-id { display: none !important; }
+        html[lang="en"] .lang-en { display: block; }
+        html[lang="en"] span.lang-en { display: inline; }
+        html[lang="id"] .lang-en { display: none !important; }
+        html[lang="id"] .lang-id { display: block; }
+        html[lang="id"] span.lang-id { display: inline; }
+
+        /* ==========================================================================
+           2. TATA LETAK UTAMA (SIDEBAR + MAIN CONTENT)
+           ========================================================================== */
+        /* Sidebar Kiri */
+        aside {
+            width: 260px;
+            background-color: #0f131c;
+            border-right: 1px solid #1e2533;
             display: flex;
             flex-direction: column;
-            gap: 40px;
-            border-right: 1px solid #0d1b2a;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 999;
-        }
-
-        .sidebar.hide-desktop {
-            margin-left: -240px;
-        }
-
-        .logo {
-            color: #00ffcc;
-            font-weight: bold;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .nav-item {
-            color: #8da2b5;
-            text-decoration: none;
-            padding: 12px 15px;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            color: #ffffff;
-            background-color: #0b1e2d;
-        }
-
-        .nav-item.active {
-            color: #00ffcc;
-            border-left: 3px solid #00ffcc;
-        }
-
-        /* --- KONTEN UTAMA --- */
-        .main-content {
-            flex: 1;
-            padding: 30px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .top-header {
-            display: flex;
             justify-content: space-between;
-            align-items: center;
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
         }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 40px;
+            padding-left: 10px;
         }
-
-        /* TOMBOL MENU DENGAN EFEK MEMANTUL (BOUNCE ANIMATION) */
-        .menu-dots-toggle {
-            background: #05131f;
-            border: 2px solid #00ffcc;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            width: 38px;
-            height: 36px;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.15);
-        }
-
-        .menu-dots-toggle:active {
-            animation: bounce 0.3s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0% { transform: scale(1); }
-            30% { transform: scale(0.85); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .menu-bar {
-            width: 18px;
-            height: 2.5px;
-            background-color: #00ffcc;
-            border-radius: 2px;
-            transition: all 0.25s ease;
-        }
-
-        .menu-dots-toggle:hover {
-            background-color: #00ffcc;
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
-        }
-
-        .menu-dots-toggle:hover .menu-bar {
-            background-color: #03090e;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        /* Tombol Geser Bahasa (EN kiri, ID kanan) */
-        .language-switch {
-            background-color: #0b1e2d;
-            padding: 4px;
-            border-radius: 20px;
-            display: flex;
-            gap: 5px;
-        }
-
-        .lang-btn {
-            background: none;
-            border: none;
-            color: #8da2b5;
-            padding: 6px 14px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: bold;
+        .logo span { color: #3b82f6; }
+        
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 8px; }
+        .nav-links a {
+            display: block;
+            padding: 12px 16px;
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 12px;
             transition: all 0.2s;
         }
-
-        .lang-btn.active {
-            background-color: #00ffcc;
-            color: #03090e;
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
         }
 
-        /* Tombol Dompet Utama */
-        .connect-wallet {
-            background: linear-gradient(135deg, #0088ff, #00ffcc);
-            border: none;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.2);
-            transition: transform 0.1s, background 0.3s;
+        /* Area Konten Kanan */
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1200px;
         }
 
-        .connect-wallet.connected {
-            background: #0b2236;
-            border: 1px solid #00ffcc;
-            color: #00ffcc;
-            box-shadow: none;
-        }
-
-        .connect-wallet:active {
-            transform: scale(0.98);
-        }
-
-        .page-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-        }
-
-        /* --- STATISTIK GRID --- */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .stat-card {
-            background-color: #05131f;
-            border: 1px solid #0b2236;
-            border-radius: 8px;
-            padding: 25px 20px;
+        /* Topbar Dashboard */
+        .topbar {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .lang-select {
+            background-color: #1e2533;
+            border: 1px solid #2e374a;
+            color: #d1d5db;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-wallet {
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
-        .stat-label {
-            color: #647b91;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        .stat-value {
-            font-size: 1.6rem;
-            font-weight: bold;
-        }
-
-        .highlight-green {
-            color: #00ffcc;
-        }
-
-        /* --- PANEL AKSI GRID --- */
-        .action-grid {
+        /* ==========================================================================
+           3. ELEMEN KARTU & PANEL TRANSAKSI (DAPP INTERFACE)
+           ========================================================================== */
+        /* Kartu Ringkasan Portofolio */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: 2fr 1fr;
             gap: 30px;
         }
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
 
-        .action-card {
-            background-color: #05131f;
-            border: 1px solid #0b2236;
-            border-radius: 12px;
+        .panel {
+            background-color: #0f131c;
+            border: 1px solid #1e2533;
+            border-radius: 20px;
             padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
         }
-
-        .action-card h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .input-group label {
-            color: #647b91;
-            font-size: 0.8rem;
-        }
-
-        .input-wrapper {
-            display: flex;
-            background-color: #020a10;
-            border: 1px solid #0b2236;
-            border-radius: 6px;
-            padding: 12px 15px;
-            align-items: center;
-        }
-
-        .input-wrapper input {
-            background: none;
-            border: none;
+        .panel-title {
+            font-size: 18px;
+            font-weight: 700;
             color: #ffffff;
-            flex: 1;
-            font-size: 1.1rem;
-            outline: none;
-        }
-
-        .currency {
-            color: #00ffcc;
-            font-weight: bold;
-        }
-
-        .action-btn {
-            background-color: #0b1e2d;
-            border: 1px solid #14334a;
-            color: #ffffff;
-            padding: 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .action-btn:hover {
-            background-color: #14334a;
-        }
-
-        /* --- POP-UP MODAL BOX --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(2, 6, 10, 0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal-overlay.show {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-box {
-            background-color: #05131f;
-            border: 1px solid #0b2236;
-            width: 90%;
-            max-width: 680px;
-            border-radius: 16px;
-            padding: 30px;
-            position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-overlay.show .modal-box {
-            transform: translateY(0);
-        }
-
-        .modal-close-x {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: #647b91;
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .modal-close-x:hover {
-            color: #ffffff;
-        }
-
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            text-align: center;
-            color: #00ffcc;
-        }
-
-        .wallet-paths {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .path-card {
-            background-color: #020a10;
-            border: 1px solid #0b2236;
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .path-title {
-            font-size: 0.95rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #ffffff;
-            border-bottom: 1px solid #0b2236;
-            padding-bottom: 8px;
-        }
-
-        .path-subtitle {
-            font-size: 0.8rem;
-            color: #00ffcc;
-            margin-bottom: 15px;
-            font-style: italic;
-        }
-
-        .path-steps {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
             margin-bottom: 20px;
         }
 
-        .path-steps li {
-            font-size: 0.85rem;
-            color: #8da2b5;
-            line-height: 1.4;
+        /* Komponen Swap / Lock Box */
+        .form-group {
+            margin-bottom: 20px;
         }
-
-        .path-steps strong {
-            color: #ffffff;
+        .form-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 8px;
             display: block;
-            margin-bottom: 2px;
         }
-
-        .provider-list {
+        .input-box {
+            background-color: #080b11;
+            border: 1px solid #1e2533;
+            border-radius: 14px;
+            padding: 16px;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .provider-btn {
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            background-color: #0b1e2d;
-            border: 1px solid #14334a;
-            color: #ffffff;
-            padding: 10px 15px;
-            border-radius: 8px;
+        }
+        .input-box input {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            width: 70%;
+            outline: none;
+        }
+        .token-select {
+            font-weight: 700;
+            color: #3b82f6;
+            font-size: 16px;
+        }
+
+        /* Pemilihan Durasi Waktu veZNQ */
+        .duration-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .duration-btn {
+            background-color: #080b11;
+            border: 1px solid #1e2533;
+            color: #9ca3af;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
+            text-align: center;
             transition: all 0.2s;
-            width: 100%;
+        }
+        .duration-btn:hover, .duration-btn.active {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
         }
 
-        .provider-btn:hover {
-            background-color: #14334a;
-            border-color: #00ffcc;
+        /* Detail Hasil Summary */
+        .summary-box {
+            background-color: rgba(59, 130, 246, 0.03);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 24px 0;
+            font-size: 13px;
         }
-
-        .provider-btn img {
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-        }
-
-        .provider-btn i {
-            font-size: 1.2rem;
-        }
-
-        .icon-google { color: #ea4335; }
-        .icon-email { color: #00ffcc; }
-
-        /* Tombol Close Utama di Bagian Bawah Pop-up */
-        .modal-footer {
+        .summary-row {
             display: flex;
-            justify-content: center;
-            border-top: 1px solid #0b2236;
-            padding-top: 20px;
+            justify-content: space-between;
+            margin-bottom: 8px;
         }
+        .summary-row:last-child { margin-bottom: 0; }
+        .summary-label { color: #9ca3af; }
+        .summary-value { font-weight: 600; color: #ffffff; }
+        .summary-value.highlight { color: #22d3ee; font-weight: 700; }
 
-        .modal-close-btn {
-            background-color: #142331;
-            border: 1px solid #22394e;
-            color: #8da2b5;
-            padding: 10px 30px;
-            border-radius: 8px;
-            font-weight: bold;
+        .btn-action {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
+        .btn-action:hover { background-color: #1d4ed8; }
 
-        .modal-close-btn:hover {
-            background-color: #bd2c2c;
-            border-color: #ff4d4d;
-            color: #ffffff;
+        /* Tabel Reward Claimable */
+        .reward-card {
+            background-color: #111622;
+            border: 1px solid #1e2533;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        /* --- RESPONSIVITAS --- */
-        @media (max-width: 900px) {
-            .sidebar {
-                position: fixed;
-                left: 0; top: 0; bottom: 0;
-                transform: translateX(-100%);
-                margin-left: 0 !important;
-            }
-            .sidebar.active-mobile {
-                transform: translateX(0);
-            }
-            .main-content { padding: 20px; }
-            .action-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 600px) {
-            .wallet-paths { grid-template-columns: 1fr; }
-        }
+        .reward-info h4 { font-size: 14px; color: #6b7280; font-weight: 600; margin-bottom: 4px; }
+        .reward-info p { font-size: 20px; font-weight: 700; color: #ffffff; }
     </style>
 </head>
 <body>
 
-    <!-- Kiri: Menu Samping -->
-    <aside class="sidebar" id="sidebar">
-        <div class="logo">ZONIQ FINANCE</div>
-        <nav class="nav-menu">
-            <a href="#" class="nav-item active" id="menu-dash">Dashboard</a>
-            <a href="#" class="nav-item" id="menu-stake">Staking Pool</a>
-            <a href="#" class="nav-item" id="menu-rwa">RWA Collateral</a>
-            <a href="#" class="nav-item" id="menu-dao">Governance (DAO)</a>
-        </nav>
+    <!-- SIDEBAR NAVIGASI KIRI -->
+    <aside>
+        <div>
+            <div class="logo">ZONIQ<span>.</span></div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">📊 Dashboard</a></li>
+                <li><a href="#">🔄 Swap (DEX)</a></li>
+                <li><a href="#">🌾 Vaults (Optimizer)</a></li>
+                <li><a href="#">🔒 veZNQ Governance</a></li>
+            </ul>
+        </div>
+        <div style="font-size: 11px; color: #4b5563; padding-left: 16px;">
+            Base Network Connected
+        </div>
     </aside>
 
-    <!-- Kanan: Area Konten Utama -->
+    <!-- AREA UTAMA APLIKASI -->
     <main class="main-content">
-        <header class="top-header">
-            <div class="header-left">
-                <button class="menu-dots-toggle" id="menuDotsToggle">
-                    <div class="menu-bar"></div>
-                    <div class="menu-bar"></div>
-                    <div class="menu-bar"></div>
-                </button>
+        
+        <!-- TOPBAR KONTROL -->
+        <header class="topbar">
+            <div>
+                <h2 class="lang-en" style="font-size: 24px; font-weight: 700;">Console Account</h2>
+                <h2 class="lang-id" style="font-size: 24px; font-weight: 700;">Konsol Akun</h2>
             </div>
-
-            <div class="header-right">
-                <div class="language-switch">
-                    <button class="lang-btn active" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="id">ID</button>
-                </div>
-                <button class="connect-wallet" id="connectWalletBtn">Connect Wallet</button>
+            <div class="right-controls">
+                <select id="appLangSwitcher" class="lang-select">
+                    <option value="en">🌐 EN</option>
+                    <option value="id">🌐 ID</option>
+                </select>
+                <button class="btn-wallet">0x71C...89bA</button>
             </div>
         </header>
 
-        <h1 class="page-title" id="page-title">Dashboard Summary</h1>
-
-        <!-- Kartu Statistik -->
-        <section class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-price">$ZNQ PRICE</span>
-                <span class="stat-value">$0.0100</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-tvl">TOTAL VALUE LOCKED (TVL)</span>
-                <span class="stat-value highlight-green">$1,245,000</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-myrwa">YOUR RWA COLLATERAL</span>
-                <span class="stat-value">$0.00</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-apy">ESTIMATED STAKING APY</span>
-                <span class="stat-value highlight-green">24.5%</span>
-            </div>
-        </section>
-
-        <!-- Formulir Input Aksi -->
-        <section class="action-grid">
-            <div class="action-card">
-                <h2 id="title-stake-card">Lock $ZNQ Token</h2>
-                <div class="input-group">
-                    <label id="lbl-stake-input">Amount to Stake</label>
-                    <div class="input-wrapper">
-                        <input type="number" placeholder="0.0">
-                        <span class="currency">ZNQ</span>
+        <!-- DASHBOARD GRID INTERFACE -->
+        <section class="dashboard-grid">
+            
+            <!-- PANEL SEBELAH KIRI: FORM CORE LOCK TRANSAKSI -->
+            <div class="panel">
+                <h3 class="panel-title lang-en">Lock $ZNQ for veZNQ</h3>
+                <h3 class="panel-title lang-id">Kunci $ZNQ untuk veZNQ</h3>
+                
+                <div class="form-group">
+                    <label class="form-label lang-en">Amount to Lock</label>
+                    <label class="form-label lang-id">Jumlah untuk Dikunci</label>
+                    <div class="input-box">
+                        <input type="number" placeholder="0.0" value="1000">
+                        <span class="token-select">$ZNQ</span>
                     </div>
                 </div>
-                <button class="action-btn" id="btn-stake-action">Start Staking</button>
-            </div>
 
-            <div class="action-card">
-                <h2 id="title-rwa-card">Apply RWA Collateral</h2>
-                <div class="input-group">
-                    <label id="lbl-rwa-input">Physical Asset Tokenization Value</label>
-                    <div class="input-wrapper">
-                        <input type="number" placeholder="0.0">
-                        <span class="currency">USD</span>
+                <div class="form-group">
+                    <label class="form-label lang-en">Lock Duration</label>
+                    <label class="form-label lang-id">Durasi Penguncian</label>
+                    <div class="duration-grid">
+                        <div class="duration-btn">1 W</div>
+                        <div class="duration-btn">1 M</div>
+                        <div class="duration-btn">1 Y</div>
+                        <div class="duration-btn active">4 Y (Max)</div>
                     </div>
                 </div>
-                <button class="action-btn" id="btn-rwa-action">Lock as Collateral</button>
+
+                <!-- Detail Hasil Simulasi Hitungan Matematika -->
+                <div class="summary-box">
+                    <div class="summary-row">
+                        <span class="summary-label lang-en">Voting Power Received</span>
+                        <span class="summary-label lang-id">Kekuatan Suara Diterima</span>
+                        <span class="summary-value highlight">1,000.00 veZNQ</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label lang-en">Estimated Weekly Yield</span>
+                        <span class="summary-label lang-id">Estimasi Hasil Mingguan</span>
+                        <span class="summary-value">~14.50 USDC</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label lang-en">Unlock Date</span>
+                        <span class="summary-label lang-id">Tanggal Pembukaan Kunci</span>
+                        <span class="summary-value">May 18, 2030</span>
+                    </div>
+                </div>
+
+                <button class="btn-action">
+                    <span class="lang-en">Execute Lock Transaction</span>
+                    <span class="lang-id">Eksekusi Transaksi Kunci</span>
+                </button>
             </div>
+
+            <!-- PANEL SEBELAH KANAN: REAL YIELD EARNINGS CONSOLE -->
+            <div class="space-y" style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <div class="panel" style="padding: 24px;">
+                    <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Your Governance Stash</h3>
+                    <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Simpanan Tata Kelola Anda</h3>
+                    
+                    <div class="reward-card">
+                        <div class="reward-info">
+                            <h4 class="lang-en">Locked Balance</h4>
+                            <h4 class="lang-id">Saldo Terkunci</h4>
+                            <p>1,000 $ZNQ</p>
+                        </div>
+                    </div>
+                    <div class="reward-card">
+                        <div class="reward-info">
+                            <h4 class="lang-en">Current Voting Weight</h4>
+                            <h4 class="lang-id">Bobot Suara Saat Ini</h4>
+                            <p style="color: #22d3ee;">1,000 veZNQ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel" style="padding: 24px;">
+                    <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Claimable Real Yield</h3>
+                    <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Bagi Hasil yang Dapat Diklaim</h3>
+                    
+                    <div class="reward-card" style="background-color: rgba(34, 211, 238, 0.02); border-color: rgba(34, 211, 238, 0.1);">
+                        <div class="reward-info">
+                            <h4>USDC Rewards</h4>
+                            <p style="color: #22d3ee;">142.50 USDC</p>
+                        </div>
+                        <button class="btn-sm" style="background-color: #1e2533; border: 1px solid #2e374a; color: white; padding: 8px 16px; border-radius: 10px; font-weight: 600; cursor: pointer;">Claim</button>
+                    </div>
+                </div>
+
+            </div>
+
         </section>
+
     </main>
 
-    <!-- ==================== POP-UP MODAL KONEKSI DOMPET ==================== -->
-    <div class="modal-overlay" id="walletModal">
-        <div class="modal-box">
-            <button class="modal-close-x" id="closeModalX">
-                <i class="fas fa-times"></i>
-            </button>
-            
-            <div class="modal-title" id="modal-main-title">SELECT WALLET CONNECTION METHOD</div>
-            
-            <div class="wallet-paths">
-                <!-- JALUR A -->
-                <div class="path-card">
-                    <div>
-                        <div class="path-title" id="path-a-title">PATH A: RETAIL USER</div>
-                        <div class="path-subtitle">(Social Auth / Email)</div>
-                        <ul class="path-steps">
-                            <li id="path-a-step1">
-                                <strong>1. Access Authentication</strong>
-                                Sign in using your Google account or Email address.
-                            </li>
-                            <li id="path-a-step2">
-                                <strong>2. Automatic Wallet</strong>
-                                System securely generates a smart wallet behind the scenes.
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="provider-list">
-                        <button class="provider-btn" id="btn-google">
-                            <i class="fab fa-google icon-google"></i>
-                            <span id="txt-google">Continue with Google</span>
-                        </button>
-                        <button class="provider-btn" id="btn-email">
-                            <i class="fas fa-envelope icon-email"></i>
-                            <span id="txt-email">Sign in with Email</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- JALUR B -->
-                <div class="path-card">
-                    <div>
-                        <div class="path-title" id="path-b-title">PATH B: CRYPTO EXPERT</div>
-                        <div class="path-subtitle">(MetaMask / Web3 Wallet)</div>
-                        <ul class="path-steps">
-                            <li id="path-b-step1">
-                                <strong>1. System Detection</strong>
-                                Reads your browser's Web3 extension or crypto wallet app.
-                            </li>
-                            <li id="path-b-step2">
-                                <strong>2. Cryptographic Signature</strong>
-                                Confirm secure access via an on-chain transaction signature.
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="provider-list">
-                        <!-- ID ditambahkan di sini untuk integrasi MetaMask asli -->
-                        <button class="provider-btn" id="connectMetaMaskBtn">
-                            <img src="https://wikimedia.org" alt="MetaMask">
-                            <span id="txt-mm">Connect MetaMask</span>
-                        </button>
-                        <button class="provider-btn">
-                            <img src="https://githubusercontent.com" alt="WalletConnect">
-                            <span>WalletConnect</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button class="modal-close-btn" id="closeModalBtn">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ==================== JAVASCRIPT LOGIK MULTIBAHASA & WEB3 METAMASK ==================== -->
+    <!-- INTERACTIVE SCRIPT -->
     <script>
-        // Data Multi-Bahasa
-        const i18n = {
-            en: {
-                "menu-dash": "Dashboard", "menu-stake": "Staking Pool", "menu-rwa": "RWA Collateral", "menu-dao": "Governance (DAO)",
-                "page-title": "Dashboard Summary", "lbl-price": "$ZNQ PRICE", "lbl-tvl": "TOTAL VALUE LOCKED (TVL)",
-                "lbl-myrwa": "YOUR RWA COLLATERAL", "lbl-apy": "ESTIMATED STAKING APY", "title-stake-card": "Lock $ZNQ Token",
-                "lbl-stake-input": "Amount to Stake", "btn-stake-action": "Start Staking", "title-rwa-card": "Apply RWA Collateral",
-                "lbl-rwa-input": "Physical Asset Tokenization Value", "btn-rwa-action": "Lock as Collateral",
-                "modal-main-title": "SELECT WALLET CONNECTION METHOD", "path-a-title": "PATH A: RETAIL USER",
-                "path-a-step1": "<strong>1. Access Authentication</strong>Sign in using your Google account or Email address.",
-                "path-a-step2": "<strong>2. Automatic Wallet</strong>System securely generates a smart wallet behind the scenes.",
-                "txt-google": "Continue with Google", "txt-email": "Sign in with Email", "path-b-title": "PATH B: CRYPTO EXPERT",
-                "path-b-step1": "<strong>1. System Detection</strong>Reads your browser's Web3 extension or crypto wallet app.",
-                "path-b-step2": "<strong>2. Cryptographic Signature</strong>Confirm secure access via an on-chain transaction signature.",
-                "txt-mm": "Connect MetaMask", "closeModalBtn": "Close"
-            },
-            id: {
-                "menu-dash": "Ringkasan Dasbor", "menu-stake": "Staking Kolam", "menu-rwa": "Agunan RWA", "menu-dao": "Tata Kelola (DAO)",
-                "page-title": "Ringkasan Dasbor", "lbl-price": "HARGA $ZNQ", "lbl-tvl": "TOTAL NILAI TERKUNCI (TVL)",
-                "lbl-myrwa": "AGUNAN RWA ANDA", "lbl-apy": "ESTIMASI APY STAKING", "title-stake-card": "Kunci Token $ZNQ",
-                "lbl-stake-input": "Jumlah untuk di-Staking", "btn-stake-action": "Mulai Staking", "title-rwa-card": "Ajukan Jaminan RWA",
-                "lbl-rwa-input": "Nilai Tokenisasi Aset Fisik", "btn-rwa-action": "Kunci sebagai Agunan",
-                "modal-main-title": "PILIH METODE KONEKSI DOMPET", "path-a-title": "JALUR A: PENGGUNA AWAM",
-                "path-a-step1": "<strong>1. Otentikasi Akses</strong>Masuk menggunakan Google akun atau alamat Email Anda.",
-                "path-a-step2": "<strong>2. Dompet Otomatis</strong>Sistem membuat smart wallet instan di balik layar.",
-                "txt-google": "Lanjutkan dengan Google", "txt-email": "Masuk dengan Email", "path-b-title": "JALUR B: AHLI KRIPTO",
-                "path-b-step1": "<strong>1. Deteksi Sistem</strong>Membaca ekstensi Web3 browser atau aplikasi dompet kripto Anda.",
-                "path-b-step2": "<strong>2. Tanda Tangan</strong>Konfirmasi transaksi aman melalui tanda tangan kriptografi.",
-                "txt-mm": "Hubungkan MetaMask", "closeModalBtn": "Tutup"
-            }
-        };
+        // Logika Pengalihan Dua Bahasa pada dApp Console
+        document.getElementById('appLangSwitcher').addEventListener('change', function(e) {
+            document.getElementById('appNode').setAttribute('lang', e.target.value);
+        });
 
-        // DOM Elemen
-        const menuDotsToggle = document.getElementById('menuDotsToggle');
-        const sidebar = document.getElementById('sidebar');
-        const connectWalletBtn = document.getElementById('connectWalletBtn');
-        const connectMetaMaskBtn = document.getElementById('connectMetaMaskBtn');
-        const walletModal = document.getElementById('walletModal');
-        const closeModalX = document.getElementById('closeModalX');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const langButtons = document.querySelectorAll('.lang-btn');
-
-        let currentLang = 'en';
-        let userWalletAddress = "";
-
-        // Fungsi Ganti Bahasa
-        function switchLanguage(lang) {
-            currentLang = lang;
-            const translation = i18n[lang];
-            for (let id in translation) {
-                const element = document.getElementById(id);
-                if (element) element.innerHTML = translation[id];
-            }
-            updateWalletButtonText();
-        }
-
-        function updateWalletButtonText() {
-            if (userWalletAddress) {
-                // Sembunyikan alamat jika sudah terhubung
-                const shortAddress = userWalletAddress.substring(0, 6) + "..." + userWalletAddress.substring(userWalletAddress.length - 4);
-                connectWalletBtn.innerText = shortAddress;
-            } else {
-                connectWalletBtn.innerText = currentLang === 'en' ? "Connect Wallet" : "Hubungkan Dompet";
-            }
-        }
-
-        langButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                langButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                switchLanguage(btn.getAttribute('data-lang'));
+        // Logika Seleksi Tombol Durasi Waktu
+        const durationBtns = document.querySelectorAll('.duration-btn');
+        durationBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                durationBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
             });
         });
-
-        // Toggle Sidebar Navigasi
-        menuDotsToggle.addEventListener('click', () => {
-            if (window.innerWidth > 900) {
-                sidebar.classList.toggle('hide-desktop');
-            } else {
-                sidebar.classList.toggle('active-mobile');
-            }
-        });
-
-        document.body.addEventListener('click', (e) => {
-            if (window.innerWidth <= 900) {
-                if (!sidebar.contains(e.target) && !menuDotsToggle.contains(e.target) && sidebar.classList.contains('active-mobile')) {
-                    sidebar.classList.remove('active-mobile');
-                }
-            }
-        });
-
-        // Kontrol Tampilan Modal
-        connectWalletBtn.addEventListener('click', () => walletModal.classList.add('show'));
-        function hideModal() { walletModal.classList.remove('show'); }
-        closeModalX.addEventListener('click', hideModal);
-        closeModalBtn.addEventListener('click', hideModal);
-        walletModal.addEventListener('click', (e) => { if (e.target === walletModal) hideModal(); });
-
-        // ==================== INTEGRASI METAMASK NYATA ====================
-        async function connectMetaMask() {
-            // 1. Memeriksa apakah ekstensi MetaMask terpasang di browser
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    // 2. Meminta MetaMask untuk membuka jendela izin akses akun dompet
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    
-                    // 3. Mengambil alamat dompet pertama yang disetujui pengguna
-                    userWalletAddress = accounts[0];
-                    
-                    // 4. Ubah gaya tombol header atas menjadi mode "Terhubung"
-                    connectWalletBtn.classList.add('connected');
-                    updateWalletButtonText();
-                    
-                    // 5. Tutup jendela pop-up modal otomatis
-                    hideModal();
-                    alert(currentLang === 'en' ? "Wallet successfully connected!" : "Dompet berhasil terhubung!");
-                    
-                } catch (error) {
-                    console.error("User menolak koneksi dompet", error);
-                }
-            } else {
-                // Jika ekstensi MetaMask belum terpasang di peramban pengguna
-                if (currentLang === 'en') {
-                    alert("MetaMask is not installed! Please install the MetaMask Extension to proceed.");
-                    window.open('https://metamask.io', '_blank');
-                } else {
-                    alert("MetaMask belum terpasang! Silakan pasang Ekstensi MetaMask terlebih dahulu.");
-                    window.open('https://metamask.io', '_blank');
-                }
-            }
-        }
-
-        // Jalankan fungsi saat tombol kustom MetaMask di dalam modal diklik
-        connectMetaMaskBtn.addEventListener('click', connectMetaMask);
-
-        // Memantau jika pengguna mengganti akun dompet mereka di dalam aplikasi MetaMask
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length > 0) {
-                    userWalletAddress = accounts[0];
-                    updateWalletButtonText();
-                } else {
-                    // Jika pengguna memutus koneksi dompet lewat MetaMask
-                    userWalletAddress = "";
-                    connectWalletBtn.classList.remove('connected');
-                    updateWalletButtonText();
-                }
-            });
-        }
     </script>
 </body>
 </html>
