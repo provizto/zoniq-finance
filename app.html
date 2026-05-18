@@ -60,7 +60,9 @@
             text-decoration: none;
             padding: 12px 15px;
             border-radius: 6px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
 
@@ -96,14 +98,14 @@
             gap: 15px;
         }
 
-        /* TOMBOL MENU DENGAN EFEK MEMANTUL (BOUNCE ANIMATION) */
+        /* TOMBOL MENU TITIK TIGA DIKECILKAN & DIPERJELAS */
         .menu-dots-toggle {
             background: #05131f;
             border: 2px solid #00ffcc;
             padding: 8px;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             gap: 4px;
@@ -114,23 +116,24 @@
             box-shadow: 0 0 8px rgba(0, 255, 204, 0.15);
         }
 
-        .menu-dots-toggle:active {
-            animation: bounce 0.3s ease-in-out;
-        }
-
-        @keyframes bounce {
-            0% { transform: scale(1); }
-            30% { transform: scale(0.85); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
         .menu-bar {
             width: 18px;
             height: 2.5px;
             background-color: #00ffcc;
             border-radius: 2px;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
+        }
+
+        /* Animasi memantul (bounce) saat diklik */
+        .menu-dots-toggle.bounce {
+            animation: buttonBounce 0.35s ease;
+        }
+
+        @keyframes buttonBounce {
+            0% { transform: scale(1); }
+            30% { transform: scale(0.82); }
+            60% { transform: scale(1.12); }
+            100% { transform: scale(1); }
         }
 
         .menu-dots-toggle:hover {
@@ -185,18 +188,22 @@
             cursor: pointer;
             font-size: 0.9rem;
             box-shadow: 0 4px 15px rgba(0, 255, 204, 0.2);
-            transition: transform 0.1s, background 0.3s;
-        }
-
-        .connect-wallet.connected {
-            background: #0b2236;
-            border: 1px solid #00ffcc;
-            color: #00ffcc;
-            box-shadow: none;
+            transition: transform 0.1s;
         }
 
         .connect-wallet:active {
             transform: scale(0.98);
+        }
+
+        /* AREA HALAMAN DINAMIS */
+        .page-section {
+            display: none; /* Sembunyikan semua halaman secara bawaan */
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .page-section.active-page {
+            display: flex; /* Hanya tampilkan halaman yang aktif */
         }
 
         .page-title {
@@ -517,10 +524,10 @@
     <aside class="sidebar" id="sidebar">
         <div class="logo">ZONIQ FINANCE</div>
         <nav class="nav-menu">
-            <a href="#" class="nav-item active" id="menu-dash">Dashboard</a>
-            <a href="#" class="nav-item" id="menu-stake">Staking Pool</a>
-            <a href="#" class="nav-item" id="menu-rwa">RWA Collateral</a>
-            <a href="#" class="nav-item" id="menu-dao">Governance (DAO)</a>
+            <div class="nav-item active" data-target="page-dashboard" id="menu-dash">Dashboard</div>
+            <div class="nav-item" data-target="page-staking" id="menu-stake">Staking Pool</div>
+            <div class="nav-item" data-target="page-rwa" id="menu-rwa">RWA Collateral</div>
+            <div class="nav-item" data-target="page-dao" id="menu-dao">Governance (DAO)</div>
         </nav>
     </aside>
 
@@ -544,52 +551,70 @@
             </div>
         </header>
 
-        <h1 class="page-title" id="page-title">Dashboard Summary</h1>
-
-        <!-- Kartu Statistik -->
-        <section class="stats-grid">
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-price">$ZNQ PRICE</span>
-                <span class="stat-value">$0.0100</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-tvl">TOTAL VALUE LOCKED (TVL)</span>
-                <span class="stat-value highlight-green">$1,245,000</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-myrwa">YOUR RWA COLLATERAL</span>
-                <span class="stat-value">$0.00</span>
-            </div>
-            <div class="stat-card">
-                <span class="stat-label" id="lbl-apy">ESTIMATED STAKING APY</span>
-                <span class="stat-value highlight-green">24.5%</span>
+        <!-- ==================== HALAMAN 1: DASHBOARD ==================== -->
+        <section id="page-dashboard" class="page-section active-page">
+            <h1 class="page-title" id="page-title">Dashboard Summary</h1>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label" id="lbl-price">$ZNQ PRICE</span>
+                    <span class="stat-value">$0.0100</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label" id="lbl-tvl">TOTAL VALUE LOCKED (TVL)</span>
+                    <span class="stat-value highlight-green">$1,245,000</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label" id="lbl-myrwa">YOUR RWA COLLATERAL</span>
+                    <span class="stat-value">$0.00</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label" id="lbl-apy">ESTIMATED STAKING APY</span>
+                    <span class="stat-value highlight-green">24.5%</span>
+                </div>
             </div>
         </section>
 
-        <!-- Formulir Input Aksi -->
-        <section class="action-grid">
-            <div class="action-card">
-                <h2 id="title-stake-card">Lock $ZNQ Token</h2>
-                <div class="input-group">
-                    <label id="lbl-stake-input">Amount to Stake</label>
-                    <div class="input-wrapper">
-                        <input type="number" placeholder="0.0">
-                        <span class="currency">ZNQ</span>
+        <!-- ==================== HALAMAN 2: STAKING POOL ==================== -->
+        <section id="page-staking" class="page-section">
+            <h1 class="page-title" id="page-title-stake">Staking Arena</h1>
+            <div class="action-grid">
+                <div class="action-card">
+                    <h2 id="title-stake-card">Lock $ZNQ Token</h2>
+                    <div class="input-group">
+                        <label id="lbl-stake-input">Amount to Stake</label>
+                        <div class="input-wrapper">
+                            <input type="number" placeholder="0.0">
+                            <span class="currency">ZNQ</span>
+                        </div>
                     </div>
+                    <button class="action-btn" id="btn-stake-action">Start Staking</button>
                 </div>
-                <button class="action-btn" id="btn-stake-action">Start Staking</button>
             </div>
+        </section>
 
-            <div class="action-card">
-                <h2 id="title-rwa-card">Apply RWA Collateral</h2>
-                <div class="input-group">
-                    <label id="lbl-rwa-input">Physical Asset Tokenization Value</label>
-                    <div class="input-wrapper">
-                        <input type="number" placeholder="0.0">
-                        <span class="currency">USD</span>
+        <!-- ==================== HALAMAN 3: RWA COLLATERAL ==================== -->
+        <section id="page-rwa" class="page-section">
+            <h1 class="page-title" id="page-title-rwa">Real World Assets</h1>
+            <div class="action-grid">
+                <div class="action-card">
+                    <h2 id="title-rwa-card">Apply RWA Collateral</h2>
+                    <div class="input-group">
+                        <label id="lbl-rwa-input">Physical Asset Tokenization Value</label>
+                        <div class="input-wrapper">
+                            <input type="number" placeholder="0.0">
+                            <span class="currency">USD</span>
+                        </div>
                     </div>
+                    <button class="action-btn" id="btn-rwa-action">Lock as Collateral</button>
                 </div>
-                <button class="action-btn" id="btn-rwa-action">Lock as Collateral</button>
+            </div>
+        </section>
+
+        <!-- ==================== HALAMAN 4: GOVERNANCE DAO ==================== -->
+        <section id="page-dao" class="page-section">
+            <h1 class="page-title" id="page-title-dao">DAO Governance</h1>
+            <div class="stat-card" style="max-width: 500px;">
+                <span class="stat-label" style="font-size: 1rem; color:#fff;" id="txt-dao-desc">Voting Proposals and Community Proposals will appear here. Connect your wallet to participate.</span>
             </div>
         </section>
     </main>
@@ -649,7 +674,6 @@
                         </ul>
                     </div>
                     <div class="provider-list">
-                        <!-- ID ditambahkan di sini untuk integrasi MetaMask asli -->
                         <button class="provider-btn" id="connectMetaMaskBtn">
                             <img src="https://wikimedia.org" alt="MetaMask">
                             <span id="txt-mm">Connect MetaMask</span>
@@ -668,84 +692,118 @@
         </div>
     </div>
 
-    <!-- ==================== JAVASCRIPT LOGIK MULTIBAHASA & WEB3 METAMASK ==================== -->
+    <!-- ==================== JAVASCRIPT SYSTEM ==================== -->
     <script>
-        // Data Multi-Bahasa
+        // DATA KAMUS KAMUS MULTIBAHASA
         const i18n = {
             en: {
-                "menu-dash": "Dashboard", "menu-stake": "Staking Pool", "menu-rwa": "RWA Collateral", "menu-dao": "Governance (DAO)",
-                "page-title": "Dashboard Summary", "lbl-price": "$ZNQ PRICE", "lbl-tvl": "TOTAL VALUE LOCKED (TVL)",
-                "lbl-myrwa": "YOUR RWA COLLATERAL", "lbl-apy": "ESTIMATED STAKING APY", "title-stake-card": "Lock $ZNQ Token",
-                "lbl-stake-input": "Amount to Stake", "btn-stake-action": "Start Staking", "title-rwa-card": "Apply RWA Collateral",
-                "lbl-rwa-input": "Physical Asset Tokenization Value", "btn-rwa-action": "Lock as Collateral",
-                "modal-main-title": "SELECT WALLET CONNECTION METHOD", "path-a-title": "PATH A: RETAIL USER",
+                "menu-dash": "Dashboard",
+                "menu-dash-active": "Dashboard",
+                "menu-stake": "Staking Pool",
+                "menu-rwa": "RWA Collateral",
+                "menu-dao": "Governance (DAO)",
+                "connectWalletBtn": "Connect Wallet",
+                "page-title": "Dashboard Summary",
+                "page-title-stake": "Staking Arena",
+                "page-title-rwa": "Real World Assets",
+                "page-title-dao": "DAO Governance",
+                "txt-dao-desc": "Voting Proposals and Community Proposals will appear here. Connect your wallet to participate.",
+                "lbl-price": "$ZNQ PRICE",
+                "lbl-tvl": "TOTAL VALUE LOCKED (TVL)",
+                "lbl-myrwa": "YOUR RWA COLLATERAL",
+                "lbl-apy": "ESTIMATED STAKING APY",
+                "title-stake-card": "Lock $ZNQ Token",
+                "lbl-stake-input": "Amount to Stake",
+                "btn-stake-action": "Start Staking",
+                "title-rwa-card": "Apply RWA Collateral",
+                "lbl-rwa-input": "Physical Asset Tokenization Value",
+                "btn-rwa-action": "Lock as Collateral",
+                "modal-main-title": "SELECT WALLET CONNECTION METHOD",
+                "path-a-title": "PATH A: RETAIL USER",
                 "path-a-step1": "<strong>1. Access Authentication</strong>Sign in using your Google account or Email address.",
                 "path-a-step2": "<strong>2. Automatic Wallet</strong>System securely generates a smart wallet behind the scenes.",
-                "txt-google": "Continue with Google", "txt-email": "Sign in with Email", "path-b-title": "PATH B: CRYPTO EXPERT",
+                "txt-google": "Continue with Google",
+                "txt-email": "Sign in with Email",
+                "path-b-title": "PATH B: CRYPTO EXPERT",
                 "path-b-step1": "<strong>1. System Detection</strong>Reads your browser's Web3 extension or crypto wallet app.",
                 "path-b-step2": "<strong>2. Cryptographic Signature</strong>Confirm secure access via an on-chain transaction signature.",
-                "txt-mm": "Connect MetaMask", "closeModalBtn": "Close"
+                "txt-mm": "Connect MetaMask",
+                "closeModalBtn": "Close"
             },
             id: {
-                "menu-dash": "Ringkasan Dasbor", "menu-stake": "Staking Kolam", "menu-rwa": "Agunan RWA", "menu-dao": "Tata Kelola (DAO)",
-                "page-title": "Ringkasan Dasbor", "lbl-price": "HARGA $ZNQ", "lbl-tvl": "TOTAL NILAI TERKUNCI (TVL)",
-                "lbl-myrwa": "AGUNAN RWA ANDA", "lbl-apy": "ESTIMASI APY STAKING", "title-stake-card": "Kunci Token $ZNQ",
-                "lbl-stake-input": "Jumlah untuk di-Staking", "btn-stake-action": "Mulai Staking", "title-rwa-card": "Ajukan Jaminan RWA",
-                "lbl-rwa-input": "Nilai Tokenisasi Aset Fisik", "btn-rwa-action": "Kunci sebagai Agunan",
-                "modal-main-title": "PILIH METODE KONEKSI DOMPET", "path-a-title": "JALUR A: PENGGUNA AWAM",
+                "menu-dash": "Ringkasan Dasbor",
+                "menu-dash-active": "Ringkasan Dasbor",
+                "menu-stake": "Staking Kolam",
+                "menu-rwa": "Agunan RWA",
+                "menu-dao": "Tata Kelola (DAO)",
+                "connectWalletBtn": "Hubungkan Dompet",
+                "page-title": "Ringkasan Dasbor",
+                "page-title-stake": "Arena Staking",
+                "page-title-rwa": "Aset Dunia Nyata (RWA)",
+                "page-title-dao": "Tata Kelola DAO",
+                "txt-dao-desc": "Proposal Voting dan Usulan Komunitas akan muncul di sini. Hubungkan dompet Anda untuk berpartisipasi.",
+                "lbl-price": "HARGA $ZNQ",
+                "lbl-tvl": "TOTAL NILAI TERKUNCI (TVL)",
+                "lbl-myrwa": "AGUNAN RWA ANDA",
+                "lbl-apy": "ESTIMASI APY STAKING",
+                "title-stake-card": "Kunci Token $ZNQ",
+                "lbl-stake-input": "Jumlah untuk di-Staking",
+                "btn-stake-action": "Mulai Staking",
+                "title-rwa-card": "Ajukan Jaminan RWA",
+                "lbl-rwa-input": "Nilai Tokenisasi Aset Fisik",
+                "btn-rwa-action": "Kunci sebagai Agunan",
+                "modal-main-title": "PILIH METODE KONEKSI DOMPET",
+                "path-a-title": "JALUR A: PENGGUNA AWAM",
                 "path-a-step1": "<strong>1. Otentikasi Akses</strong>Masuk menggunakan Google akun atau alamat Email Anda.",
                 "path-a-step2": "<strong>2. Dompet Otomatis</strong>Sistem membuat smart wallet instan di balik layar.",
-                "txt-google": "Lanjutkan dengan Google", "txt-email": "Masuk dengan Email", "path-b-title": "JALUR B: AHLI KRIPTO",
+                "txt-google": "Lanjutkan dengan Google",
+                "txt-email": "Masuk dengan Email",
+                "path-b-title": "JALUR B: AHLI KRIPTO",
                 "path-b-step1": "<strong>1. Deteksi Sistem</strong>Membaca ekstensi Web3 browser atau aplikasi dompet kripto Anda.",
                 "path-b-step2": "<strong>2. Tanda Tangan</strong>Konfirmasi transaksi aman melalui tanda tangan kriptografi.",
-                "txt-mm": "Hubungkan MetaMask", "closeModalBtn": "Tutup"
+                "txt-mm": "Hubungkan MetaMask",
+                "closeModalBtn": "Tutup"
             }
         };
 
-        // DOM Elemen
+        let currentLang = 'en';
+
+        // ELEMEN DOM
         const menuDotsToggle = document.getElementById('menuDotsToggle');
         const sidebar = document.getElementById('sidebar');
         const connectWalletBtn = document.getElementById('connectWalletBtn');
-        const connectMetaMaskBtn = document.getElementById('connectMetaMaskBtn');
         const walletModal = document.getElementById('walletModal');
         const closeModalX = document.getElementById('closeModalX');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const langButtons = document.querySelectorAll('.lang-btn');
+        const navItems = document.querySelectorAll('.nav-item');
+        const pageSections = document.querySelectorAll('.page-section');
+        const connectMetaMaskBtn = document.getElementById('connectMetaMaskBtn');
 
-        let currentLang = 'en';
-        let userWalletAddress = "";
+        // 1. LOGIKA INTERAKSI PINDAH HALAMAN (NAVIGATION)
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
 
-        // Fungsi Ganti Bahasa
-        function switchLanguage(lang) {
-            currentLang = lang;
-            const translation = i18n[lang];
-            for (let id in translation) {
-                const element = document.getElementById(id);
-                if (element) element.innerHTML = translation[id];
-            }
-            updateWalletButtonText();
-        }
+                const targetPageId = item.getAttribute('data-target');
+                pageSections.forEach(section => {
+                    section.classList.remove('active-page');
+                });
+                document.getElementById(targetPageId).classList.add('active-page');
 
-        function updateWalletButtonText() {
-            if (userWalletAddress) {
-                // Sembunyikan alamat jika sudah terhubung
-                const shortAddress = userWalletAddress.substring(0, 6) + "..." + userWalletAddress.substring(userWalletAddress.length - 4);
-                connectWalletBtn.innerText = shortAddress;
-            } else {
-                connectWalletBtn.innerText = currentLang === 'en' ? "Connect Wallet" : "Hubungkan Dompet";
-            }
-        }
-
-        langButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                langButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                switchLanguage(btn.getAttribute('data-lang'));
+                // Jika di mobile, tutup sidebar setelah klik menu
+                if (window.innerWidth <= 900) {
+                    sidebar.classList.remove('active-mobile');
+                }
             });
         });
 
-        // Toggle Sidebar Navigasi
+        // 2. KONTROL SIDEBAR & ANIMASI BOUNCE
         menuDotsToggle.addEventListener('click', () => {
+            menuDotsToggle.classList.add('bounce');
+            setTimeout(() => menuDotsToggle.classList.remove('bounce'), 350);
+
             if (window.innerWidth > 900) {
                 sidebar.classList.toggle('hide-desktop');
             } else {
@@ -761,64 +819,20 @@
             }
         });
 
-        // Kontrol Tampilan Modal
-        connectWalletBtn.addEventListener('click', () => walletModal.classList.add('show'));
-        function hideModal() { walletModal.classList.remove('show'); }
-        closeModalX.addEventListener('click', hideModal);
-        closeModalBtn.addEventListener('click', hideModal);
-        walletModal.addEventListener('click', (e) => { if (e.target === walletModal) hideModal(); });
-
-        // ==================== INTEGRASI METAMASK NYATA ====================
-        async function connectMetaMask() {
-            // 1. Memeriksa apakah ekstensi MetaMask terpasang di browser
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    // 2. Meminta MetaMask untuk membuka jendela izin akses akun dompet
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    
-                    // 3. Mengambil alamat dompet pertama yang disetujui pengguna
-                    userWalletAddress = accounts[0];
-                    
-                    // 4. Ubah gaya tombol header atas menjadi mode "Terhubung"
-                    connectWalletBtn.classList.add('connected');
-                    updateWalletButtonText();
-                    
-                    // 5. Tutup jendela pop-up modal otomatis
-                    hideModal();
-                    alert(currentLang === 'en' ? "Wallet successfully connected!" : "Dompet berhasil terhubung!");
-                    
-                } catch (error) {
-                    console.error("User menolak koneksi dompet", error);
-                }
-            } else {
-                // Jika ekstensi MetaMask belum terpasang di peramban pengguna
-                if (currentLang === 'en') {
-                    alert("MetaMask is not installed! Please install the MetaMask Extension to proceed.");
-                    window.open('https://metamask.io', '_blank');
-                } else {
-                    alert("MetaMask belum terpasang! Silakan pasang Ekstensi MetaMask terlebih dahulu.");
-                    window.open('https://metamask.io', '_blank');
-                }
+        // 3. SWITCH BAHASA DINAMIS
+        function switchLanguage(lang) {
+            currentLang = lang;
+            const translation = i18n[lang];
+            for (let id in translation) {
+                const element = document.getElementById(id);
+                if (element) element.innerHTML = translation[id];
             }
         }
 
-        // Jalankan fungsi saat tombol kustom MetaMask di dalam modal diklik
-        connectMetaMaskBtn.addEventListener('click', connectMetaMask);
-
-        // Memantau jika pengguna mengganti akun dompet mereka di dalam aplikasi MetaMask
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length > 0) {
-                    userWalletAddress = accounts[0];
-                    updateWalletButtonText();
-                } else {
-                    // Jika pengguna memutus koneksi dompet lewat MetaMask
-                    userWalletAddress = "";
-                    connectWalletBtn.classList.remove('connected');
-                    updateWalletButtonText();
-                }
-            });
-        }
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                langButtons.forEach(b => b.classList.remove('active'));
+}
     </script>
 </body>
 </html>
