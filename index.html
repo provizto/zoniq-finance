@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoniq Finance - Layer-2 DeFi Aggregator</title>
+    <title>Zoniq Finance - Layer-2 DeFi-RWA Aggregator</title>
     <style>
         :root {
             --bg-color: #030e12;
@@ -186,112 +186,28 @@
         .pie-center .amount { color: var(--title-color); font-size: 1.4rem; font-weight: 800; }
         .pie-center .token-name { color: var(--accent-color); font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; }
 
-        /* 5. STRATEGIC ROADMAP SECTION (MATCHING SCREENSHOT) */
-        .roadmap-section {
-            padding: 20px 0 60px 0;
-            position: relative;
-        }
-        .roadmap-section h2 {
-            color: var(--title-color);
-            font-size: 2rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        /* Vertical center line */
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            background-color: var(--border-color);
-            top: 0; bottom: 0;
-            left: 50%;
-            margin-left: -1px;
-            z-index: 1;
-        }
-        .timeline-container {
-            padding: 10px 40px;
-            position: relative;
-            background-color: inherit;
-            width: 50%;
-            box-sizing: border-box;
-            z-index: 2;
-        }
-        /* Custom timeline nodes/circles */
-        .timeline-container::after {
-            content: '';
-            position: absolute;
-            width: 14px; height: 14px;
-            right: -8px; top: 38px;
-            border-radius: 50%;
-            background-color: var(--bg-color);
-            border: 3px solid #00f2fe;
-            z-index: 3;
-        }
-        .timeline-container.right::after {
-            left: -8px;
-            border-color: #0072ff;
-        }
+        /* 5. STRATEGIC ROADMAP SECTION */
+        .roadmap-section { padding: 20px 0 60px 0; position: relative; }
+        .roadmap-section h2 { color: var(--title-color); font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 60px; }
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+        .timeline::after { content: ''; position: absolute; width: 2px; background-color: var(--border-color); top: 0; bottom: 0; left: 50%; margin-left: -1px; z-index: 1; }
+        .timeline-container { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; box-sizing: border-box; z-index: 2; }
+        .timeline-container::after { content: ''; position: absolute; width: 14px; height: 14px; right: -8px; top: 38px; border-radius: 50%; background-color: var(--bg-color); border: 3px solid #00f2fe; z-index: 3; }
+        .timeline-container.right::after { left: -8px; border-color: #0072ff; }
         .timeline-container.left { left: 0; text-align: right; }
         .timeline-container.right { left: 50%; text-align: left; }
-        
-        .roadmap-box {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 25px;
-            position: relative;
-        }
-        .q-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            font-size: 0.65rem;
-            font-weight: 800;
-            color: #00f2fe;
-            background-color: rgba(0, 242, 254, 0.08);
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-        .right .q-badge {
-            color: #0072ff;
-            background-color: rgba(0, 114, 255, 0.08);
-        }
-        .roadmap-box h3 {
-            color: var(--title-color);
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0 0 15px 0;
-        }
-        .roadmap-list {
-            margin: 0; padding: 0;
-            list-style: none;
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-        .roadmap-list li {
-            margin-bottom: 10px;
-            position: relative;
-        }
+        .roadmap-box { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 25px; position: relative; }
+        .q-badge { display: inline-block; padding: 4px 10px; font-size: 0.65rem; font-weight: 800; color: #00f2fe; background-color: rgba(0, 242, 254, 0.08); border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        .right .q-badge { color: #0072ff; background-color: rgba(0, 114, 255, 0.08); }
+        .roadmap-box h3 { color: var(--title-color); font-size: 1.2rem; font-weight: 700; margin: 0 0 15px 0; }
+        .roadmap-list { margin: 0; padding: 0; list-style: none; font-size: 0.9rem; color: #64748b; }
+        .roadmap-list li { margin-bottom: 10px; position: relative; }
         .left .roadmap-list li { padding-right: 15px; }
         .right .roadmap-list li { padding-left: 15px; }
-        
-        /* Custom hyphens/dots lists alignment */
-        .left .roadmap-list li::after {
-            content: '–'; position: absolute; right: 0; top: 0; color: #475569;
-        }
-        .right .roadmap-list li::before {
-            content: '–'; position: absolute; left: 0; top: 0; color: #475569;
-        }
+        .left .roadmap-list li::after { content: '–'; position: absolute; right: 0; top: 0; color: #475569; }
+        .right .roadmap-list li::before { content: '–'; position: absolute; left: 0; top: 0; color: #475569; }
         .roadmap-list li:last-child { margin-bottom: 0; }
 
-        /* Responsive timeline layout for mobile screens */
         @media screen and (max-width: 767px) {
             .timeline::after { left: 20px; }
             .timeline-container { width: 100%; padding-left: 50px; padding-right: 0; text-align: left !important; }
@@ -301,6 +217,36 @@
             .roadmap-list li { padding-left: 15px !important; padding-right: 0 !important; }
             .roadmap-list li::after { display: none; }
             .roadmap-list li::before { content: '–'; position: absolute; left: 0; top: 0; display: block; }
+        }
+
+        /* 6. GLOBAL FOOTER STYLING (NEW SECTION) */
+        footer {
+            margin-top: 60px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+        @media (min-width: 480px) {
+            footer { flex-direction: row; }
+        }
+        footer .copyright {
+            font-weight: 500;
+        }
+        footer .footer-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        footer .footer-link:hover {
+            color: #0072ff;
+            text-decoration: underline;
         }
 
         /* FILTERS ARCHITECTURE */
@@ -327,12 +273,12 @@
         <!-- Hero Section -->
         <section class="hero-layout">
             <div class="hero-left">
-                <span class="badge">Layer-2 DeFi Aggregator</span>
+                <span class="badge">Layer-2 DeFi-RWA Aggregator</span>
                 <h1>Zoniq Finance: DeFi Semudah Pakai Email.</h1>
                 <p>Protokol agregator DeFi-RWA berbiaya rendah di jaringan Base &amp; Arbitrum. Jaminkan aset dunia nyata Anda secara permissionless untuk mendapatkan likuiditas instan dengan biaya gas di bawah $0.01.</p>
                 <div class="cta-group">
-                    <a href="#" class="btn btn-primary">Buka Aplikasi</a>
-                    <a href="#" class="btn btn-secondary">Baca One-Pager</a>
+                    <a href="#" class="btn btn-primary cta-app-btn">Buka Aplikasi</a>
+                    <a href="#" class="btn btn-secondary cta-doc-btn">Baca One-Pager</a>
                 </div>
             </div>
             <div class="hero-right"><div class="blob-logo"><span>Z</span></div></div>
@@ -380,9 +326,10 @@
             </div>
         </section>
 
-        <!-- Strategic Roadmap (ID) -->
+        <!-- Strategic Roadmap -->
         <section class="roadmap-section">
             <h2>Peta Jalan Strategis</h2>
+            <p class="roadmap-subtitle" id="rm-sub">Lini masa rencana eksekusi dan pengembangan ekosistem Zoniq Finance secara global.</p>
             <div class="timeline">
                 <div class="timeline-container left">
                     <div class="roadmap-box">
@@ -441,8 +388,8 @@
                 <h1>Zoniq Finance: DeFi as Simple as Email.</h1>
                 <p>A low-cost DeFi-RWA aggregator protocol deployed on Base &amp; Arbitrum networks. Leverage your real-world assets permissionlessly to unlock instant liquidity with gas fees under $0.01.</p>
                 <div class="cta-group">
-                    <a href="#" class="btn btn-primary">Launch App</a>
-                    <a href="#" class="btn btn-secondary">Read One-Pager</a>
+                    <a href="#" class="btn btn-primary cta-app-btn">Launch App</a>
+                    <a href="#" class="btn btn-secondary cta-doc-btn">Read One-Pager</a>
                 </div>
             </div>
             <div class="hero-right"><div class="blob-logo"><span>Z</span></div></div>
@@ -490,7 +437,7 @@
             </div>
         </section>
 
-        <!-- Strategic Roadmap (EN) -->
+        <!-- Strategic Roadmap -->
         <section class="roadmap-section">
             <h2>Strategic Roadmap</h2>
             <div class="timeline">
@@ -542,6 +489,14 @@
         </section>
     </div>
 
+    <!-- ================= GLOBAL FOOTER (NEW ELEMENT) ================= -->
+    <footer>
+        <div class="copyright">&copy; 2026 Zoniq Finance. All rights reserved.</div>
+        <div>
+            <a href="tos.html" id="tosLink" class="footer-link">Terms of Service</a>
+        </div>
+    </footer>
+
 </div>
 
 <script>
@@ -567,21 +522,25 @@
         return null;
     }
 
+    // INTERFACE LANGUAGE UPDATER
     function applyLanguage(lang) {
         const toggle = document.getElementById('langToggle');
         const sectId = document.getElementById('sect-id');
         const sectEn = document.getElementById('sect-en');
+        const tosLink = document.getElementById('tosLink');
 
         if (lang === 'id') {
             toggle.classList.remove('active-en');
             toggle.classList.add('active-id');
             sectId.classList.remove('hidden');
             sectEn.classList.add('hidden');
+            tosLink.innerText = "Ketentuan Layanan"; // Dynamically switch footer text
         } else {
             toggle.classList.remove('active-id');
             toggle.classList.add('active-en');
             sectId.classList.add('hidden');
             sectEn.classList.remove('hidden');
+            tosLink.innerText = "Terms of Service";
         }
     }
 
