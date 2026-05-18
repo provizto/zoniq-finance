@@ -1,448 +1,405 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoniq Finance - App Dashboard</title>
+    <title>Zoniq Finance - Dashboard dApp</title>
     <style>
-        /* --- CORE CONFIGURATION --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        :root {
+            --bg-color: #030a0d;
+            --sidebar-bg: #051014;
+            --card-bg: #06151b;
+            --input-bg: #091a21;
+            --border-color: #10242c;
+            --text-title: #ffffff;
+            --text-body: #64748b;
+            --accent-color: #00f2fe;
+            --accent-green: #10b981;
+            --accent-gradient: linear-gradient(135deg, #0072ff 0%, #00f2fe 100%);
+            --modal-overlay: rgba(3, 10, 13, 0.85);
         }
 
         body {
-            background-color: #03070d; /* Ultra Dark Background */
-            color: #ffffff;
-            display: flex;
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-body);
+            margin: 0; padding: 0;
+            display: flex; min-height: 100vh;
         }
 
-        /* --- LANG SWITCHER FIXED BUTTON --- */
-        .lang-switcher {
-            position: fixed;
-            top: 25px;
-            right: 240px; /* Jarak aman di sebelah tombol dompet */
-            z-index: 1000;
-            display: flex;
-            gap: 8px;
-            background: rgba(5, 11, 20, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            color: #a0aec0;
-            padding: 6px 14px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 16px;
-            transition: all 0.2s ease;
-        }
-
-        .lang-btn.active {
-            background-color: #00f2c3;
-            color: #050b14;
-        }
-
-        /* --- SIDEBAR NAVIGATION --- */
+        /* 1. SIDEBAR NAVIGASI */
         .sidebar {
-            width: 260px;
-            background-color: #050b14;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
+            width: 240px; background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex; flex-direction: column; padding: 25px 15px; box-sizing: border-box; flex-shrink: 0;
         }
+        .brand { color: var(--accent-color); font-size: 1.25rem; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 40px; padding-left: 10px; text-transform: uppercase; }
+        .nav-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+        .nav-item a { display: block; color: #94a3b8; text-decoration: none; padding: 12px 15px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; transition: all 0.2s ease; }
+        .nav-item a:hover { background-color: rgba(255, 255, 255, 0.02); color: var(--text-title); }
+        .nav-item.active a { background-color: rgba(0, 242, 254, 0.06); color: var(--accent-color); border-left: 3px solid var(--accent-color); border-radius: 0 8px 8px 0; padding-left: 12px; }
 
-        .brand-logo {
-            font-size: 1.3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #00f2c3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
-            padding-left: 10px;
+        /* 2. MAIN CONTENT AREA */
+        .main-content { flex-grow: 1; padding: 30px 40px; box-sizing: border-box; overflow-y: auto; }
+        .top-bar { display: flex; justify-content: flex-end; align-items: center; gap: 20px; margin-bottom: 40px; }
+
+        /* TOGGLE SWITCH ID/EN */
+        .switch { position: relative; display: inline-block; width: 100px; height: 34px; background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 17px; cursor: pointer; user-select: none; }
+        .switch-label { position: absolute; top: 0; width: 50px; height: 34px; line-height: 34px; text-align: center; font-weight: 700; font-size: 0.8rem; color: var(--text-body); z-index: 2; transition: color 0.2s; }
+        .switch-label.label-id { left: 0; }
+        .switch-label.label-en { right: 0; }
+        .switch-handle { position: absolute; top: 2px; left: 2px; width: 46px; height: 28px; background: var(--accent-gradient); border-radius: 14px; z-index: 1; transition: transform 0.2s ease; }
+        .switch.active-id .label-id { color: var(--bg-color); }
+        .switch.active-en .label-en { color: var(--bg-color); }
+        .switch.active-en .switch-handle { transform: translateX(50px); }
+
+        /* WALLET BUTTON WITH NEON BORDER */
+        .btn-wallet { background-color: transparent; color: var(--accent-color); border: 1px solid rgba(0, 242, 254, 0.4); padding: 8px 18px; border-radius: 6px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease; }
+        .btn-wallet:hover { background-color: rgba(0, 242, 254, 0.05); box-shadow: 0 0 15px rgba(0, 242, 254, 0.2); }
+        .dashboard-title { color: var(--text-title); font-size: 1.8rem; font-weight: 800; margin: 0 0 30px 0; }
+
+        /* 3. ANALYTICS METRICS CARDS GRID */
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 35px; }
+        .metric-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 22px; }
+        .metric-label { font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .metric-value { font-size: 1.6rem; font-weight: 800; color: var(--text-title); margin: 0; }
+        .metric-value.highlight-green { color: var(--accent-green); }
+
+        /* 4. TRANSACTION MODULE PANEL GRID */
+        .panels-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        @media (min-width: 992px) { .panels-grid { grid-template-columns: 1fr 1fr; } }
+        .action-panel { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; box-sizing: border-box; }
+        .action-panel h2 { color: var(--text-title); font-size: 1.2rem; font-weight: 700; margin: 0 0 20px 0; }
+        .input-label { font-size: 0.8rem; color: #475569; margin-bottom: 8px; display: block; }
+        .input-group { position: relative; display: flex; align-items: center; margin-bottom: 25px; }
+        .input-group input { width: 100%; background-color: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-title); padding: 14px 65px 14px 15px; border-radius: 8px; font-size: 1rem; font-weight: 600; outline: none; box-sizing: border-box; }
+        .token-tag { position: absolute; right: 18px; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.5px; }
+        .tag-znq { color: var(--accent-green); }
+        .tag-usd { color: #475569; }
+        .btn-action { width: 100%; padding: 14px; background-color: #0c161a; border: 1px solid var(--border-color); color: var(--text-title); font-size: 0.95rem; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .btn-action:hover { background-color: var(--input-bg); border-color: #1e3a47; }
+
+        /* 5. INTERFACE POP-UP MODAL (NEW OPTION CORRESPONDING TO THE IMAGE) */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--modal-overlay);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 100; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
         }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px; width: 100%; max-width: 650px;
+            padding: 35px; box-sizing: border-box; position: relative;
+            transform: scale(0.95); transition: transform 0.3s ease;
         }
-
-        .nav-item a {
-            display: block;
-            padding: 12px 15px;
-            color: #a0aec0;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-close { position: absolute; top: 20px; right: 25px; font-size: 1.5rem; color: #475569; cursor: pointer; background: none; border: none; font-weight: bold; }
+        .modal-close:hover { color: var(--text-title); }
+        .modal-box h2 { color: var(--text-title); font-size: 1.5rem; text-align: center; margin: 0 0 30px 0; font-weight: 800; }
+        
+        /* Options Router Paths Columns */
+        .wallet-options-container { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 576px) { .wallet-options-container { grid-template-columns: 1fr 1fr; } }
+        .option-route-card {
+            background-color: rgba(3, 10, 13, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 25px 20px; cursor: pointer;
+            transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; text-align: center;
         }
-
-        .nav-item.active a, .nav-item a:hover {
-            background: rgba(0, 242, 195, 0.1);
-            color: #00f2c3;
+        .option-route-card:hover {
+            border-color: rgba(0, 242, 254, 0.4);
+            background-color: var(--input-bg);
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.05);
         }
+        .route-badge { font-size: 0.7rem; font-weight: 800; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .option-route-card h4 { color: var(--text-title); margin: 0 0 10px 0; font-size: 1.1rem; font-weight: 700; }
+        .route-subtext { font-size: 0.75rem; color: #475569; margin-bottom: 15px; font-weight: 600; text-transform: uppercase; }
+        .route-steps-list { margin: 0; padding: 0; list-style: none; font-size: 0.8rem; text-align: left; color: var(--text-body); width: 100%; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .route-steps-list li { margin-bottom: 8px; position: relative; padding-left: 15px; line-height: 1.4; }
+        .route-steps-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent-color); }
+        .route-steps-list li:last-child { margin-bottom: 0; }
 
-        /* --- MAIN DASHBOARD CONTAINER --- */
-        .main-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-        }
-
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .app-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .wallet-btn {
-            background: linear-gradient(135deg, #0066ff, #00f2c3);
-            color: #03070d;
-            border: none;
-            padding: 12px 24px;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 242, 195, 0.2);
-            transition: transform 0.2s ease;
-        }
-
-        .wallet-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        /* --- METRICS GRID --- */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .metric-card {
-            background: rgba(5, 11, 20, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 12px;
-        }
-
-        .metric-card p {
-            color: #a0aec0;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-
-        .metric-card h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .text-green { color: #00f2c3; }
-
-        /* --- INTERACTION ZONE --- */
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .action-card {
-            background: rgba(5, 11, 20, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 35px;
-            border-radius: 16px;
-        }
-
-        .action-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 15px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #a0aec0;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
-        .input-box-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-box-wrapper input {
-            width: 100%;
-            background-color: #03070d;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px 16px;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            outline: none;
-        }
-
-        .input-box-wrapper input:focus {
-            border-color: #00f2c3;
-        }
-
-        .token-badge {
-            position: absolute;
-            right: 15px;
-            font-weight: 700;
-            color: #00f2c3;
-        }
-
-        .action-btn {
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
-
-        .action-btn:hover {
-            background-color: #00f2c3;
-            color: #03070d;
-            border-color: #00f2c3;
-            font-weight: 700;
-        }
-
-        /* --- RESPONSIVE MOBILE --- */
-        @media (max-width: 968px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-            .action-grid { grid-template-columns: 1fr; }
-            .main-content { padding: 25px; }
-            .lang-switcher { position: relative; top: auto; right: auto; margin: 20px auto 0 auto; width: fit-content; }
-        }
+        /* MULTILANGUAGE CLASSES */
+        .lang-block { animation: fadeIn 0.3s ease; }
+        .lang-block.hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <!-- TOMBOL PENGUBAH BAHASA -->
-    <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-lang-id" onclick="switchLang('id')">ID</button>
-        <button class="lang-btn" id="btn-lang-en" onclick="switchLang('en')">EN</button>
-    </div>
-
-    <!-- SISI KINI: MENU NAVIGASI APP -->
+    <!-- SIDEBAR NAVIGATION PANEL -->
     <aside class="sidebar">
-        <div class="brand-logo">ZONIQ FINANCE</div>
-        <ul class="nav-links">
-            <li class="nav-item active"><a href="#" id="menu-dash">Dashboard</a></li>
-            <li class="nav-item"><a href="#" id="menu-stake">Staking Kolam</a></li>
-            <li class="nav-item"><a href="#" id="menu-rwa">Agunan RWA</a></li>
-            <li class="nav-item"><a href="#" id="menu-dao">Tata Kelola (DAO)</a></li>
-        </ul>
+        <div class="brand">Zoniq Finance</div>
+        <nav>
+            <ul class="nav-list">
+                <li class="nav-item active"><a href="#" id="menu-dash">Dasbor</a></li>
+                <li class="nav-item"><a href="#" id="menu-pool">Staking Kolam</a></li>
+                <li class="nav-item"><a href="#" id="menu-rwa">Agunan RWA</a></li>
+                <li class="nav-item"><a href="#" id="menu-dao">Tata Kelola (DAO)</a></li>
+            </ul>
+        </nav>
     </aside>
 
-    <!-- SISI KANAN: KONTEN UTAMA DASHBOARD -->
+    <!-- MAIN CONTENT AREA -->
     <main class="main-content">
-        <header class="app-header">
-            <div>
-                <h1 id="title-summary">Ringkasan Dasbor</h1>
+        
+        <!-- HEADER KONTROL UTAMA -->
+        <header class="top-bar">
+            <div id="langToggle" class="switch active-en" onclick="toggleLanguage()">
+                <div class="switch-label label-id">ID</div>
+                <div class="switch-label label-en">EN</div>
+                <div class="switch-handle"></div>
             </div>
-            <!-- Tombol Koneksi Web3 MetaMask -->
-            <button class="wallet-btn" id="btn-connect">Hubungkan Dompet</button>
+            <button class="btn-wallet" id="walletBtn" onclick="openWalletModal()">Hubungkan Dompet</button>
         </header>
 
-        <!-- GRID STATISTIK UTAMA -->
-        <section class="metrics-grid">
-            <div class="metric-card">
-                <p id="m-price">Harga $ZNQ</p>
-                <h2>$0.0100</h2>
+        <!-- ================= TAMPILAN BAHASA INDONESIA ================= -->
+        <div id="sect-id" class="lang-block hidden">
+            <h1 class="dashboard-title">Ringkasan Dasbor</h1>
+            <div class="metrics-grid">
+                <div class="metric-card"><div class="metric-label">Harga $ZNQ</div><p class="metric-value">$0.0100</p></div>
+                <div class="metric-card"><div class="metric-label">Total Nilai Terkunci (TVL)</div><p class="metric-value highlight-green">$1,245,000</p></div>
+                <div class="metric-card"><div class="metric-label">Agunan RWA Anda</div><p class="metric-value">$0.00</p></div>
+                <div class="metric-card"><div class="metric-label">Estimasi APY Staking</div><p class="metric-value highlight-green">24.5%</p></div>
             </div>
-            <div class="metric-card">
-                <p id="m-tvl">Total Nilai Terkunci (TVL)</p>
-                <h2 class="text-green">$1,245,000</h2>
-            </div>
-            <div class="metric-card">
-                <p id="m-coll">Agunan RWA Anda</p>
-                <h2>$0.00</h2>
-            </div>
-            <div class="metric-card">
-                <p id="m-apy">Estimasi APY Staking</p>
-                <h2 class="text-green">24.5%</h2>
-            </div>
-        </section>
-
-        <!-- PANEL INTERAKSI FITUR -->
-        <section class="action-grid">
-            <!-- PANEL STAKING -->
-            <div class="action-card">
-                <h3 id="card-t-stake">Kunci Token $ZNQ</h3>
-                <div class="input-group">
-                    <label id="lbl-stake">Jumlah untuk di-Staking</label>
-                    <div class="input-box-wrapper">
-                        <input type="number" placeholder="0.0">
-                        <span class="token-badge">ZNQ</span>
-                    </div>
+            <div class="panels-grid">
+                <div class="action-panel">
+                    <h2>Kunci Token $ZNQ</h2>
+                    <span class="input-label">Jumlah untuk di-Staking</span>
+                    <div class="input-group"><input type="number" placeholder="0.0" id="stake-input-id"><span class="token-tag tag-znq">ZNQ</span></div>
+                    <button class="btn-action" onclick="executeTx('stake', 'id')">Mulai Staking</button>
                 </div>
-                <button class="action-btn" id="btn-act-stake">Mulai Staking</button>
-            </div>
-
-            <!-- PANEL INTEGRASI AGUNAN SILANG RWA -->
-            <div class="action-card">
-                <h3 id="card-t-rwa">Ajukan Jaminan RWA</h3>
-                <div class="input-group">
-                    <label id="lbl-rwa">Nilai Tokenisasi Aset Fisik</label>
-                    <div class="input-box-wrapper">
-                        <input type="number" placeholder="0.0">
-                        <span class="token-badge">USD</span>
-                    </div>
+                <div class="action-panel">
+                    <h2>Ajukan Jaminan RWA</h2>
+                    <span class="input-label">Nilai Tokenisasi Aset Fisik</span>
+                    <div class="input-group"><input type="number" placeholder="0.0" id="rwa-input-id"><span class="token-tag tag-usd">USD</span></div>
+                    <button class="btn-action" onclick="executeTx('rwa', 'id')">Kunci sebagai Agunan</button>
                 </div>
-                <button class="action-btn" id="btn-act-rwa">Kunci sebagai Agunan</button>
             </div>
-        </section>
+        </div>
+
+        <!-- ================= TAMPILAN BAHASA INGGRIS ================= -->
+        <div id="sect-en" class="lang-block">
+            <h1 class="dashboard-title">Dashboard Summary</h1>
+            <div class="metrics-grid">
+                <div class="metric-card"><div class="metric-label">$ZNQ Price</div><p class="metric-value">$0.0100</p></div>
+                <div class="metric-card"><div class="metric-label">Total Value Locked (TVL)</div><p class="metric-value highlight-green">$1,245,000</p></div>
+                <div class="metric-card"><div class="metric-label">Your RWA Collateral</div><p class="metric-value">$0.00</p></div>
+                <div class="metric-card"><div class="metric-label">Estimated Staking APY</div><p class="metric-value highlight-green">24.5%</p></div>
+            </div>
+            <div class="panels-grid">
+                <div class="action-panel">
+                    <h2>Lock $ZNQ Tokens</h2>
+                    <span class="input-label">Amount to Stake</span>
+                    <div class="input-group"><input type="number" placeholder="0.0" id="stake-input-en"><span class="token-tag tag-znq">ZNQ</span></div>
+                    <button class="btn-action" onclick="executeTx('stake', 'en')">Start Staking</button>
+                </div>
+                <div class="action-panel">
+                    <h2>Apply RWA Collateral</h2>
+                    <span class="input-label">Physical Asset Tokenization Value</span>
+                    <div class="input-group"><input type="number" placeholder="0.0" id="rwa-input-en"><span class="token-tag tag-usd">USD</span></div>
+                    <button class="btn-action" onclick="executeTx('rwa', 'en')">Lock as Collateral</button>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <!-- LOGIKA JAVASCRIPT MULTIBAHASA & METAMASK -->
-    <script>
-        // 1. KAMUS BAHASA DASHBOARD
-        const appTranslations = {
-            id: {
-                menuDash: "Dashboard",
-                menuStake: "Staking Kolam",
-                menuRwa: "Agunan RWA",
-                menuDao: "Tata Kelola (DAO)",
-                titleSummary: "Ringkasan Dasbor",
-                btnConnect: "Hubungkan Dompet",
-                btnConnecting: "Menghubungkan...",
-                mPrice: "Harga $ZNQ",
-                mTvl: "Total Nilai Terkunci (TVL)",
-                mColl: "Agunan RWA Anda",
-                mApy: "Estimasi APY Staking",
-                cardTStake: "Kunci Token $ZNQ",
-                lblStake: "Jumlah untuk di-Staking",
-                btnActStake: "Mulai Staking",
-                cardTRwa: "Ajukan Jaminan RWA",
-                lblRwa: "Nilai Tokenisasi Aset Fisik",
-                btnActRwa: "Kunci sebagai Agunan",
-                metaError: "MetaMask tidak terdeteksi! Silakan instal ekstensi MetaMask."
-            },
-            en: {
-                menuDash: "Dashboard",
-                menuStake: "Staking Pools",
-                menuRwa: "RWA Collateral",
-                menuDao: "Governance (DAO)",
-                titleSummary: "Dashboard Summary",
-                btnConnect: "Connect Wallet",
-                btnConnecting: "Connecting...",
-                mPrice: "$ZNQ Price",
-                mTvl: "Total Value Locked (TVL)",
-                mColl: "Your RWA Collateral",
-                mApy: "Estimated Staking APY",
-                cardTStake: "Lock $ZNQ Tokens",
-                lblStake: "Amount to Stake",
-                btnActStake: "Start Staking",
-                cardTRwa: "Deposit RWA Collateral",
-                lblRwa: "Tokenized Asset Value",
-                btnActRwa: "Lock as Collateral",
-                metaError: "MetaMask not detected! Please install MetaMask extension."
-            }
-        };
-
-        let currentLang = 'id';
-        let isConnected = false;
-        let walletAddress = "";
-
-        // 2. FUNGSI PENGUBAH BAHASA
-        function switchLang(lang) {
-            currentLang = lang;
+    <!-- ================= INTERFACE CHOOSE CONNECTION INTERACTIVE MODAL ================= -->
+    <div id="walletModal" class="modal-overlay" onclick="closeWalletModalOutside(event)">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeWalletModal()">×</button>
+            <h2 id="modal-title">Hubungkan Dompet Anda</h2>
             
-            document.getElementById('menu-dash').innerText = appTranslations[lang].menuDash;
-            document.getElementById('menu-stake').innerText = appTranslations[lang].menuStake;
-            document.getElementById('menu-rwa').innerText = appTranslations[lang].menuRwa;
-            document.getElementById('menu-dao').innerText = appTranslations[lang].menuDao;
-            document.getElementById('title-summary').innerText = appTranslations[lang].titleSummary;
-            document.getElementById('m-price').innerText = appTranslations[lang].mPrice;
-            document.getElementById('m-tvl').innerText = appTranslations[lang].mTvl;
-            document.getElementById('m-coll').innerText = appTranslations[lang].mColl;
-            document.getElementById('m-apy').innerText = appTranslations[lang].mApy;
-            document.getElementById('card-t-stake').innerText = appTranslations[lang].cardTStake;
-            document.getElementById('lbl-stake').innerText = appTranslations[lang].lblStake;
-            document.getElementById('btn-act-stake').innerText = appTranslations[lang].btnActStake;
-            document.getElementById('card-t-rwa').innerText = appTranslations[lang].cardTRwa;
-            document.getElementById('lbl-rwa').innerText = appTranslations[lang].lblRwa;
-            document.getElementById('btn-act-rwa').innerText = appTranslations[lang].btnActRwa;
+            <div class="wallet-options-container">
+                <!-- JALUR A: PENGGUNA AWAM -->
+                <div class="option-route-card" onclick="selectRoute('A')">
+                    <span class="route-badge">Jalur A</span>
+                    <h4 id="routeA-title">Pengguna Awam</h4>
+                    <span class="route-subtext">(Social Auth / Email)</span>
+                    <ul class="route-steps-list" id="routeA-steps">
+                        <li>Input Email / Google Auth</li>
+                        <li>Dompet Pintar Otomatis Tercipta</li>
+                        <li>Eksekusi Transaksi Instan</li>
+                    </ul>
+                </div>
 
-            // Update status teks tombol dompet jika tidak sedang terkoneksi
-            if (!isConnected) {
-                document.getElementById('btn-connect').innerText = appTranslations[lang].btnConnect;
+                <!-- JALUR B: AHLI KRIPTO -->
+                <div class="option-route-card" onclick="selectRoute('B')">
+                    <span class="route-badge" style="color:#0072ff">Jalur B</span>
+                    <h4 id="routeB-title">Ahli Kripto</h4>
+                    <span class="route-subtext">(MetaMask / Web3)</span>
+                    <ul class="route-steps-list" id="routeB-steps">
+                        <li>Deteksi Ekstensi / Deep-Link HP</li>
+                        <li>Tanda Tangan Kunci Dompet Digital</li>
+                        <li>Kendali Penuh Kunci Privat</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LOGIC KONTROL POP-UP MODAL JALUR WALLET
+        let isConnected = false;
+
+        function openWalletModal() {
+            if(isConnected) {
+                // Jika sudah terkoneksi, klik tombol akan memutuskan koneksi (Disconnect)
+                isConnected = false;
+                const isId = document.getElementById('langToggle').classList.contains('active-id');
+                const btn = document.getElementById('walletBtn');
+                btn.innerText = isId ? "Hubungkan Dompet" : "Connect Wallet";
+                btn.style.borderColor = "rgba(0, 242, 254, 0.4)";
+                btn.style.color = "var(--accent-color)";
+                return;
             }
-
-            // Ganti visual aktif pada tombol bahasa
-            document.getElementById('btn-lang-id').classList.remove('active');
-            document.getElementById('btn-lang-en').classList.remove('active');
-            if (lang === 'id') document.getElementById('btn-lang-id').classList.add('active');
-            if (lang === 'en') document.getElementById('btn-lang-en').classList.add('active');
+            document.getElementById('walletModal').classList.add('active');
         }
 
-        // 3. LOGIKA INTERAKSI METAMASK
-        const walletBtn = document.getElementById('btn-connect');
+        function closeWalletModal() {
+            document.getElementById('walletModal').classList.remove('active');
+        }
 
-        async function connectWallet() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    walletBtn.innerText = appTranslations[currentLang].btnConnecting;
-                    
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    walletAddress = accounts[0];
-                    isConnected = true;
-                    
-                    // Format alamat dompet agar ringkas (Contoh: 0x1234...abcd)
-                    const formatted = walletAddress.substring(0, 6) + "..." + walletAddress.substring(walletAddress.length - 4);
-                    
-                    walletBtn.innerText = formatted;
-                    walletBtn.style.background = "#00f2c3";
-                    walletBtn.style.color = "#03070d";
-                } catch (error) {
-                    console.error("Koneksi dibatalkan:", error);
-                    isConnected = false;
-                    walletBtn.innerText = appTranslations[currentLang].btnConnect;
-                }
+        function closeWalletModalOutside(event) {
+            if(event.target.id === 'walletModal') {
+                closeWalletModal();
+            }
+        }
+
+        // EXECUTE SELECTION ROUTE PATH FROM IMAGE
+        function selectRoute(routeType) {
+            isConnected = true;
+            const btn = document.getElementById('walletBtn');
+            const isId = document.getElementById('langToggle').classList.contains('active-id');
+
+            closeWalletModal();
+            
+            if(routeType === 'A') {
+                // Simulasi login via smart account abstraction email
+                btn.innerText = "zoniq_user@social.auth"; 
+                alert(isId ? "Pendaftaran via Jalur A Berhasil! Smart Account dompet pintar Anda otomatis tercipta." : "Route A Login Successful! Your account abstraction smart wallet was created automatically.");
             } else {
-                alert(appTranslations[currentLang].metaError);
-                walletBtn.innerText = appTranslations[currentLang].btnConnect;
+                // Simulasi login via MetaMask web3 extension
+                btn.innerText = "0x71C...3A9f"; 
+                alert(isId ? "Koneksi via Jalur B Berhasil! Ekstensi MetaMask terdeteksi & tanda tangan terverifikasi." : "Route B Connection Successful! MetaMask extension detected & signature verified.");
+            }
+
+            btn.style.borderColor = "var(--accent-green)";
+            btn.style.color = "var(--accent-green)";
+        }
+
+        // TRANSACTION EXECUTION METHOD
+        function executeTx(type, lang) {
+            let val = document.getElementById(`${type}-input-${lang}`).value;
+            if(!val || parseFloat(val) <= 0) {
+                alert(lang === 'id' ? "Silakan masukkan jumlah nominal valid!" : "Please enter a valid amount!");
+                return;
+            }
+            if(!isConnected) {
+                alert(lang === 'id' ? "Silakan hubungkan dompet Anda terlebih dahulu!" : "Please connect your wallet first!");
+                return;
+            }
+            if(type === 'stake') {
+                alert(lang === 'id' ? `Berhasil mengunci ${val} ZNQ ke pool staking!` : `Successfully locked ${val} ZNQ into staking pool!`);
+            } else {
+                alert(lang === 'id' ? `Pengajuan agunan RWA senilai $${val} USD berhasil diproses!` : `RWA collateral request valued at $${val} USD processed successfully!`);
             }
         }
 
-        walletBtn.addEventListener('click', connectWallet);
-    </script>
+        // COOKIES SYNC ENGINE AND DYNAMIC DICTIONARY INTERACTION
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                let date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; SameSite=Strict";
+        }
 
+        function getCookie(name) {
+            let nameEQ = name + "=";
+            let ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        function applyLanguage(lang) {
+            const toggle = document.getElementById('langToggle');
+            const sectId = document.getElementById('sect-id');
+            const sectEn = document.getElementById('sect-en');
+            const walletBtn = document.getElementById('walletBtn');
+            
+            // Sidebar components selector
+            const menuDash = document.getElementById('menu-dash');
+            const menuPool = document.getElementById('menu-pool');
+            const menuRwa = document.getElementById('menu-rwa');
+            const menuDao = document.getElementById('menu-dao');
+
+            // Modal text components selector
+            const modalTitle = document.getElementById('modal-title');
+            const routeATitle = document.getElementById('routeA-title');
+            const routeASteps = document.getElementById('routeA-steps');
+            const routeBTitle = document.getElementById('routeB-title');
+            const routeBSteps = document.getElementById('routeB-steps');
+
+            if (lang === 'id') {
+                toggle.classList.remove('active-en');
+                toggle.classList.add('active-id');
+                sectId.classList.remove('hidden');
+                sectEn.classList.add('hidden');
+                
+                menuDash.innerText = "Dasbor";
+                menuPool.innerText = "Staking Kolam";
+                menuRwa.innerText = "Agunan RWA";
+                menuDao.innerText = "Tata Kelola (DAO)";
+                if(!isConnected) walletBtn.innerText = "Hubungkan Dompet";
+
+                // Text Modal Indonesia
+                modalTitle.innerText = "Hubungkan Dompet Anda";
+                routeATitle.innerText = "Pengguna Awam";
+                routeASteps.innerHTML = "<li>Input Email / Google Auth</li><li>Dompet Pintar Otomatis Tercipta</li><li>Eksekusi Transaksi Instan</li>";
+                routeBTitle.innerText = "Ahli Kripto";
+                routeBSteps.innerHTML = "<li>Deteksi Ekstensi / Deep-Link HP</li><li>Tanda Tangan Kunci Dompet Digital</li><li>Kendali Penuh Kunci Privat</li>";
+            } else {
+                toggle.classList.remove('active-id');
+                toggle.classList.add('active-en');
+                sectId.classList.add('hidden');
+                sectEn.classList.remove('hidden');
+                
+                menuDash.innerText = "Dashboard";
+                menuPool.innerText = "Staking Pool";
+                menuRwa.innerText = "RWA Collateral";
+                menuDao.innerText = "Governance (DAO)";
+                if(!isConnected) walletBtn.innerText = "Connect Wallet";
+
+                // Text Modal English
+                modalTitle.innerText = "Connect Your Wallet";
+                routeATitle.innerText = "Mainstream User";
+                routeASteps.innerHTML = "<li>Input Email / Google Auth</li><li>Smart Wallet Automatically Created</li><li>Instant Transaction Execution</li>";
+                routeBTitle.innerText = "Crypto Expert";
+                routeBSteps.innerHTML = "<li>Detect Extension / Mobile Deep-Link</li><li>Sign Digital Wallet Key</li><li>Full Control of Private Keys</li>";
+            }
+        }
+
+        function toggleLanguage() {
+            const toggle = document.getElementById('langToggle');
+            let targetLang = toggle.classList.contains('active-en') ? 'id' : 'en';
+            applyLanguage(targetLang);
+            setCookie('oniq_lang', targetLang, 30);
+        }
+
+        window.onload = function() {
+            let savedLang = getCookie('oniq_lang');
+            applyLanguage(savedLang ? savedLang : 'en');
+        };
+    </script>
 </body>
 </html>
