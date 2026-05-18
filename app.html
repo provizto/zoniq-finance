@@ -96,28 +96,28 @@
             gap: 15px;
         }
 
-        /* --- UPDATE: TOMBOL MENU DENGAN GARIS TEBAL & JELAS --- */
+        /* --- UPDATE: UKURAN TOMBOL MENU DIKECILKAN SEDIKIT --- */
         .menu-dots-toggle {
             background: #05131f;
-            border: 2.5px solid #00ffcc; /* Bingkai lebih tebal */
-            padding: 12px;
-            border-radius: 8px;
+            border: 2px solid #00ffcc; /* Ketebalan bingkai disesuaikan proporsional */
+            padding: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
-            gap: 5px; /* Jarak antar garis jernih */
-            width: 46px;
-            height: 44px;
+            gap: 4px; /* Jarak antar garis sedikit lebih rapat */
+            width: 38px;  /* Dikecilkan dari 46px */
+            height: 36px; /* Dikecilkan dari 44px */
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.15);
+            box-shadow: 0 0 8px rgba(0, 255, 204, 0.15);
         }
 
-        /* Batang garis kustom tebal */
+        /* Batang garis kustom diperkecil sedikit */
         .menu-bar {
-            width: 22px;
-            height: 3.5px; /* Ketebalan garis ditingkatkan agar sangat jelas */
+            width: 18px; /* Diperpendek dari 22px */
+            height: 2.5px; /* Ketebalan disesuaikan menjadi 2.5px agar seimbang */
             background-color: #00ffcc;
             border-radius: 2px;
             transition: all 0.25s ease;
@@ -125,12 +125,11 @@
 
         .menu-dots-toggle:hover {
             background-color: #00ffcc;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
         }
 
-        /* Efek warna garis saat tombol di-hover */
         .menu-dots-toggle:hover .menu-bar {
-            background-color: #03090e; /* Menjadi gelap agar kontras tinggi */
+            background-color: #03090e;
         }
 
         .header-right {
@@ -512,7 +511,7 @@
     <main class="main-content">
         <header class="top-header">
             <div class="header-left">
-                <!-- Tombol Menu Garis Kustom Lebih Tebal & Jelas -->
+                <!-- Tombol Menu Garis Kustom yang Diperkecil Ukurannya -->
                 <button class="menu-dots-toggle" id="menuDotsToggle">
                     <div class="menu-bar"></div>
                     <div class="menu-bar"></div>
