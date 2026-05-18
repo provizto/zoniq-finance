@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoniq Finance Dashboard</title>
-    <!-- Font Awesome untuk ikon menu, Close, Google, dan Wallet -->
+    <!-- Font Awesome untuk ikon sosial/wallet -->
     <link rel="stylesheet" href="https://cloudflare.com">
     
     <style>
@@ -96,26 +96,41 @@
             gap: 15px;
         }
 
-        /* --- SEGERA DIWARNAI: TOMBOL MENU TITIK TIGA / GARIS TIGA --- */
+        /* --- UPDATE: TOMBOL MENU DENGAN GARIS TEBAL & JELAS --- */
         .menu-dots-toggle {
             background: #05131f;
-            border: 1px solid #00ffcc; /* Bingkai Hijau Neon */
-            color: #00ffcc;            /* Warna Ikon Hijau Neon */
-            padding: 10px 14px;
+            border: 2.5px solid #00ffcc; /* Bingkai lebih tebal */
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            gap: 5px; /* Jarak antar garis jernih */
+            width: 46px;
+            height: 44px;
             justify-content: center;
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.1);
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.15);
+        }
+
+        /* Batang garis kustom tebal */
+        .menu-bar {
+            width: 22px;
+            height: 3.5px; /* Ketebalan garis ditingkatkan agar sangat jelas */
+            background-color: #00ffcc;
+            border-radius: 2px;
+            transition: all 0.25s ease;
         }
 
         .menu-dots-toggle:hover {
-            background-color: #00ffcc;  /* Berubah penuh saat disentuh */
-            color: #03090e;            /* Ikon menjadi gelap kontras */
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4); /* Efek berpijar kuat */
+            background-color: #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+
+        /* Efek warna garis saat tombol di-hover */
+        .menu-dots-toggle:hover .menu-bar {
+            background-color: #03090e; /* Menjadi gelap agar kontras tinggi */
         }
 
         .header-right {
@@ -497,9 +512,11 @@
     <main class="main-content">
         <header class="top-header">
             <div class="header-left">
-                <!-- Tombol Menu Berwarna Hijau Neon Terang -->
+                <!-- Tombol Menu Garis Kustom Lebih Tebal & Jelas -->
                 <button class="menu-dots-toggle" id="menuDotsToggle">
-                    <i class="fas fa-bars"></i>
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
+                    <div class="menu-bar"></div>
                 </button>
             </div>
 
