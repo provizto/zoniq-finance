@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,26 +33,13 @@
             text-align: center;
             margin-bottom: 40px;
         }
-        .header h1 {
-            color: var(--title-color);
-            font-size: 2.2rem;
-            margin: 0 0 10px 0;
-        }
-        .header p {
-            color: var(--accent-color);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-            margin: 0 0 25px 0;
-        }
-
-        /* TOGGLE SWITCH STYLING */
+        
+        /* TOGGLE SWITCH STYLING (AT THE VERY TOP) */
         .toggle-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         .switch {
             position: relative;
@@ -101,6 +88,20 @@
         .switch.active-en .label-en { color: var(--toggle-text-active); }
         .switch.active-en .switch-handle {
             transform: translateX(68px);
+        }
+
+        .header h1 {
+            color: var(--title-color);
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+        }
+        .header p {
+            color: var(--accent-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            margin: 0;
         }
 
         .grid {
@@ -158,23 +159,23 @@
 <div class="container">
     <!-- HEADER -->
     <div class="header">
-        <h1>Zoniq Finance</h1>
-        <p>Protocol Testing Phase (Beta Testnet / Alpha)</p>
-        
-        <!-- CENTERED TOGGLE SWITCH -->
+        <!-- CENTERED TOGGLE SWITCH ON TOP -->
         <div class="toggle-container">
-            <div id="langToggle" class="switch active-id" onclick="toggleLanguage()">
+            <div id="langToggle" class="switch active-en" onclick="toggleLanguage()">
                 <div class="switch-label label-id">ID</div>
                 <div class="switch-label label-en">EN</div>
                 <div class="switch-handle"></div>
             </div>
         </div>
+
+        <h1>Zoniq Finance</h1>
+        <p>Protocol Testing Phase (Beta Testnet / Alpha)</p>
     </div>
 
     <!-- CONTENT AREA -->
     <div id="content-grid" class="grid">
-        <!-- BAHASA INDONESIA -->
-        <section id="sect-id" class="lang-section" lang="id">
+        <!-- BAHASA INDONESIA (HIDDEN BY DEFAULT) -->
+        <section id="sect-id" class="lang-section hidden" lang="id">
             <h2 class="lang-title">Ketentuan Layanan</h2>
             <ol>
                 <li>
@@ -200,8 +201,8 @@
             </ol>
         </section>
 
-        <!-- ENGLISH TRANSLATION -->
-        <section id="sect-en" class="lang-section hidden" lang="en">
+        <!-- ENGLISH TRANSLATION (VISIBLE BY DEFAULT) -->
+        <section id="sect-en" class="lang-section" lang="en">
             <h2 class="lang-title">Terms of Service</h2>
             <ol>
                 <li>
@@ -235,18 +236,18 @@
         const sectId = document.getElementById('sect-id');
         const sectEn = document.getElementById('sect-en');
 
-        if (toggle.classList.contains('active-id')) {
-            // Geser ke kanan (English)
-            toggle.classList.remove('active-id');
-            toggle.classList.add('active-en');
-            sectId.classList.add('hidden');
-            sectEn.classList.remove('hidden');
-        } else {
+        if (toggle.classList.contains('active-en')) {
             // Geser ke kiri (Indonesia)
             toggle.classList.remove('active-en');
             toggle.classList.add('active-id');
             sectId.classList.remove('hidden');
             sectEn.classList.add('hidden');
+        } else {
+            // Geser ke kanan (English)
+            toggle.classList.remove('active-id');
+            toggle.classList.add('active-en');
+            sectId.classList.add('hidden');
+            sectEn.classList.remove('hidden');
         }
     }
 </script>
