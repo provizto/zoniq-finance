@@ -6,7 +6,7 @@
     <title>ZONIQ Finance - dApp Dashboard</title>
     <style>
         /* ==========================================================================
-           1. RESET & VARIABEL TEMA (MURNI CSS)
+           1. RESET & LOGIKA DUA BAHASA
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -19,9 +19,9 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* LOGIKA DUA BAHASA */
         html[lang="en"] .lang-id { display: none !important; }
         html[lang="en"] .lang-en { display: block; }
         html[lang="en"] span.lang-en { display: inline; }
@@ -30,9 +30,8 @@
         html[lang="id"] span.lang-id { display: inline; }
 
         /* ==========================================================================
-           2. TATA LETAK UTAMA (SIDEBAR + MAIN CONTENT)
+           2. SIDEBAR NAVIGATION (DENGAN LOGIKA RESPONSIF HP)
            ========================================================================== */
-        /* Sidebar Kiri */
         aside {
             width: 260px;
             background-color: #0f131c;
@@ -43,6 +42,8 @@
             padding: 30px 20px;
             position: fixed;
             height: 100vh;
+            z-index: 40;
+            transition: transform 0.3s ease;
         }
         .logo {
             font-size: 22px;
@@ -70,20 +71,79 @@
             color: #3b82f6;
         }
 
-        /* Area Konten Kanan */
+        /* TOMBOL PANAH MENYEMBUNYIKAN MENU DI HP (MOBILE TOGGLE BUTTON) */
+        .menu-toggle {
+            display: none; /* Tersembunyi di komputer desktop */
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 50;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+        .menu-toggle:active { transform: scale(0.9); }
+
+        /* Overlay gelap saat menu HP terbuka */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-blur: 4px;
+            z-index: 35;
+        }
+
+        /* Media Query Khusus Layar Ponsel (HP) */
+        @media (max-width: 768px) {
+            aside {
+                transform: translateX(-100%); /* Sembunyikan sidebar ke kiri luar layar */
+            }
+            aside.open {
+                transform: translateX(0); /* Munculkan sidebar kembali */
+            }
+            .menu-toggle {
+                display: flex; /* Tampilkan tombol di HP */
+            }
+            .main-content {
+                margin-left: 0 !important;
+                padding: 20px !important;
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        /* ==========================================================================
+           3. AREA KONTEN UTAMA & DASHBOARD LAYOUT
+           ========================================================================== */
         .main-content {
             margin-left: 260px;
             flex-grow: 1;
             padding: 40px;
             max-width: 1200px;
+            transition: margin 0.3s ease;
         }
-
-        /* Topbar Dashboard */
         .topbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 40px;
+            gap: 16px;
+        }
+        @media (max-width: 480px) {
+            .topbar { flex-direction: column; align-items: flex-start; }
+            .right-controls { width: 100%; justify-content: space-between; }
         }
         .right-controls {
             display: flex;
@@ -112,10 +172,6 @@
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
-        /* ==========================================================================
-           3. ELEMEN KARTU & PANEL TRANSAKSI (DAPP INTERFACE)
-           ========================================================================== */
-        /* Kartu Ringkasan Portofolio */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -138,10 +194,8 @@
             margin-bottom: 20px;
         }
 
-        /* Komponen Swap / Lock Box */
-        .form-group {
-            margin-bottom: 20px;
-        }
+        /* Form Components */
+        .form-group { margin-bottom: 20px; }
         .form-label {
             font-size: 11px;
             font-weight: 700;
@@ -168,13 +222,8 @@
             width: 70%;
             outline: none;
         }
-        .token-select {
-            font-weight: 700;
-            color: #3b82f6;
-            font-size: 16px;
-        }
+        .token-select { font-weight: 700; color: #3b82f6; font-size: 16px; }
 
-        /* Pemilihan Durasi Waktu veZNQ */
         .duration-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -199,7 +248,6 @@
             background-color: rgba(59, 130, 246, 0.05);
         }
 
-        /* Detail Hasil Summary */
         .summary-box {
             background-color: rgba(59, 130, 246, 0.03);
             border: 1px solid rgba(59, 130, 246, 0.1);
@@ -232,7 +280,6 @@
         }
         .btn-action:hover { background-color: #1d4ed8; }
 
-        /* Tabel Reward Claimable */
         .reward-card {
             background-color: #111622;
             border: 1px solid #1e2533;
@@ -245,12 +292,28 @@
         }
         .reward-info h4 { font-size: 14px; color: #6b7280; font-weight: 600; margin-bottom: 4px; }
         .reward-info p { font-size: 20px; font-weight: 700; color: #ffffff; }
+        
+        .btn-sm {
+            background-color: #1e2533;
+            border: 1px solid #2e374a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
+    <!-- TOMBOL PANAH SAMBING WARNA-WARNI DI HP -->
+    <button id="menuToggleBtn" class="menu-toggle">☰</button>
+
+    <!-- OVERLAY LAYAR GELAP UNTUK HP -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
     <!-- SIDEBAR NAVIGASI KIRI -->
-    <aside>
+    <aside id="appSidebar">
         <div>
             <div class="logo">ZONIQ<span>.</span></div>
             <ul class="nav-links">
@@ -265,10 +328,10 @@
         </div>
     </aside>
 
-    <!-- AREA UTAMA APLIKASI -->
+    <!-- AREA UTAMA DASHBOARD -->
     <main class="main-content">
         
-        <!-- TOPBAR KONTROL -->
+        <!-- TOPBAR AKUN -->
         <header class="topbar">
             <div>
                 <h2 class="lang-en" style="font-size: 24px; font-weight: 700;">Console Account</h2>
@@ -283,10 +346,10 @@
             </div>
         </header>
 
-        <!-- DASHBOARD GRID INTERFACE -->
+        <!-- DASHBOARD GRID -->
         <section class="dashboard-grid">
             
-            <!-- PANEL SEBELAH KIRI: FORM CORE LOCK TRANSAKSI -->
+            <!-- PANEL UTAMA KUNCI veZNQ -->
             <div class="panel">
                 <h3 class="panel-title lang-en">Lock $ZNQ for veZNQ</h3>
                 <h3 class="panel-title lang-id">Kunci $ZNQ untuk veZNQ</h3>
@@ -311,7 +374,6 @@
                     </div>
                 </div>
 
-                <!-- Detail Hasil Simulasi Hitungan Matematika -->
                 <div class="summary-box">
                     <div class="summary-row">
                         <span class="summary-label lang-en">Voting Power Received</span>
@@ -336,8 +398,8 @@
                 </button>
             </div>
 
-            <!-- PANEL SEBELAH KANAN: REAL YIELD EARNINGS CONSOLE -->
-            <div class="space-y" style="display: flex; flex-direction: column; gap: 20px;">
+            <!-- PANEL REWARD SISI KANAN -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
                 
                 <div class="panel" style="padding: 24px;">
                     <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Your Governance Stash</h3>
@@ -368,7 +430,7 @@
                             <h4>USDC Rewards</h4>
                             <p style="color: #22d3ee;">142.50 USDC</p>
                         </div>
-                        <button class="btn-sm" style="background-color: #1e2533; border: 1px solid #2e374a; color: white; padding: 8px 16px; border-radius: 10px; font-weight: 600; cursor: pointer;">Claim</button>
+                        <button class="btn-sm">Claim</button>
                     </div>
                 </div>
 
@@ -378,14 +440,14 @@
 
     </main>
 
-    <!-- INTERACTIVE SCRIPT -->
+    <!-- SCRIPT LOGIKA KONTROL INTERAKTIF -->
     <script>
-        // Logika Pengalihan Dua Bahasa pada dApp Console
+        // 1. Logika Pengalihan Dua Bahasa (EN/ID)
         document.getElementById('appLangSwitcher').addEventListener('change', function(e) {
             document.getElementById('appNode').setAttribute('lang', e.target.value);
         });
 
-        // Logika Seleksi Tombol Durasi Waktu
+        // 2. Logika Seleksi Tombol Durasi Kunci
         const durationBtns = document.querySelectorAll('.duration-btn');
         durationBtns.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -393,6 +455,28 @@
                 this.classList.add('active');
             });
         });
+
+        // 3. LOGIKA TOMBOL PANAH FLOATING BERWARNA UNTUK MENU HP
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const appSidebar = document.getElementById('appSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleMobileMenu() {
+            const isOpen = appSidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+            
+            // Ubah ikon tombol panah: ☰ saat tertutup, dan ✕ (atau ikon kembali) saat menu terbuka
+            if (isOpen) {
+                menuToggleBtn.innerHTML = '✕';
+                menuToggleBtn.style.background = 'linear-gradient(135deg, #ef4444 0%, #991b1b 100%)'; // Berubah merah saat menu terbuka
+            } else {
+                menuToggleBtn.innerHTML = '☰';
+                menuToggleBtn.style.background = 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)'; // Kembali biru cerah khas Base
+            }
+        }
+
+        menuToggleBtn.addEventListener('click', toggleMobileMenu);
+        sidebarOverlay.addEventListener('click', toggleMobileMenu); // Tutup menu jika area luar/gelap diklik
     </script>
 </body>
 </html>
