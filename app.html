@@ -21,6 +21,7 @@
             color: #ffffff;
             display: flex;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         /* --- SIDEBAR NAVIGASI --- */
@@ -32,7 +33,13 @@
             flex-direction: column;
             gap: 40px;
             border-right: 1px solid #0d1b2a;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 999;
+        }
+
+        .sidebar.hide-desktop {
+            margin-left: -240px;
         }
 
         .logo {
@@ -74,12 +81,38 @@
             display: flex;
             flex-direction: column;
             gap: 30px;
+            transition: all 0.3s ease;
         }
 
         .top-header {
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-dots-toggle {
+            background: #05131f;
+            border: 1px solid #0b2236;
+            color: #00ffcc;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-dots-toggle:hover {
+            background-color: #0b2236;
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
         }
 
         .header-right {
@@ -88,7 +121,7 @@
             gap: 20px;
         }
 
-        /* Tombol Geser Bahasa (EN kiri mendahului ID kanan) */
+        /* Tombol Geser Bahasa (EN kiri, ID kanan) */
         .language-switch {
             background-color: #0b1e2d;
             padding: 4px;
@@ -240,22 +273,6 @@
             background-color: #14334a;
         }
 
-        /* --- MENU TOGGLE MOBILE --- */
-        .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 25px;
-            left: 20px;
-            background: #05131f;
-            border: 1px solid #0b2236;
-            color: #ffffff;
-            padding: 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            z-index: 1000;
-            font-size: 1.2rem;
-        }
-
         /* --- POP-UP MODAL BOX --- */
         .modal-overlay {
             position: fixed;
@@ -321,7 +338,6 @@
             color: #00ffcc;
         }
 
-        /* Struktur Jalur Koneksi Kripto */
         .wallet-paths {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -375,7 +391,6 @@
             margin-bottom: 2px;
         }
 
-        /* Tombol Pilihan Provider Dompet */
         .provider-list {
             display: flex;
             flex-direction: column;
@@ -444,15 +459,16 @@
 
         /* --- RESPONSIVITAS --- */
         @media (max-width: 900px) {
-            .menu-toggle { display: block; }
             .sidebar {
                 position: fixed;
                 left: 0; top: 0; bottom: 0;
                 transform: translateX(-100%);
-                z-index: 999;
+                margin-left: 0 !important;
             }
-            .sidebar.active { transform: translateX(0); }
-            .main-content { padding: 90px 20px 20px 20px; }
+            .sidebar.active-mobile {
+                transform: translateX(0);
+            }
+            .main-content { padding: 20px; }
             .action-grid { grid-template-columns: 1fr; }
         }
 
@@ -463,82 +479,82 @@
 </head>
 <body>
 
-    <!-- Tombol Menu Garis 3 (Mobile) -->
-    <button class="menu-toggle" id="menuToggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <!-- Kiri: Menu Samping -->
     <aside class="sidebar" id="sidebar">
         <div class="logo">ZONIQ FINANCE</div>
         <nav class="nav-menu">
-            <a href="#" class="nav-item active">Dashboard</a>
-            <a href="#" class="nav-item">Staking Kolam</a>
-            <a href="#" class="nav-item">Agunan RWA</a>
-            <a href="#" class="nav-item">Tata Kelola (DAO)</a>
+            <a href="#" class="nav-item active" id="menu-dash">Dashboard</a>
+            <a href="#" class="nav-item" id="menu-stake">Staking Pool</a>
+            <a href="#" class="nav-item" id="menu-rwa">RWA Collateral</a>
+            <a href="#" class="nav-item" id="menu-dao">Governance (DAO)</a>
         </nav>
     </aside>
 
     <!-- Kanan: Area Konten Utama -->
     <main class="main-content">
         <header class="top-header">
+            <div class="header-left">
+                <button class="menu-dots-toggle" id="menuDotsToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
             <div class="header-right">
-                <!-- Sesuai permintaan: EN diletakkan lebih dulu (kiri) baru ID (kanan) -->
                 <div class="language-switch">
-                    <button class="lang-btn active">EN</button>
-                    <button class="lang-btn">ID</button>
+                    <!-- EN (Kiri), ID (Kanan) -->
+                    <button class="lang-btn active" data-lang="en">EN</button>
+                    <button class="lang-btn" data-lang="id">ID</button>
                 </div>
-                <!-- Tombol Hubungkan Dompet -->
-                <button class="connect-wallet" id="connectWalletBtn">Hubungkan Dompet</button>
+                <button class="connect-wallet" id="connectWalletBtn">Connect Wallet</button>
             </div>
         </header>
 
-        <h1 class="page-title">Ringkasan Dasbor</h1>
+        <h1 class="page-title" id="page-title">Dashboard Summary</h1>
 
         <!-- Kartu Statistik -->
         <section class="stats-grid">
             <div class="stat-card">
-                <span class="stat-label">HARGA $ZNQ</span>
+                <span class="stat-label" id="lbl-price">$ZNQ PRICE</span>
                 <span class="stat-value">$0.0100</span>
             </div>
             <div class="stat-card">
-                <span class="stat-label">TOTAL NILAI TERKUNCI (TVL)</span>
+                <span class="stat-label" id="lbl-tvl">TOTAL VALUE LOCKED (TVL)</span>
                 <span class="stat-value highlight-green">$1,245,000</span>
             </div>
             <div class="stat-card">
-                <span class="stat-label">AGUNAN RWA ANDA</span>
+                <span class="stat-label" id="lbl-myrwa">YOUR RWA COLLATERAL</span>
                 <span class="stat-value">$0.00</span>
             </div>
             <div class="stat-card">
-                <span class="stat-label">ESTIMASI APY STAKING</span>
+                <span class="stat-label" id="lbl-apy">ESTIMATED STAKING APY</span>
                 <span class="stat-value highlight-green">24.5%</span>
             </div>
         </section>
 
-        <!-- Formulir Input -->
+        <!-- Formulir Input Aksi -->
         <section class="action-grid">
             <div class="action-card">
-                <h2>Kunci Token $ZNQ</h2>
+                <h2 id="title-stake-card">Lock $ZNQ Token</h2>
                 <div class="input-group">
-                    <label>Jumlah untuk di-Staking</label>
+                    <label id="lbl-stake-input">Amount to Stake</label>
                     <div class="input-wrapper">
                         <input type="number" placeholder="0.0">
                         <span class="currency">ZNQ</span>
                     </div>
                 </div>
-                <button class="action-btn">Mulai Staking</button>
+                <button class="action-btn" id="btn-stake-action">Start Staking</button>
             </div>
 
             <div class="action-card">
-                <h2>Ajukan Jaminan RWA</h2>
+                <h2 id="title-rwa-card">Apply RWA Collateral</h2>
                 <div class="input-group">
-                    <label>Nilai Tokenisasi Aset Fisik</label>
+                    <label id="lbl-rwa-input">Physical Asset Tokenization Value</label>
                     <div class="input-wrapper">
                         <input type="number" placeholder="0.0">
                         <span class="currency">USD</span>
                     </div>
                 </div>
-                <button class="action-btn">Kunci sebagai Agunan</button>
+                <button class="action-btn" id="btn-rwa-action">Lock as Collateral</button>
             </div>
         </section>
     </main>
@@ -546,81 +562,142 @@
     <!-- ==================== POP-UP MODAL KONEKSI DOMPET ==================== -->
     <div class="modal-overlay" id="walletModal">
         <div class="modal-box">
-            <!-- Tombol Tutup Silang (X) di Atas -->
             <button class="modal-close-x" id="closeModalX">
                 <i class="fas fa-times"></i>
             </button>
             
-            <div class="modal-title">PILIH METODE KONEKSI DOMPET</div>
+            <div class="modal-title" id="modal-main-title">SELECT WALLET CONNECTION METHOD</div>
             
             <div class="wallet-paths">
-                <!-- JALUR A: PENGGUNA AWAM -->
+                <!-- JALUR A -->
                 <div class="path-card">
                     <div>
-                        <div class="path-title">JALUR A: PENGGUNA AWAM</div>
+                        <div class="path-title" id="path-a-title">PATH A: RETAIL USER</div>
                         <div class="path-subtitle">(Social Auth / Email)</div>
                         <ul class="path-steps">
-                            <li>
-                                <strong>1. Otentikasi Akses</strong>
-                                Masuk menggunakan Google akun atau alamat Email Anda.
+                            <li id="path-a-step1">
+                                <strong>1. Access Authentication</strong>
+                                Sign in using your Google account or Email address.
                             </li>
-                            <li>
-                                <strong>2. Dompet Otomatis</strong>
-                                Sistem membuat smart wallet instan di balik layar.
+                            <li id="path-a-step2">
+                                <strong>2. Automatic Wallet</strong>
+                                System securely generates a smart wallet behind the scenes.
                             </li>
                         </ul>
                     </div>
                     <div class="provider-list">
-                        <button class="provider-btn">
+                        <button class="provider-btn" id="btn-google">
                             <i class="fab fa-google icon-google"></i>
-                            Lanjutkan dengan Google
+                            <span id="txt-google">Continue with Google</span>
                         </button>
-                        <button class="provider-btn">
+                        <button class="provider-btn" id="btn-email">
                             <i class="fas fa-envelope icon-email"></i>
-                            Masuk dengan Email
+                            <span id="txt-email">Sign in with Email</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- JALUR B: AHLI KRIPTO -->
+                <!-- JALUR B -->
                 <div class="path-card">
                     <div>
-                        <div class="path-title">JALUR B: AHLI KRIPTO</div>
+                        <div class="path-title" id="path-b-title">PATH B: CRYPTO EXPERT</div>
                         <div class="path-subtitle">(MetaMask / Web3 Wallet)</div>
                         <ul class="path-steps">
-                            <li>
-                                <strong>1. Deteksi Sistem</strong>
-                                Membaca ekstensi Web3 browser atau aplikasi dompet kripto Anda.
+                            <li id="path-b-step1">
+                                <strong>1. System Detection</strong>
+                                Reads your browser's Web3 extension or crypto wallet app.
                             </li>
-                            <li>
-                                <strong>2. Tanda Tangan</strong>
-                                Konfirmasi transaksi aman melalui tanda tangan kriptografi.
+                            <li id="path-b-step2">
+                                <strong>2. Cryptographic Signature</strong>
+                                Confirm secure access via an on-chain transaction signature.
                             </li>
                         </ul>
                     </div>
                     <div class="provider-list">
                         <button class="provider-btn">
                             <img src="https://wikimedia.org" alt="MetaMask">
-                            Hubungkan MetaMask
+                            <span id="txt-mm">Connect MetaMask</span>
                         </button>
                         <button class="provider-btn">
                             <img src="https://githubusercontent.com" alt="WalletConnect">
-                            WalletConnect
+                            <span>WalletConnect</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Sesuai Permintaan: Menambahkan Tombol "Close" Utama di Bawah Kotak Pop-up -->
             <div class="modal-footer">
                 <button class="modal-close-btn" id="closeModalBtn">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- ==================== JAVASCRIPT ==================== -->
+    <!-- ==================== JAVASCRIPT & DATA MULTIBAHASA ==================== -->
     <script>
-        const menuToggle = document.getElementById('menuToggle');
+        // Data Kamus Kamus Bahasa (English & Indonesia)
+        const i18n = {
+            en: {
+                "menu-dash": "Dashboard",
+                "menu-stake": "Staking Pool",
+                "menu-rwa": "RWA Collateral",
+                "menu-dao": "Governance (DAO)",
+                "connectWalletBtn": "Connect Wallet",
+                "page-title": "Dashboard Summary",
+                "lbl-price": "$ZNQ PRICE",
+                "lbl-tvl": "TOTAL VALUE LOCKED (TVL)",
+                "lbl-myrwa": "YOUR RWA COLLATERAL",
+                "lbl-apy": "ESTIMATED STAKING APY",
+                "title-stake-card": "Lock $ZNQ Token",
+                "lbl-stake-input": "Amount to Stake",
+                "btn-stake-action": "Start Staking",
+                "title-rwa-card": "Apply RWA Collateral",
+                "lbl-rwa-input": "Physical Asset Tokenization Value",
+                "btn-rwa-action": "Lock as Collateral",
+                "modal-main-title": "SELECT WALLET CONNECTION METHOD",
+                "path-a-title": "PATH A: RETAIL USER",
+                "path-a-step1": "<strong>1. Access Authentication</strong>Sign in using your Google account or Email address.",
+                "path-a-step2": "<strong>2. Automatic Wallet</strong>System securely generates a smart wallet behind the scenes.",
+                "txt-google": "Continue with Google",
+                "txt-email": "Sign in with Email",
+                "path-b-title": "PATH B: CRYPTO EXPERT",
+                "path-b-step1": "<strong>1. System Detection</strong>Reads your browser's Web3 extension or crypto wallet app.",
+                "path-b-step2": "<strong>2. Cryptographic Signature</strong>Confirm secure access via an on-chain transaction signature.",
+                "txt-mm": "Connect MetaMask",
+                "closeModalBtn": "Close"
+            },
+            id: {
+                "menu-dash": "Ringkasan Dasbor",
+                "menu-stake": "Staking Kolam",
+                "menu-rwa": "Agunan RWA",
+                "menu-dao": "Tata Kelola (DAO)",
+                "connectWalletBtn": "Hubungkan Dompet",
+                "page-title": "Ringkasan Dasbor",
+                "lbl-price": "HARGA $ZNQ",
+                "lbl-tvl": "TOTAL NILAI TERKUNCI (TVL)",
+                "lbl-myrwa": "AGUNAN RWA ANDA",
+                "lbl-apy": "ESTIMASI APY STAKING",
+                "title-stake-card": "Kunci Token $ZNQ",
+                "lbl-stake-input": "Jumlah untuk di-Staking",
+                "btn-stake-action": "Mulai Staking",
+                "title-rwa-card": "Ajukan Jaminan RWA",
+                "lbl-rwa-input": "Nilai Tokenisasi Aset Fisik",
+                "btn-rwa-action": "Kunci sebagai Agunan",
+                "modal-main-title": "PILIH METODE KONEKSI DOMPET",
+                "path-a-title": "JALUR A: PENGGUNA AWAM",
+                "path-a-step1": "<strong>1. Otentikasi Akses</strong>Masuk menggunakan Google akun atau alamat Email Anda.",
+                "path-a-step2": "<strong>2. Dompet Otomatis</strong>Sistem membuat smart wallet instan di balik layar.",
+                "txt-google": "Lanjutkan dengan Google",
+                "txt-email": "Masuk dengan Email",
+                "path-b-title": "JALUR B: AHLI KRIPTO",
+                "path-b-step1": "<strong>1. Deteksi Sistem</strong>Membaca ekstensi Web3 browser atau aplikasi dompet kripto Anda.",
+                "path-b-step2": "<strong>2. Tanda Tangan</strong>Konfirmasi transaksi aman melalui tanda tangan kriptografi.",
+                "txt-mm": "Hubungkan MetaMask",
+                "closeModalBtn": "Tutup"
+            }
+        };
+
+        // DOM Elemen
+        const menuDotsToggle = document.getElementById('menuDotsToggle');
         const sidebar = document.getElementById('sidebar');
         const connectWalletBtn = document.getElementById('connectWalletBtn');
         const walletModal = document.getElementById('walletModal');
@@ -628,38 +705,55 @@
         const closeModalBtn = document.getElementById('closeModalBtn');
         const langButtons = document.querySelectorAll('.lang-btn');
 
-        // Toggle Menu Samping (Mobile)
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-        });
-
-        // Buka Modal Pop-up
-        connectWalletBtn.addEventListener('click', () => {
-            walletModal.classList.add('show');
-        });
-
-        // Fungsi Menutup Modal
-        function hideModal() {
-            walletModal.classList.remove('show');
+        // Fungsi Mengganti Bahasa Teks
+        function switchLanguage(lang) {
+            const translation = i18n[lang];
+            for (let id in translation) {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.innerHTML = translation[id];
+                }
+            }
         }
 
-        // Jalankan fungsi tutup saat tombol X atau tombol "Close" diklik
-        closeModalX.addEventListener('click', hideModal);
-        closeModalBtn.addEventListener('click', hideModal);
-
-        // Tutup Modal jika area luar kotak hitam diklik
-        walletModal.addEventListener('click', (e) => {
-            if (e.target === walletModal) {
-                hideModal();
-            }
-        });
-
-        // Toggle Tombol Bahasa
+        // Event Listener Tombol Bahasa
         langButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 langButtons.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
+                
+                const selectedLang = btn.getAttribute('data-lang');
+                switchLanguage(selectedLang);
             });
+        });
+
+        // Tampilkan/Sembunyikan Menu Navigasi Samping
+        menuDotsToggle.addEventListener('click', () => {
+            if (window.innerWidth > 900) {
+                sidebar.classList.toggle('hide-desktop');
+            } else {
+                sidebar.classList.toggle('active-mobile');
+            }
+        });
+
+        // Tutup otomatis menu mobile jika mengeklik area luar menu
+        document.body.addEventListener('click', (e) => {
+            if (window.innerWidth <= 900) {
+                if (!sidebar.contains(e.target) && !menuDotsToggle.contains(e.target) && sidebar.classList.contains('active-mobile')) {
+                    sidebar.classList.remove('active-mobile');
+                }
+            }
+        });
+
+        // Pop-up Modal Box Open & Close
+        connectWalletBtn.addEventListener('click', () => walletModal.classList.add('show'));
+        
+        function hideModal() { walletModal.classList.remove('show'); }
+        closeModalX.addEventListener('click', hideModal);
+        closeModalBtn.addEventListener('click', hideModal);
+
+        walletModal.addEventListener('click', (e) => {
+            if (e.target === walletModal) hideModal();
         });
     </script>
 </body>
