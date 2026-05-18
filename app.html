@@ -3,446 +3,626 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoniq Finance - App Dashboard</title>
+    <title>Zoniq Finance Dashboard</title>
+    <!-- Font Awesome untuk ikon menu, Close, Google, dan Wallet -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    
     <style>
-        /* --- CORE CONFIGURATION --- */
+        /* ==================== GAYA CSS (STYLE) ==================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #03070d; /* Ultra Dark Background */
+            background-color: #03090e;
             color: #ffffff;
             display: flex;
             min-height: 100vh;
         }
 
-        /* --- LANG SWITCHER FIXED BUTTON --- */
-        .lang-switcher {
-            position: fixed;
-            top: 25px;
-            right: 240px; /* Jarak aman di sebelah tombol dompet */
-            z-index: 1000;
-            display: flex;
-            gap: 8px;
-            background: rgba(5, 11, 20, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 4px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            color: #a0aec0;
-            padding: 6px 14px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 16px;
-            transition: all 0.2s ease;
-        }
-
-        .lang-btn.active {
-            background-color: #00f2c3;
-            color: #050b14;
-        }
-
-        /* --- SIDEBAR NAVIGATION --- */
+        /* --- SIDEBAR NAVIGASI --- */
         .sidebar {
-            width: 260px;
-            background-color: #050b14;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            width: 240px;
+            background-color: #050e14;
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
+            gap: 40px;
+            border-right: 1px solid #0d1b2a;
+            transition: transform 0.3s ease;
         }
 
-        .brand-logo {
+        .logo {
+            color: #00ffcc;
+            font-weight: bold;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-item {
+            color: #8da2b5;
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #ffffff;
+            background-color: #0b1e2d;
+        }
+
+        .nav-item.active {
+            color: #00ffcc;
+            border-left: 3px solid #00ffcc;
+        }
+
+        /* --- KONTEN UTAMA --- */
+        .main-content {
+            flex: 1;
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Tombol Geser Bahasa */
+        .language-switch {
+            background-color: #0b1e2d;
+            padding: 4px;
+            border-radius: 20px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #8da2b5;
+            padding: 6px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background-color: #00ffcc;
+            color: #03090e;
+        }
+
+        /* Tombol Dompet Utama */
+        .connect-wallet {
+            background: linear-gradient(135deg, #0088ff, #00ffcc);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.2);
+            transition: transform 0.1s;
+        }
+
+        .connect-wallet:active {
+            transform: scale(0.98);
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        /* --- STATISTIK GRID --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: #05131f;
+            border: 1px solid #0b2236;
+            border-radius: 8px;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .stat-label {
+            color: #647b91;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .highlight-green {
+            color: #00ffcc;
+        }
+
+        /* --- PANEL AKSI GRID --- */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .action-card {
+            background-color: #05131f;
+            border: 1px solid #0b2236;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .action-card h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            color: #647b91;
+            font-size: 0.8rem;
+        }
+
+        .input-wrapper {
+            display: flex;
+            background-color: #020a10;
+            border: 1px solid #0b2236;
+            border-radius: 6px;
+            padding: 12px 15px;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            background: none;
+            border: none;
+            color: #ffffff;
+            flex: 1;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .currency {
+            color: #00ffcc;
+            font-weight: bold;
+        }
+
+        .action-btn {
+            background-color: #0b1e2d;
+            border: 1px solid #14334a;
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #14334a;
+        }
+
+        /* --- MENU TOGGLE MOBILE --- */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 25px;
+            left: 20px;
+            background: #05131f;
+            border: 1px solid #0b2236;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 1.2rem;
+        }
+
+        /* --- POP-UP MODAL BOX --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(2, 6, 10, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background-color: #05131f;
+            border: 1px solid #0b2236;
+            width: 90%;
+            max-width: 680px;
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #647b91;
             font-size: 1.3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff, #00f2c3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
-            padding-left: 10px;
+            cursor: pointer;
+            transition: color 0.2s;
         }
 
-        .nav-links {
+        .modal-close:hover {
+            color: #ffffff;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #00ffcc;
+        }
+
+        /* Struktur Jalur Koneksi Kripto */
+        .wallet-paths {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .path-card {
+            background-color: #020a10;
+            border: 1px solid #0b2236;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .path-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #ffffff;
+            border-bottom: 1px solid #0b2236;
+            padding-bottom: 8px;
+        }
+
+        .path-subtitle {
+            font-size: 0.8rem;
+            color: #00ffcc;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .path-steps {
             list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .path-steps li {
+            font-size: 0.85rem;
+            color: #8da2b5;
+            line-height: 1.4;
+        }
+
+        .path-steps strong {
+            color: #ffffff;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Tombol Pilihan Provider Dompet */
+        .provider-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .nav-item a {
-            display: block;
-            padding: 12px 15px;
-            color: #a0aec0;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-        }
-
-        .nav-item.active a, .nav-item a:hover {
-            background: rgba(0, 242, 195, 0.1);
-            color: #00f2c3;
-        }
-
-        /* --- MAIN DASHBOARD CONTAINER --- */
-        .main-content {
-            flex: 1;
-            padding: 40px;
-            overflow-y: auto;
-        }
-
-        .app-header {
+        .provider-btn {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .app-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .wallet-btn {
-            background: linear-gradient(135deg, #0066ff, #00f2c3);
-            color: #03070d;
-            border: none;
-            padding: 12px 24px;
-            font-weight: 700;
+            gap: 12px;
+            background-color: #0b1e2d;
+            border: 1px solid #14334a;
+            color: #ffffff;
+            padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 242, 195, 0.2);
-            transition: transform 0.2s ease;
-        }
-
-        .wallet-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        /* --- METRICS GRID --- */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .metric-card {
-            background: rgba(5, 11, 20, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 12px;
-        }
-
-        .metric-card p {
-            color: #a0aec0;
             font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-
-        .metric-card h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .text-green { color: #00f2c3; }
-
-        /* --- INTERACTION ZONE --- */
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-        }
-
-        .action-card {
-            background: rgba(5, 11, 20, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 35px;
-            border-radius: 16px;
-        }
-
-        .action-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 15px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #a0aec0;
-            font-size: 0.9rem;
-            margin-bottom: 8px;
-        }
-
-        .input-box-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-box-wrapper input {
-            width: 100%;
-            background-color: #03070d;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px 16px;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 1.1rem;
             font-weight: 600;
-            outline: none;
-        }
-
-        .input-box-wrapper input:focus {
-            border-color: #00f2c3;
-        }
-
-        .token-badge {
-            position: absolute;
-            right: 15px;
-            font-weight: 700;
-            color: #00f2c3;
-        }
-
-        .action-btn {
+            transition: all 0.2s;
             width: 100%;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.2s ease;
         }
 
-        .action-btn:hover {
-            background-color: #00f2c3;
-            color: #03070d;
-            border-color: #00f2c3;
-            font-weight: 700;
+        .provider-btn:hover {
+            background-color: #14334a;
+            border-color: #00ffcc;
         }
 
-        /* --- RESPONSIVE MOBILE --- */
-        @media (max-width: 968px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .provider-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .provider-btn i {
+            font-size: 1.2rem;
+        }
+
+        .icon-google { color: #ea4335; }
+        .icon-email { color: #00ffcc; }
+
+        /* --- RESPONSIVITAS --- */
+        @media (max-width: 900px) {
+            .menu-toggle { display: block; }
+            .sidebar {
+                position: fixed;
+                left: 0; top: 0; bottom: 0;
+                transform: translateX(-100%);
+                z-index: 999;
+            }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { padding: 90px 20px 20px 20px; }
             .action-grid { grid-template-columns: 1fr; }
-            .main-content { padding: 25px; }
-            .lang-switcher { position: relative; top: auto; right: auto; margin: 20px auto 0 auto; width: fit-content; }
+        }
+
+        @media (max-width: 600px) {
+            .wallet-paths { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- TOMBOL PENGUBAH BAHASA -->
-    <div class="lang-switcher">
-        <button class="lang-btn active" id="btn-lang-id" onclick="switchLang('id')">ID</button>
-        <button class="lang-btn" id="btn-lang-en" onclick="switchLang('en')">EN</button>
-    </div>
+    <!-- Tombol Menu Garis 3 (Mobile) -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
-    <!-- SISI KINI: MENU NAVIGASI APP -->
-    <aside class="sidebar">
-        <div class="brand-logo">ZONIQ FINANCE</div>
-        <ul class="nav-links">
-            <li class="nav-item active"><a href="#" id="menu-dash">Dashboard</a></li>
-            <li class="nav-item"><a href="#" id="menu-stake">Staking Kolam</a></li>
-            <li class="nav-item"><a href="#" id="menu-rwa">Agunan RWA</a></li>
-            <li class="nav-item"><a href="#" id="menu-dao">Tata Kelola (DAO)</a></li>
-        </ul>
+    <!-- Kiri: Menu Samping -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">ZONIQ FINANCE</div>
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="#" class="nav-item">Staking Kolam</a>
+            <a href="#" class="nav-item">Agunan RWA</a>
+            <a href="#" class="nav-item">Tata Kelola (DAO)</a>
+        </nav>
     </aside>
 
-    <!-- SISI KANAN: KONTEN UTAMA DASHBOARD -->
+    <!-- Kanan: Area Konten Utama -->
     <main class="main-content">
-        <header class="app-header">
-            <div>
-                <h1 id="title-summary">Ringkasan Dasbor</h1>
+        <header class="top-header">
+            <div class="header-right">
+                <div class="language-switch">
+                    <button class="lang-btn active">EN</button>
+                    <button class="lang-btn">ID</button>
+                </div>
+                <!-- Tombol Hubungkan Dompet -->
+                <button class="connect-wallet" id="connectWalletBtn">Hubungkan Dompet</button>
             </div>
-            <!-- Tombol Koneksi Web3 MetaMask -->
-            <button class="wallet-btn" id="btn-connect">Hubungkan Dompet</button>
         </header>
 
-        <!-- GRID STATISTIK UTAMA -->
-        <section class="metrics-grid">
-            <div class="metric-card">
-                <p id="m-price">Harga $ZNQ</p>
-                <h2>$0.0100</h2>
+        <h1 class="page-title">Ringkasan Dasbor</h1>
+
+        <!-- Kartu Statistik -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">HARGA $ZNQ</span>
+                <span class="stat-value">$0.0100</span>
             </div>
-            <div class="metric-card">
-                <p id="m-tvl">Total Nilai Terkunci (TVL)</p>
-                <h2 class="text-green">$1,245,000</h2>
+            <div class="stat-card">
+                <span class="stat-label">TOTAL NILAI TERKUNCI (TVL)</span>
+                <span class="stat-value highlight-green">$1,245,000</span>
             </div>
-            <div class="metric-card">
-                <p id="m-coll">Agunan RWA Anda</p>
-                <h2>$0.00</h2>
+            <div class="stat-card">
+                <span class="stat-label">AGUNAN RWA ANDA</span>
+                <span class="stat-value">$0.00</span>
             </div>
-            <div class="metric-card">
-                <p id="m-apy">Estimasi APY Staking</p>
-                <h2 class="text-green">24.5%</h2>
+            <div class="stat-card">
+                <span class="stat-label">ESTIMASI APY STAKING</span>
+                <span class="stat-value highlight-green">24.5%</span>
             </div>
         </section>
 
-        <!-- PANEL INTERAKSI FITUR -->
+        <!-- Formulir Input -->
         <section class="action-grid">
-            <!-- PANEL STAKING -->
             <div class="action-card">
-                <h3 id="card-t-stake">Kunci Token $ZNQ</h3>
+                <h2>Kunci Token $ZNQ</h2>
                 <div class="input-group">
-                    <label id="lbl-stake">Jumlah untuk di-Staking</label>
-                    <div class="input-box-wrapper">
+                    <label>Jumlah untuk di-Staking</label>
+                    <div class="input-wrapper">
                         <input type="number" placeholder="0.0">
-                        <span class="token-badge">ZNQ</span>
+                        <span class="currency">ZNQ</span>
                     </div>
                 </div>
-                <button class="action-btn" id="btn-act-stake">Mulai Staking</button>
+                <button class="action-btn">Mulai Staking</button>
             </div>
 
-            <!-- PANEL INTEGRASI AGUNAN SILANG RWA -->
             <div class="action-card">
-                <h3 id="card-t-rwa">Ajukan Jaminan RWA</h3>
+                <h2>Ajukan Jaminan RWA</h2>
                 <div class="input-group">
-                    <label id="lbl-rwa">Nilai Tokenisasi Aset Fisik</label>
-                    <div class="input-box-wrapper">
+                    <label>Nilai Tokenisasi Aset Fisik</label>
+                    <div class="input-wrapper">
                         <input type="number" placeholder="0.0">
-                        <span class="token-badge">USD</span>
+                        <span class="currency">USD</span>
                     </div>
                 </div>
-                <button class="action-btn" id="btn-act-rwa">Kunci sebagai Agunan</button>
+                <button class="action-btn">Kunci sebagai Agunan</button>
             </div>
         </section>
     </main>
 
-    <!-- LOGIKA JAVASCRIPT MULTIBAHASA & METAMASK -->
-    <script>
-        // 1. KAMUS BAHASA DASHBOARD
-        const appTranslations = {
-            id: {
-                menuDash: "Dashboard",
-                menuStake: "Staking Kolam",
-                menuRwa: "Agunan RWA",
-                menuDao: "Tata Kelola (DAO)",
-                titleSummary: "Ringkasan Dasbor",
-                btnConnect: "Hubungkan Dompet",
-                btnConnecting: "Menghubungkan...",
-                mPrice: "Harga $ZNQ",
-                mTvl: "Total Nilai Terkunci (TVL)",
-                mColl: "Agunan RWA Anda",
-                mApy: "Estimasi APY Staking",
-                cardTStake: "Kunci Token $ZNQ",
-                lblStake: "Jumlah untuk di-Staking",
-                btnActStake: "Mulai Staking",
-                cardTRwa: "Ajukan Jaminan RWA",
-                lblRwa: "Nilai Tokenisasi Aset Fisik",
-                btnActRwa: "Kunci sebagai Agunan",
-                metaError: "MetaMask tidak terdeteksi! Silakan instal ekstensi MetaMask."
-            },
-            en: {
-                menuDash: "Dashboard",
-                menuStake: "Staking Pools",
-                menuRwa: "RWA Collateral",
-                menuDao: "Governance (DAO)",
-                titleSummary: "Dashboard Summary",
-                btnConnect: "Connect Wallet",
-                btnConnecting: "Connecting...",
-                mPrice: "$ZNQ Price",
-                mTvl: "Total Value Locked (TVL)",
-                mColl: "Your RWA Collateral",
-                mApy: "Estimated Staking APY",
-                cardTStake: "Lock $ZNQ Tokens",
-                lblStake: "Amount to Stake",
-                btnActStake: "Start Staking",
-                cardTRwa: "Deposit RWA Collateral",
-                lblRwa: "Tokenized Asset Value",
-                btnActRwa: "Lock as Collateral",
-                metaError: "MetaMask not detected! Please install MetaMask extension."
-            }
-        };
-
-        let currentLang = 'id';
-        let isConnected = false;
-        let walletAddress = "";
-
-        // 2. FUNGSI PENGUBAH BAHASA
-        function switchLang(lang) {
-            currentLang = lang;
+    <!-- ==================== POP-UP MODAL KONEKSI DOMPET ==================== -->
+    <div class="modal-overlay" id="walletModal">
+        <div class="modal-box">
+            <!-- Tombol Tutup (X) -->
+            <button class="modal-close" id="closeModalBtn">
+                <i class="fas fa-times"></i>
+            </button>
             
-            document.getElementById('menu-dash').innerText = appTranslations[lang].menuDash;
-            document.getElementById('menu-stake').innerText = appTranslations[lang].menuStake;
-            document.getElementById('menu-rwa').innerText = appTranslations[lang].menuRwa;
-            document.getElementById('menu-dao').innerText = appTranslations[lang].menuDao;
-            document.getElementById('title-summary').innerText = appTranslations[lang].titleSummary;
-            document.getElementById('m-price').innerText = appTranslations[lang].mPrice;
-            document.getElementById('m-tvl').innerText = appTranslations[lang].mTvl;
-            document.getElementById('m-coll').innerText = appTranslations[lang].mColl;
-            document.getElementById('m-apy').innerText = appTranslations[lang].mApy;
-            document.getElementById('card-t-stake').innerText = appTranslations[lang].cardTStake;
-            document.getElementById('lbl-stake').innerText = appTranslations[lang].lblStake;
-            document.getElementById('btn-act-stake').innerText = appTranslations[lang].btnActStake;
-            document.getElementById('card-t-rwa').innerText = appTranslations[lang].cardTRwa;
-            document.getElementById('lbl-rwa').innerText = appTranslations[lang].lblRwa;
-            document.getElementById('btn-act-rwa').innerText = appTranslations[lang].btnActRwa;
+            <div class="modal-title">PILIH METODE KONEKSI DOMPET</div>
+            
+            <div class="wallet-paths">
+                <!-- JALUR A: PENGGUNA AWAM -->
+                <div class="path-card">
+                    <div>
+                        <div class="path-title">JALUR A: PENGGUNA AWAM</div>
+                        <div class="path-subtitle">(Social Auth / Email)</div>
+                        <ul class="path-steps">
+                            <li>
+                                <strong>1. Otentikasi Akses</strong>
+                                Masuk menggunakan Google akun atau alamat Email Anda.
+                            </li>
+                            <li>
+                                <strong>2. Dompet Otomatis</strong>
+                                Sistem membuat smart wallet instan di balik layar.
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Daftar Tombol Opsi Nyata Jalur A -->
+                    <div class="provider-list">
+                        <button class="provider-btn">
+                            <i class="fab fa-google icon-google"></i>
+                            Lanjutkan dengan Google
+                        </button>
+                        <button class="provider-btn">
+                            <i class="fas fa-envelope icon-email"></i>
+                            Masuk dengan Email
+                        </button>
+                    </div>
+                </div>
 
-            // Update status teks tombol dompet jika tidak sedang terkoneksi
-            if (!isConnected) {
-                document.getElementById('btn-connect').innerText = appTranslations[lang].btnConnect;
+                <!-- JALUR B: AHLI KRIPTO -->
+                <div class="path-card">
+                    <div>
+                        <div class="path-title">JALUR B: AHLI KRIPTO</div>
+                        <div class="path-subtitle">(MetaMask / Web3 Wallet)</div>
+                        <ul class="path-steps">
+                            <li>
+                                <strong>1. Deteksi Sistem</strong>
+                                Membaca ekstensi Web3 browser atau aplikasi dompet kripto Anda.
+                            </li>
+                            <li>
+                                <strong>2. Tanda Tangan</strong>
+                                Konfirmasi transaksi aman melalui tanda tangan kriptografi.
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Daftar Tombol Opsi Nyata Jalur B -->
+                    <div class="provider-list">
+                        <button class="provider-btn">
+                            <img src="https://wikimedia.org" alt="MetaMask">
+                            Hubungkan MetaMask
+                        </button>
+                        <button class="provider-btn">
+                            <img src="https://githubusercontent.com" alt="WalletConnect">
+                            WalletConnect
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const connectWalletBtn = document.getElementById('connectWalletBtn');
+        const walletModal = document.getElementById('walletModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const langButtons = document.querySelectorAll('.lang-btn');
+
+        // Toggle Menu Samping (Mobile)
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Buka Modal Pop-up
+        connectWalletBtn.addEventListener('click', () => {
+            walletModal.classList.add('show');
+        });
+
+        // Tutup Modal (Klik Tombol X)
+        closeModalBtn.addEventListener('click', () => {
+            walletModal.classList.remove('show');
+        });
+
+        // Tutup Modal jika area luar kotak diklik
+        walletModal.addEventListener('click', (e) => {
+            if (e.target === walletModal) {
+                walletModal.classList.remove('show');
             }
+        });
 
-            // Ganti visual aktif pada tombol bahasa
-            document.getElementById('btn-lang-id').classList.remove('active');
-            document.getElementById('btn-lang-en').classList.remove('active');
-            if (lang === 'id') document.getElementById('btn-lang-id').classList.add('active');
-            if (lang === 'en') document.getElementById('btn-lang-en').classList.add('active');
-        }
-
-        // 3. LOGIKA INTERAKSI METAMASK
-        const walletBtn = document.getElementById('btn-connect');
-
-        async function connectWallet() {
-            if (typeof window.ethereum !== 'undefined') {
-                try {
-                    walletBtn.innerText = appTranslations[currentLang].btnConnecting;
-                    
-                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    walletAddress = accounts[0];
-                    isConnected = true;
-                    
-                    // Format alamat dompet agar ringkas (Contoh: 0x1234...abcd)
-                    const formatted = walletAddress.substring(0, 6) + "..." + walletAddress.substring(walletAddress.length - 4);
-                    
-                    walletBtn.innerText = formatted;
-                    walletBtn.style.background = "#00f2c3";
-                    walletBtn.style.color = "#03070d";
-                } catch (error) {
-                    console.error("Koneksi dibatalkan:", error);
-                    isConnected = false;
-                    walletBtn.innerText = appTranslations[currentLang].btnConnect;
-                }
-            } else {
-                alert(appTranslations[currentLang].metaError);
-                walletBtn.innerText = appTranslations[currentLang].btnConnect;
-            }
-        }
-
-        walletBtn.addEventListener('click', connectWallet);
+        // Toggle Tombol Bahasa
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                langButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
     </script>
-
 </body>
 </html>
