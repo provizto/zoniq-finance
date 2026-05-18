@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZONIQ Finance - The Capital Efficiency Hub on Base</title>
-    <!-- Tailwind CSS via CDN untuk kemudahan integrasi -->
+    <!-- Tailwind CSS via CDN -->
     <script src="https://tailwindcss.com"></script>
     <!-- Font Inter dari Google Fonts -->
     <link href="https://googleapis.com" rel="stylesheet">
@@ -20,20 +20,24 @@
 <body class="bg-[#0b0f19] text-gray-100 min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
 
     <!-- NAVIGATION BAR -->
-    <header class="border-b border-gray-800/80 bg-[#0b0f19]/80 backdrop-blur-md sticky top-0 z-50">
+    <header class="border-b border-gray-800/80 bg-[#0b0f19]/80 backdrop-blur-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center font-bold text-white text-lg shadow-lg shadow-blue-500/20">Z</div>
                 <span class="text-xl font-bold tracking-tight text-white">ZONIQ<span class="text-blue-500">.</span></span>
             </div>
             <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-400">
-                <a href="#" class="text-white hover:text-blue-400 transition-colors">DEX</a>
-                <a href="#" class="hover:text-blue-400 transition-colors">Vaults</a>
-                <a href="#" class="hover:text-blue-400 transition-colors">veZNQ Governance</a>
-                <a href="#" class="hover:text-blue-400 transition-colors">Whitepaper</a>
+                <a href="#pools" class="text-white hover:text-blue-400 transition-colors">DEX</a>
+                <a href="#products" class="hover:text-blue-400 transition-colors" data-en="Vaults" data-id="Brankas">Vaults</a>
+                <a href="#vetokenomics" class="hover:text-blue-400 transition-colors" data-en="veZNQ Governance" data-id="Tata Kelola veZNQ">veZNQ Governance</a>
             </nav>
-            <div>
-                <button class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-blue-600/20">
+            <div class="flex items-center space-x-4">
+                <!-- LANGUAGE SWITCHER -->
+                <select id="langSwitcher" class="bg-gray-800/80 border border-gray-700 text-gray-300 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none cursor-pointer">
+                    <option value="en">🌐 EN</option>
+                    <option value="id">🌐 ID</option>
+                </select>
+                <button class="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-medium text-sm px-5 py-2.5 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-blue-600/20" data-en="Connect Wallet" data-id="Hubungkan Dompet">
                     Connect Wallet
                 </button>
             </div>
@@ -44,30 +48,30 @@
         <!-- HERO SECTION -->
         <section class="max-w-7xl mx-auto px-6 pt-20 pb-16 text-center md:text-left grid md:grid-cols-2 gap-12 items-center">
             <div class="space-y-6">
-                <div class="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full text-xs font-semibold text-blue-400 tracking-wide uppercase">
+                <div class="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full text-xs font-semibold text-blue-400 tracking-wide uppercase" data-en="🚀 Now Native on Base Layer 2" data-id="🚀 Kini Native di Base Layer 2">
                     🚀 Now Native on Base Layer 2
                 </div>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight" id="heroTitle">
                     The Capital Efficiency <br class="hidden lg:block">Hub on <span class="gradient-text">Base Blockchain</span>
                 </h1>
-                <p class="text-base md:text-lg text-gray-400 max-w-xl leading-relaxed">
-                    Trade with low slippage, automate your compounding yield, and earn real protocol revenue in USDC by locking <span class="text-white font-semibold">$ZNQ</span>.
+                <p class="text-base md:text-lg text-gray-400 max-w-xl leading-relaxed" data-en="Trade with low slippage, automate your compounding yield, and earn real protocol revenue in USDC by locking $ZNQ." data-id="Berdagang dengan slippage rendah, otomatiskan hasil investasi Anda, dan dapatkan pendapatan protokol riil dalam USDC dengan mengunci $ZNQ.">
+                    Trade with low slippage, automate your compounding yield, and earn real protocol revenue in USDC by locking $ZNQ.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-4">
-                    <button class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-300">
+                    <button class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all duration-300" data-en="Launch App" data-id="Buka Aplikasi">
                         Launch App
                     </button>
-                    <button class="w-full sm:w-auto bg-gray-800/60 hover:bg-gray-800 text-gray-300 border border-gray-700/60 font-semibold px-8 py-3.5 rounded-xl transition-all duration-300">
-                        Read Whitepaper
+                    <!-- Trigger button untuk membuka popup modal veZNQ -->
+                    <button onclick="toggleModal(true)" class="w-full sm:w-auto bg-gray-800/60 hover:bg-gray-800 text-gray-300 border border-gray-700/60 font-semibold px-8 py-3.5 rounded-xl transition-all duration-300 animate-pulse" data-en="Lock $ZNQ Now" data-id="Kunci $ZNQ Sekarang">
+                        Lock $ZNQ Now
                     </button>
                 </div>
             </div>
-            <!-- Visual Anchor / Placeholder Animasi -->
+            <!-- Visual Rotating Graphics -->
             <div class="flex justify-center items-center relative">
                 <div class="absolute w-72 h-72 bg-blue-500/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
                 <div class="absolute w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl -z-10 animate-pulse delay-75"></div>
                 <div class="w-80 h-80 rounded-3xl border border-gray-800 bg-gradient-to-br from-gray-900/60 to-gray-900/20 backdrop-blur-sm flex items-center justify-center shadow-2xl">
-                    <!-- Icon grafis simulasi visual DeFi -->
                     <div class="relative w-40 h-40 border-4 border-dashed border-gray-800 rounded-full flex items-center justify-center animate-[spin_60s_linear_infinite]">
                         <div class="absolute -top-3 w-6 h-6 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"></div>
                         <div class="absolute -bottom-3 w-6 h-6 bg-cyan-500 rounded-full shadow-lg shadow-cyan-500/50"></div>
@@ -83,113 +87,232 @@
         <section class="max-w-7xl mx-auto px-6 py-12 border-y border-gray-900 bg-gray-900/10">
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
                 <div class="space-y-1">
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Total Value Locked (TVL)</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider" data-en="Total Value Locked (TVL)" data-id="Total Nilai Terkunci (TVL)">Total Value Locked (TVL)</p>
                     <p class="text-2xl md:text-3xl font-bold text-white tracking-tight">$42,851,204</p>
                 </div>
                 <div class="space-y-1">
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">24h Trading Volume</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider" data-en="24h Trading Volume" data-id="Volume Perdagangan 24j">24h Trading Volume</p>
                     <p class="text-2xl md:text-3xl font-bold text-white tracking-tight">$12,405,119</p>
                 </div>
                 <div class="space-y-1">
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Real Yield Distributed</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider" data-en="Real Yield Distributed" data-id="Bagi Hasil Riil Terbagi">Real Yield Distributed</p>
                     <p class="text-2xl md:text-3xl font-bold text-cyan-400 tracking-tight">854,230 USDC</p>
                 </div>
                 <div class="space-y-1">
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">$ZNQ Locked</p>
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider" data-en="$ZNQ Locked" data-id="$ZNQ Terkunci">$ZNQ Locked</p>
                     <p class="text-2xl md:text-3xl font-bold text-blue-400 tracking-tight">64.2%</p>
                 </div>
             </div>
         </section>
 
         <!-- CORE PRODUCTS SHOWCASE -->
-        <section class="max-w-7xl mx-auto px-6 py-24 space-y-12">
+        <section id="products" class="max-w-7xl mx-auto px-6 py-24 space-y-12">
             <div class="text-center max-w-2xl mx-auto space-y-3">
-                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Engineered for L2 Ecosystem</h2>
-                <p class="text-gray-400">Dua lini produk DeFi murni berkecepatan tinggi yang bekerja secara sinergis dalam satu protokol penampung.</p>
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl" data-en="Engineered for L2 Ecosystem" data-id="Didesain untuk Ekosistem L2">Engineered for L2 Ecosystem</h2>
+                <p class="text-gray-400" data-en="Two pure DeFi lines working together synergistically within a single protocol framework." data-id="Dua lini produk DeFi murni bekerja sama secara sinergis dalam satu kerangka kerja protokol.">Two pure DeFi lines working together synergistically within a single protocol framework.</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8">
-                <!-- Product Card 1: DEX -->
+                <!-- AMM DEX -->
                 <div class="group border border-gray-800/80 bg-gray-900/20 hover:bg-gray-900/40 p-8 rounded-2xl transition-all duration-300 hover:border-blue-500/30 flex flex-col justify-between">
                     <div class="space-y-4">
                         <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
                             <svg xmlns="http://w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
                         </div>
                         <h3 class="text-xl font-bold text-white">ZONIQ AMM DEX</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Eksekusi perdagangan aset instan dengan biaya bahan bakar (gas fee) super murah khas jaringan Base. Menyediakan sistem penampung Stable Pools untuk meminimalkan slippage aset sejenis.</p>
+                        <p class="text-gray-400 text-sm leading-relaxed" data-en="Execute instant token swaps with ultra-low gas fees on Base network. Utilizes stable pool frameworks to drastically minimize asset slippage." data-id="Eksekusi pertukaran token instan dengan biaya gas super murah di jaringan Base. Menggunakan kerangka kerja stable pool untuk meminimalkan slippage aset.">Execute instant token swaps with ultra-low gas fees on Base network. Utilizes stable pool frameworks to drastically minimize asset slippage.</p>
                     </div>
-                    <a href="#" class="mt-6 inline-flex items-center text-sm font-semibold text-blue-400 group-hover:text-blue-300">Trade Now <span class="ml-1 transition-transform group-hover:translate-x-1">→</span></a>
+                    <a href="#" class="mt-6 inline-flex items-center text-sm font-semibold text-blue-400 group-hover:text-blue-300" data-en="Trade Now →" data-id="Tukar Sekarang →">Trade Now →</a>
                 </div>
-                <!-- Product Card 2: Yield Optimizer -->
+                <!-- Yield Optimizer -->
                 <div class="group border border-gray-800/80 bg-gray-900/20 hover:bg-gray-900/40 p-8 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 flex flex-col justify-between">
                     <div class="space-y-4">
                         <div class="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300">
                             <svg xmlns="http://w3.org" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                         </div>
                         <h3 class="text-xl font-bold text-white">ZONIQ Yield Optimizer</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">Sistem pintar otomatisasi panen (auto-compounding). Anda cukup menaruh aset satu kali, kontrak kami akan bekerja melipatgandakan keuntungan Anda secara mandiri tanpa biaya transaksi berulang.</p>
+                        <p class="text-gray-400 text-sm leading-relaxed" data-en="Smart contract automated harvesting hub. Deposit assets once, and our vault compounds your earnings automatically without repetitive gas expenses." data-id="Pusat otomatisasi panen pintar. Setor aset sekali saja, dan brankas kami melipatgandakan penghasilan Anda otomatis tanpa biaya gas berulang.">Smart contract automated harvesting hub. Deposit assets once, and our vault compounds your earnings automatically without repetitive gas expenses.</p>
                     </div>
-                    <a href="#" class="mt-6 inline-flex items-center text-sm font-semibold text-cyan-400 group-hover:text-cyan-300">Invest Now <span class="ml-1 transition-transform group-hover:translate-x-1">→</span></a>
+                    <a href="#" class="mt-6 inline-flex items-center text-sm font-semibold text-cyan-400 group-hover:text-cyan-300" data-en="Invest Now →" data-id="Investasi Sekarang →">Invest Now →</a>
                 </div>
+            </div>
+        </section>
+
+        <!-- LIQUIDITY POOLS TABLE COMPONENT -->
+        <section id="pools" class="max-w-7xl mx-auto px-6 py-12 border-t border-gray-900">
+            <div class="space-y-4 mb-8">
+                <h3 class="text-2xl font-bold text-white tracking-tight" data-en="Supported Liquidity Pools" data-id="Kolam Likuiditas yang Didukung">Supported Liquidity Pools</h3>
+                <p class="text-sm text-gray-400" data-en="Earn high APRs by providing liquidity and compounding via ZONIQ vaults." data-id="Dapatkan APR tinggi dengan menyediakan likuiditas dan auto-compounding via brankas ZONIQ.">Earn high APRs by providing liquidity and compounding via ZONIQ vaults.</p>
+            </div>
+            <div class="overflow-x-auto border border-gray-800 bg-gray-900/10 rounded-2xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-800 bg-gray-900/40 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            <th class="p-5" data-en="Pool Pair" data-id="Pasangan Kolam">Pool Pair</th>
+                            <th class="p-5" data-en="Type" data-id="Tipe">Type</th>
+                            <th class="p-5" data-en="Total TVL" data-id="Total TVL">Total TVL</th>
+                            <th class="p-5" data-en="Base APR" data-id="APR Dasar">Base APR</th>
+                            <th class="p-5 text-cyan-400" data-en="ZONIQ Boosted APY" data-id="APY Optimal ZONIQ">ZONIQ Boosted APY</th>
+                            <th class="p-5 text-right" data-en="Action" data-id="Aksi">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-gray-800/60 text-gray-300">
+                        <tr class="hover:bg-gray-800/20 transition-colors">
+                            <td class="p-5 font-semibold text-white">WETH / USDC</td>
+                            <td class="p-5 text-xs"><span class="bg-gray-800 border border-gray-700 px-2 py-0.5 rounded text-gray-400" data-en="Standard" data-id="Standar">Standard</span></td>
+                            <td class="p-5 font-medium">\$18,452,000</td>
+                            <td class="p-5 text-gray-400">12.4%</td>
+                            <td class="p-5 font-bold text-cyan-400">32.8% 🔥</td>
+                            <td class="p-5 text-right"><button class="bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all" data-en="Deposit" data-id="Setor">Deposit</button></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/20 transition-colors">
+                            <td class="p-5 font-semibold text-white">USDC / USDt</td>
+                            <td class="p-5 text-xs"><span class="bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded text-blue-400">Stable</span></td>
+                            <td class="p-5 font-medium">\$14,210,500</td>
+                            <td class="p-5 text-gray-400">4.1%</td>
+                            <td class="p-5 font-bold text-cyan-400">11.5% 🔥</td>
+                            <td class="p-5 text-right"><button class="bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all" data-en="Deposit" data-id="Setor">Deposit</button></td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/20 transition-colors">
+                            <td class="p-5 font-semibold text-white">$ZNQ / WETH</td>
+                            <td class="p-5 text-xs"><span class="bg-purple-500/10 border border-purple-500/20 px-2 py-0.5 rounded text-purple-400">Volatile</span></td>
+                            <td class="p-5 font-medium">\$10,188,704</td>
+                            <td class="p-5 text-gray-400">45.2%</td>
+                            <td class="p-5 font-bold text-cyan-400">114.6% 🔥</td>
+                            <td class="p-5 text-right"><button class="bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600 hover:text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all" data-en="Deposit" data-id="Setor">Deposit</button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
         <!-- VE-TOKENOMICS & REAL YIELD SECTION -->
-        <section class="max-w-7xl mx-auto px-6 py-16 border-t border-gray-900">
+        <section id="vetokenomics" class="max-w-7xl mx-auto px-6 py-16 border-t border-gray-900">
             <div class="bg-gradient-to-br from-gray-900/60 to-gray-900/20 border border-gray-800 p-8 md:p-12 rounded-3xl grid md:grid-cols-3 gap-8 items-center">
                 <div class="md:col-span-1 space-y-4">
-                    <h3 class="text-2xl font-bold text-white sm:text-3xl">Lock $ZNQ, Earn Revenue</h3>
-                    <p class="text-sm text-gray-400 leading-relaxed">
-                        Kami tidak menerbitkan inflasi token tanpa nilai. Dapatkan hak suara tata kelola protokol dan bagikan hasil pendapatan riil dari platform.
+                    <h3 class="text-2xl font-bold text-white sm:text-3xl" data-en="Lock $ZNQ, Earn Revenue" data-id="Kunci $ZNQ, Raih Pendapatan">Lock $ZNQ, Earn Revenue</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed" data-en="We do not issue unbacked inflationary tokens. Secure governance voting weights and claim real 70% protocol fee distributions." data-id="Kami tidak menerbitkan token inflasi tanpa jaminan. Amankan bobot suara tata kelola dan klaim distribusi 70% biaya protokol riil.">
+                        We do not issue unbacked inflationary tokens. Secure governance voting weights and claim real 70% protocol fee distributions.
                     </p>
                 </div>
-                <!-- Alur Kerja Interaktif -->
                 <div class="md:col-span-2 grid sm:grid-cols-3 gap-6">
                     <div class="bg-[#0b0f19]/60 border border-gray-800 p-5 rounded-2xl space-y-2">
                         <span class="text-xs font-bold text-blue-500 uppercase">Step 1</span>
-                        <h4 class="font-semibold text-white text-sm">Buy $ZNQ Token</h4>
-                        <p class="text-xs text-gray-400">Dapatkan token utilitas eksklusif $ZNQ langsung di pasar utama Base.</p>
+                        <h4 class="font-semibold text-white text-sm" data-en="Buy $ZNQ Token" data-id="Beli Token $ZNQ">Buy $ZNQ Token</h4>
+                        <p class="text-xs text-gray-400" data-en="Acquire utility tokens directly on the Base native market pools." data-id="Dapatkan token utilitas langsung di kolam pasar native Base.">Acquire utility tokens directly on the Base native market pools.</p>
                     </div>
                     <div class="bg-[#0b0f19]/60 border border-gray-800 p-5 rounded-2xl space-y-2">
                         <span class="text-xs font-bold text-blue-500 uppercase">Step 2</span>
-                        <h4 class="font-semibold text-white text-sm">Lock into veZNQ</h4>
-                        <p class="text-xs text-gray-400">Kunci koin Anda dari durasi 1 minggu hingga 4 tahun untuk mengamankan hak suara.</p>
+                        <h4 class="font-semibold text-white text-sm" data-en="Lock into veZNQ" data-id="Kunci Menjadi veZNQ">Lock into veZNQ</h4>
+                        <p class="text-xs text-gray-400" data-en="Lock assets from 1 week up to 4 years to maximize your voting weight." data-id="Kunci aset dari 1 minggu hingga 4 tahun untuk memaksimalkan bobot hak suara Anda.">Lock assets from 1 week up to 4 years to maximize your voting weight.</p>
                     </div>
                     <div class="bg-[#0b0f19]/60 border border-blue-500/20 bg-blue-500/5 p-5 rounded-2xl space-y-2">
                         <span class="text-xs font-bold text-cyan-400 uppercase">Step 3</span>
-                        <h4 class="font-semibold text-white text-sm text-cyan-400">Earn USDC Yield</h4>
-                        <p class="text-xs text-gray-300">Klaim porsi bagi hasil pendapatan riil sebesar 70% dari akumulasi fee platform.</p>
+                        <h4 class="font-semibold text-sm text-cyan-400" data-en="Earn USDC Yield" data-id="Raih Hasil USDC">Earn USDC Yield</h4>
+                        <p class="text-xs text-gray-300" data-en="Claim weekly distributions of native protocol cashflow streams." data-id="Klaim distribusi mingguan dari aliran arus kas masuk protokol asli.">Claim weekly distributions of native protocol cashflow streams.</p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- SECURITY & BADGES SECTION -->
-        <section class="max-w-7xl mx-auto px-6 py-12 flex flex-wrap gap-8 items-center justify-center border-t border-gray-900 text-xs font-medium text-gray-500 uppercase tracking-widest">
-            <div class="flex items-center space-x-2 border border-gray-800 px-4 py-2 rounded-xl bg-gray-900/10">
-                <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                <span>🛡️ Audited Smart Contracts</span>
-            </div>
-            <div class="flex items-center space-x-2 border border-gray-800 px-4 py-2 rounded-xl bg-gray-900/10">
-                <span>🔑 3-of-5 Gnosis Multi-Sig</span>
-            </div>
-            <div class="flex items-center space-x-2 border border-gray-800 px-4 py-2 rounded-xl bg-gray-900/10">
-                <span>⏱️ 48-Hour Timelock Enforced</span>
-            </div>
-        </section>
     </main>
+
+    <!-- TRANSACTION MODAL (POP-UP BOX FOR VEZNQ LOCKING) -->
+    <div id="lockModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-[#0f1422] border border-gray-800 w-full max-w-md p-6 rounded-2xl space-y-5 shadow-2xl relative">
+            <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-white flex items-center gap-2">
+                    🔒 <span data-en="Create veZNQ Lock" data-id="Buat Kunci veZNQ">Create veZNQ Lock</span>
+                </h4>
+                <button onclick="toggleModal(false)" class="text-gray-500 hover:text-white text-xl focus:outline-none">&times;</button>
+            </div>
+            
+            <!-- Input Token Amount -->
+            <div class="space-y-2">
+                <label class="text-xs font-semibold text-gray-400 uppercase" data-en="Amount to Lock" data-id="Jumlah untuk Dikunci">Amount to Lock</label>
+                <div class="relative bg-[#0b0f19] border border-gray-800 rounded-xl px-4 py-3 flex items-center justify-between">
+                    <input type="number" placeholder="0.0" class="bg-transparent text-white font-bold text-lg focus:outline-none w-2/3">
+                    <span class="text-sm font-bold gradient-text">$ZNQ</span>
+                </div>
+            </div>
+
+            <!-- Input Lock Duration Selection -->
+            <div class="space-y-2">
+                <label class="text-xs font-semibold text-gray-400 uppercase" data-en="Lock Duration" data-id="Durasi Penguncian">Lock Duration</label>
+                <div class="grid grid-cols-4 gap-2 text-center text-xs font-bold text-gray-400">
+                    <div class="bg-[#0b0f19] hover:bg-blue-600/10 border border-gray-800 hover:border-blue-500/40 p-2.5 rounded-xl cursor-pointer transition-all">1 W</div>
+                    <div class="bg-[#0b0f19] hover:bg-blue-600/10 border border-gray-800 hover:border-blue-500/40 p-2.5 rounded-xl cursor-pointer transition-all">1 M</div>
+                    <div class="bg-[#0b0f19] hover:bg-blue-600/10 border border-gray-800 hover:border-blue-500/40 p-2.5 rounded-xl cursor-pointer transition-all">1 Y</div>
+                    <div class="bg-blue-600/20 border border-blue-500 text-blue-400 p-2.5 rounded-xl cursor-pointer transition-all">4 Y (Max)</div>
+                </div>
+            </div>
+
+            <!-- Dynamic Estimated Result Box -->
+            <div class="bg-blue-500/5 border border-blue-500/10 p-4 rounded-xl flex justify-between text-xs">
+                <span class="text-gray-400" data-en="Estimated Voting Weight" data-id="Estimasi Bobot Hak Suara">Estimated Voting Weight</span>
+                <span class="font-bold text-cyan-400" id="estWeight">0.00 veZNQ</span>
+            </div>
+
+            <!-- Transaction Buttons -->
+            <div class="space-y-2 pt-2">
+                <button class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-xl transition-all text-sm shadow-lg shadow-blue-600/10" data-en="Approve $ZNQ" data-id="Setujui $ZNQ">
+                    Approve $ZNQ
+                </button>
+                <button class="w-full bg-gray-800 text-gray-500 font-semibold py-3 rounded-xl text-sm cursor-not-allowed" disabled data-en="Execute Lock Transaction" data-id="Eksekusi Transaksi Penguncian">
+                    Execute Lock Transaction
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="border-t border-gray-900 bg-[#070a12]/60 py-8">
         <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
             <p>&copy; 2026 ZONIQ Finance. Built on Base Ecosystem.</p>
             <div class="flex items-center space-x-6">
-                <a href="#" class="hover:text-white transition-colors">Twitter (X)</a>
+                <a href="#" class="hover:text-white transition-colors">Twitter</a>
                 <a href="#" class="hover:text-white transition-colors">Discord</a>
                 <a href="#" class="hover:text-white transition-colors">GitHub</a>
-                <a href="#" class="hover:text-white transition-colors">BaseScan</a>
             </div>
         </div>
     </footer>
 
+    <!-- INTERACTIVE MULTI-LANGUAGE & MODAL ANIMATION JAVASCRIPT -->
+    <script>
+        // 1. Logika Pengalihan Dua Bahasa (EN-ID)
+        const langSwitcher = document.getElementById('langSwitcher');
+        
+        const heroTitles = {
+            en: 'The Capital Efficiency <br class="hidden lg:block">Hub on <span class="gradient-text">Base Blockchain</span>',
+            id: 'Pusat Efisiensi Modal <br class="hidden lg:block">di <span class="gradient-text">Blockchain Base</span>'
+        };
+
+        langSwitcher.addEventListener('change', (e) => {
+            const currentLang = e.target.value;
+            document.documentElement.lang = currentLang;
+
+            // Ganti Judul Utama Hero (karena memiliki struktur tag HTML internal)
+            document.getElementById('heroTitle').innerHTML = heroTitles[currentLang];
+
+            // Ganti seluruh elemen teks statis lainnya secara modular melalui atribut data
+            document.querySelectorAll('[data-en]').forEach(element => {
+                element.textContent = element.getAttribute(`data-${currentLang}`);
+            });
+        });
+
+        // 2. Logika Efek Transisi Membuka & Menutup Pop-up Modal Box
+        function toggleModal(show) {
+            const modal = document.getElementById('lockModal');
+            if (show) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.add('opacity-100');
+                }, 10);
+            } else {
+                modal.classList.remove('opacity-100');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+    </script>
 </body>
 </html>
