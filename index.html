@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoniq Finance - Layer-2 DeFi-RWA Aggregator</title>
+    <title>Zoniq Finance - Layer-2 DeFi Aggregator</title>
     <style>
         :root {
             --bg-color: #030e12;
@@ -219,7 +219,7 @@
             .roadmap-list li::before { content: '–'; position: absolute; left: 0; top: 0; display: block; }
         }
 
-        /* 6. GLOBAL FOOTER STYLING (NEW SECTION) */
+        /* 6. GLOBAL FOOTER STYLING */
         footer {
             margin-top: 60px;
             padding: 30px 0;
@@ -232,22 +232,10 @@
             font-size: 0.85rem;
             color: #475569;
         }
-        @media (min-width: 480px) {
-            footer { flex-direction: row; }
-        }
-        footer .copyright {
-            font-weight: 500;
-        }
-        footer .footer-link {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-        footer .footer-link:hover {
-            color: #0072ff;
-            text-decoration: underline;
-        }
+        @media (min-width: 480px) { footer { flex-direction: row; } }
+        footer .copyright { font-weight: 500; }
+        footer .footer-link { color: var(--accent-color); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+        footer .footer-link:hover { color: #0072ff; text-decoration: underline; }
 
         /* FILTERS ARCHITECTURE */
         .lang-section { animation: fadeIn 0.4s ease; }
@@ -268,17 +256,128 @@
         </div>
     </div>
 
-    <!-- ================= BAHASA INDONESIA SECTION ================= -->
+    <!-- ================= 1. ENGLISH SECTION (FIRST) ================= -->
+    <div id="sect-en" class="lang-section" lang="en">
+        <!-- Hero Section -->
+        <section class="hero-layout">
+            <div class="hero-left">
+                <span class="badge">Layer-2 DeFi Aggregator</span>
+                <h1>Zoniq Finance: DeFi as Simple as Email.</h1>
+                <p>A low-cost DeFi-RWA aggregator protocol deployed on Base &amp; Arbitrum networks. Leverage your real-world assets permissionlessly to unlock instant liquidity with gas fees under $0.01.</p>
+                <div class="cta-group">
+                    <a href="app.html" class="btn btn-primary">Launch App</a>
+                    <a href="whitepaper.html" class="btn btn-secondary">Read One-Pager</a>
+                </div>
+            </div>
+            <div class="hero-right"><div class="blob-logo"><span>Z</span></div></div>
+        </section>
+
+        <!-- Innovation Pillars -->
+        <section class="features-grid">
+            <div class="feature-card highlighted">
+                <div class="feature-icon-box icon-gas">⛽</div>
+                <h3>99% Gas Fee Savings</h3>
+                <p>Fully backed by Layer-2 architecture (Base &amp; Arbitrum) to ensure every transaction runs instantly with fees under $0.01.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-box icon-rwa">🔄</div>
+                <h3>RWA Cross-Collateral</h3>
+                <p>Securely utilize tokenized real-world assets as collateral in the DeFi money markets without traditional bureaucratic barriers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon-box icon-email">✉</div>
+                <h3>Log In via Email</h3>
+                <p>Eliminate seed phrase complexities. Create your new Web3 wallet in seconds using your trusted Google or Apple accounts.</p>
+            </div>
+        </section>
+
+        <!-- Tokenomics -->
+        <section class="tokenomics-section">
+            <h2>$ZNQ Tokenomics Allocation</h2>
+            <p>Total Zoniq Finance supply is capped at 100,000,000 $ZNQ with an automated deflationary mechanism to secure long-term ecosystem value.</p>
+            <div class="tokenomics-content">
+                <div class="legend-list">
+                    <div class="legend-item"><div class="legend-color c-public"></div>40% <span>- Public &amp; Liquidity (DEX/CEX)</span></div>
+                    <div class="legend-item"><div class="legend-color c-staking"></div>25% <span>- Staking &amp; Ecosystem Incentives</span></div>
+                    <div class="legend-item"><div class="legend-color c-dev"></div>15% <span>- Development &amp; Marketing</span></div>
+                    <div class="legend-item"><div class="legend-color c-private"></div>10% <span>- Private / Seed Sale</span></div>
+                    <div class="legend-item"><div class="legend-color c-team"></div>10% <span>- Team &amp; Advisors Allocation (Vesting)</span></div>
+                </div>
+                <div class="pie-chart-wrapper">
+                    <div class="pie-chart">
+                        <div class="pie-center">
+                            <span class="amount">100M</span>
+                            <span class="token-name">$ZNQ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Roadmap -->
+        <section class="roadmap-section">
+            <h2>Strategic Roadmap</h2>
+            <p class="roadmap-subtitle" id="rm-sub">Timeline of the Zoniq Finance ecosystem execution and development plan globally.</p>
+            <div class="timeline">
+                <div class="timeline-container left">
+                    <div class="roadmap-box">
+                        <span class="q-badge">Quarter 1</span>
+                        <h3>Foundation &amp; Security</h3>
+                        <ul class="roadmap-list">
+                            <li>Security audit of $ZNQ token smart contract.</li>
+                            <li>Official website &amp; One-Pager launch.</li>
+                            <li>Token deployment on the test network (Testnet).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="roadmap-box">
+                        <span class="q-badge">Quarter 2</span>
+                        <h3>Access &amp; Liquidity</h3>
+                        <ul class="roadmap-list">
+                            <li>App login integration via social/email accounts.</li>
+                            <li>Token deployment on main network (Mainnet DEX).</li>
+                            <li>Launch of initial staking program &amp; incentive rewards.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-container left">
+                    <div class="roadmap-box">
+                        <span class="q-badge">Quarter 3</span>
+                        <h3>RWA Protocol &amp; Collateral</h3>
+                        <ul class="roadmap-list">
+                            <li>First wave of real-world asset (RWA) tokenization.</li>
+                            <li>Cross-Collateral module deployment.</li>
+                            <li>Partnership with regulated physical custodian providers.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-container right">
+                    <div class="roadmap-box">
+                        <span class="q-badge">Quarter 4</span>
+                        <h3>Expansion &amp; Mass Scale</h3>
+                        <ul class="roadmap-list">
+                            <li>Listing of $ZNQ token on global crypto exchanges (CEX).</li>
+                            <li>Pay gas fees directly with USDC/USDT stablecoins.</li>
+                            <li>Full transition to community governance system (DAO).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ================= 2. BAHASA INDONESIA SECTION (SECOND) ================= -->
     <div id="sect-id" class="lang-section hidden" lang="id">
         <!-- Hero Section -->
         <section class="hero-layout">
             <div class="hero-left">
-                <span class="badge">Layer-2 DeFi-RWA Aggregator</span>
+                <span class="badge">Layer-2 DeFi Aggregator</span>
                 <h1>Zoniq Finance: DeFi Semudah Pakai Email.</h1>
                 <p>Protokol agregator DeFi-RWA berbiaya rendah di jaringan Base &amp; Arbitrum. Jaminkan aset dunia nyata Anda secara permissionless untuk mendapatkan likuiditas instan dengan biaya gas di bawah $0.01.</p>
                 <div class="cta-group">
-                    <a href="app.html" class="btn btn-primary cta-app-btn">Buka Aplikasi</a>
-                    <a href="whitepaper.html" class="btn btn-secondary cta-doc-btn">Baca One-Pager</a>
+                    <a href="app.html" class="btn btn-primary">Buka Aplikasi</a>
+                    <a href="whitepaper.html" class="btn btn-secondary">Baca One-Pager</a>
                 </div>
             </div>
             <div class="hero-right"><div class="blob-logo"><span>Z</span></div></div>
@@ -379,118 +478,7 @@
         </section>
     </div>
 
-    <!-- ================= ENGLISH SECTION ================= -->
-    <div id="sect-en" class="lang-section" lang="en">
-        <!-- Hero Section -->
-        <section class="hero-layout">
-            <div class="hero-left">
-                <span class="badge">Layer-2 DeFi Aggregator</span>
-                <h1>Zoniq Finance: DeFi as Simple as Email.</h1>
-                <p>A low-cost DeFi-RWA aggregator protocol deployed on Base &amp; Arbitrum networks. Leverage your real-world assets permissionlessly to unlock instant liquidity with gas fees under $0.01.</p>
-                <div class="cta-group">
-                    <a href="app.html" class="btn btn-primary cta-app-btn">Launch App</a>
-                    <a href="whitepaper.html" class="btn btn-secondary cta-doc-btn">Read One-Pager</a>
-                </div>
-            </div>
-            <div class="hero-right"><div class="blob-logo"><span>Z</span></div></div>
-        </section>
-
-        <!-- Innovation Pillars -->
-        <section class="features-grid">
-            <div class="feature-card highlighted">
-                <div class="feature-icon-box icon-gas">⛽</div>
-                <h3>99% Gas Fee Savings</h3>
-                <p>Fully backed by Layer-2 architecture (Base &amp; Arbitrum) to ensure every transaction runs instantly with fees under $0.01.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon-box icon-rwa">🔄</div>
-                <h3>RWA Cross-Collateral</h3>
-                <p>Securely utilize tokenized real-world assets as collateral in the DeFi money markets without traditional bureaucratic barriers.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon-box icon-email">✉</div>
-                <h3>Log In via Email</h3>
-                <p>Eliminate seed phrase complexities. Create your new Web3 wallet in seconds using your trusted Google or Apple accounts.</p>
-            </div>
-        </section>
-
-        <!-- Tokenomics -->
-        <section class="tokenomics-section">
-            <h2>$ZNQ Tokenomics Allocation</h2>
-            <p>Total Zoniq Finance supply is capped at 100,000,000 $ZNQ with an automated deflationary mechanism to secure long-term ecosystem value.</p>
-            <div class="tokenomics-content">
-                <div class="legend-list">
-                    <div class="legend-item"><div class="legend-color c-public"></div>40% <span>- Public &amp; Liquidity (DEX/CEX)</span></div>
-                    <div class="legend-item"><div class="legend-color c-staking"></div>25% <span>- Staking &amp; Ecosystem Incentives</span></div>
-                    <div class="legend-item"><div class="legend-color c-dev"></div>15% <span>- Development &amp; Marketing</span></div>
-                    <div class="legend-item"><div class="legend-color c-private"></div>10% <span>- Private / Seed Sale</span></div>
-                    <div class="legend-item"><div class="legend-color c-team"></div>10% <span>- Team &amp; Advisors Allocation (Vesting)</span></div>
-                </div>
-                <div class="pie-chart-wrapper">
-                    <div class="pie-chart">
-                        <div class="pie-center">
-                            <span class="amount">100M</span>
-                            <span class="token-name">$ZNQ</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Strategic Roadmap -->
-        <section class="roadmap-section">
-            <h2>Strategic Roadmap</h2>
-            <p class="roadmap-subtitle" id="rm-sub">Timeline of the global Zoniq Finance ecosystem execution and development plan.</p>
-            <div class="timeline">
-                <div class="timeline-container left">
-                    <div class="roadmap-box">
-                        <span class="q-badge">Quarter 1</span>
-                        <h3>Foundation &amp; Security</h3>
-                        <ul class="roadmap-list">
-                            <li>Security audit of $ZNQ token smart contract.</li>
-                            <li>Official website &amp; One-Pager launch.</li>
-                            <li>Token deployment on the test network (Testnet).</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-container right">
-                    <div class="roadmap-box">
-                        <span class="q-badge">Quarter 2</span>
-                        <h3>Access &amp; Liquidity</h3>
-                        <ul class="roadmap-list">
-                            <li>App login integration via social/email accounts.</li>
-                            <li>Token deployment on main network (Mainnet DEX).</li>
-                            <li>Launch of initial staking program &amp; incentive rewards.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-container left">
-                    <div class="roadmap-box">
-                        <span class="q-badge">Quarter 3</span>
-                        <h3>RWA Protocol &amp; Collateral</h3>
-                        <ul class="roadmap-list">
-                            <li>First wave of real-world asset (RWA) tokenization.</li>
-                            <li>Cross-Collateral module deployment.</li>
-                            <li>Partnership with regulated physical custodian providers.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-container right">
-                    <div class="roadmap-box">
-                        <span class="q-badge">Quarter 4</span>
-                        <h3>Expansion &amp; Mass Scale</h3>
-                        <ul class="roadmap-list">
-                            <li>Listing of $ZNQ token on global crypto exchanges (CEX).</li>
-                            <li>Pay gas fees directly with USDC/USDT stablecoins.</li>
-                            <li>Full transition to community governance system (DAO).</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- ================= GLOBAL FOOTER (NEW ELEMENT) ================= -->
+    <!-- ================= GLOBAL FOOTER ================= -->
     <footer>
         <div class="copyright">&copy; 2026 Zoniq Finance. All rights reserved.</div>
         <div>
@@ -523,7 +511,6 @@
         return null;
     }
 
-    // INTERFACE LANGUAGE UPDATER
     function applyLanguage(lang) {
         const toggle = document.getElementById('langToggle');
         const sectId = document.getElementById('sect-id');
@@ -535,7 +522,7 @@
             toggle.classList.add('active-id');
             sectId.classList.remove('hidden');
             sectEn.classList.add('hidden');
-            tosLink.innerText = "Ketentuan Layanan"; // Dynamically switch footer text
+            tosLink.innerText = "Ketentuan Layanan";
         } else {
             toggle.classList.remove('active-id');
             toggle.classList.add('active-en');
