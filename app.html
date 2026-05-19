@@ -312,58 +312,64 @@
     <!-- OVERLAY LAYAR GELAP UNTUK HP -->
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-    <!-- SIDEBAR NAVIGASI KIRI -->
-    <aside id="appSidebar">
-        <div>
-            <button onclick="window.location.href='index.html'" style="background: none; border: 1px solid #1e2533; color: #6b7280; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 24px; width: 100%; text-align: left; transition: all 0.2s;" onmouseover="this.style.color='#ffffff'; this.style.borderColor='#3b82f6';" onmouseout="this.style.color='#6b7280'; this.style.borderColor='#1e2533';">
+    <!-- ==========================================================================
+     SIDEBAR UTAMA (app.html)
+     ========================================================================== -->
+<aside id="appSidebar">
+    <div>
+        <button onclick="window.location.href='index.html'" style="background: none; border: 1px solid #1e2533; color: #6b7280; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 24px; width: 100%; text-align: left; transition: all 0.2s;" onmouseover="this.style.color='#ffffff'; this.style.borderColor='#3b82f6';" onmouseout="this.style.color='#6b7280'; this.style.borderColor='#1e2533';">
             <span class="lang-en">← Back to Home</span>
             <span class="lang-id">← Kembali ke Beranda</span>
         </button>
-            <div class="logo">ZoniqFi<span>.</span></div>
-            <ul class="nav-links">
-                <li><a href="#" class="active">📊 Dashboard</a></li>
-                <li><a href="#">🔄 Swap (DEX)</a></li>
-                <li><a href="#">🌾 Vaults (Optimizer)</a></li>
-                <li><a href="#">🔒 veZNF Governance</a></li>
-            </ul>
-        </div>
-        <div style="font-size: 11px; color: #4b5563; padding-left: 16px;">
-            Base Network Connected
-        </div>
-    </aside>
 
-    <!-- AREA UTAMA DASHBOARD -->
-    <main class="main-content">
+        <!-- NAMA BRAND -->
+        <div class="logo">ZONIQ<span>.</span></div>
         
-        <!-- TOPBAR AKUN -->
-        <header class="topbar">
-            <div>
-                <h2 class="lang-en" style="font-size: 24px; font-weight: 700;">Console Account</h2>
-                <h2 class="lang-id" style="font-size: 24px; font-weight: 700;">Konsol Akun</h2>
-            </div>
-            <div class="right-controls">
-                <select id="appLangSwitcher" class="lang-select">
-                    <option value="en">🌐 EN</option>
-                    <option value="id">🌐 ID</option>
-                </select>
-                <button class="btn-wallet">0x71C...89bA</button>
-            </div>
-        </header>
+        <!-- LIST MENU DENGAN EVENT CLICK -->
+        <ul class="nav-links">
+            <li><a href="#" class="nav-item active" onclick="switchPage('dashboard', this)">📊 Dashboard</a></li>
+            <li><a href="#" class="nav-item" onclick="switchPage('swap', this)">🔄 Swap (DEX)</a></li>
+            <li><a href="#" class="nav-item" onclick="switchPage('vaults', this)">🌾 Vaults (Optimizer)</a></li>
+            <li><a href="#" class="nav-item" onclick="switchPage('governance', this)">🔒 veZNQ Governance</a></li>
+        </ul>
+    </div>
+    <div style="font-size: 11px; color: #4b5563; padding-left: 16px;">
+        Base Network Connected
+    </div>
+</aside>
 
-        <!-- DASHBOARD GRID -->
+<!-- ==========================================================================
+     KONTEN UTAMA - PERBAIKAN TEKS KE $ZNQ / veZNQ
+     ========================================================================== -->
+<main class="main-content">
+    <header class="topbar">
+        <div>
+            <h2 class="lang-en" style="font-size: 24px; font-weight: 700;">Console Account</h2>
+            <h2 class="lang-id" style="font-size: 24px; font-weight: 700;">Konsol Akun</h2>
+        </div>
+        <div class="right-controls">
+            <select id="appLangSwitcher" class="lang-select">
+                <option value="en">🌐 EN</option>
+                <option value="id">🌐 ID</option>
+            </select>
+            <button class="btn-wallet">0x71C...89bA</button>
+        </div>
+    </header>
+
+    <!-- AREA KONTEN DINAMIS -->
+    <div id="page-dashboard" class="page-section">
         <section class="dashboard-grid">
-            
-            <!-- PANEL UTAMA KUNCI veZNQ -->
             <div class="panel">
-                <h3 class="panel-title lang-en">Lock $ZNF for veZNF</h3>
-                <h3 class="panel-title lang-id">Kunci $ZNF untuk veZNF</h3>
+                <!-- PERBAIKAN HURUF F MENJADI Q -->
+                <h3 class="panel-title lang-en">Lock $ZNQ for veZNQ</h3>
+                <h3 class="panel-title lang-id">Kunci $ZNQ untuk veZNQ</h3>
                 
                 <div class="form-group">
                     <label class="form-label lang-en">Amount to Lock</label>
                     <label class="form-label lang-id">Jumlah untuk Dikunci</label>
                     <div class="input-box">
                         <input type="number" placeholder="0.0" value="1000">
-                        <span class="token-select">$ZNF</span>
+                        <span class="token-select">$ZNQ</span>
                     </div>
                 </div>
 
@@ -382,7 +388,7 @@
                     <div class="summary-row">
                         <span class="summary-label lang-en">Voting Power Received</span>
                         <span class="summary-label lang-id">Kekuatan Suara Diterima</span>
-                        <span class="summary-value highlight">1,000.00 veZNF</span>
+                        <span class="summary-value highlight">1,000.00 veZNQ</span>
                     </div>
                     <div class="summary-row">
                         <span class="summary-label lang-en">Estimated Weekly Yield</span>
@@ -396,31 +402,29 @@
                     </div>
                 </div>
 
-                <button class="btn-action">
+                <button class="btn-action" id="executeBtn">
                     <span class="lang-en">Execute Lock Transaction</span>
                     <span class="lang-id">Eksekusi Transaksi Kunci</span>
                 </button>
             </div>
 
-            <!-- PANEL REWARD SISI KANAN -->
+            <!-- PANEL REWARD KANAN -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
-                
                 <div class="panel" style="padding: 24px;">
                     <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Your Governance Stash</h3>
                     <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Simpanan Tata Kelola Anda</h3>
-                    
                     <div class="reward-card">
                         <div class="reward-info">
                             <h4 class="lang-en">Locked Balance</h4>
                             <h4 class="lang-id">Saldo Terkunci</h4>
-                            <p>1,000 $ZNF</p>
+                            <p>1,000 $ZNQ</p>
                         </div>
                     </div>
                     <div class="reward-card">
                         <div class="reward-info">
                             <h4 class="lang-en">Current Voting Weight</h4>
                             <h4 class="lang-id">Bobot Suara Saat Ini</h4>
-                            <p style="color: #22d3ee;">1,000 veZNF</p>
+                            <p style="color: #22d3ee;">1,000 veZNQ</p>
                         </div>
                     </div>
                 </div>
@@ -428,21 +432,40 @@
                 <div class="panel" style="padding: 24px;">
                     <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Claimable Real Yield</h3>
                     <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Bagi Hasil yang Dapat Diklaim</h3>
-                    
                     <div class="reward-card" style="background-color: rgba(34, 211, 238, 0.02); border-color: rgba(34, 211, 238, 0.1);">
                         <div class="reward-info">
                             <h4>USDC Rewards</h4>
                             <p style="color: #22d3ee;">142.50 USDC</p>
                         </div>
-                        <button class="btn-sm">Claim</button>
+                        <button class="btn-sm" id="claimBtn">Claim</button>
                     </div>
                 </div>
-
             </div>
-
         </section>
+    </div>
 
-    </main>
+    <!-- PLACEHOLDER HALAMAN FITUR BARU LAINNYA -->
+    <div id="page-swap" class="page-section" style="display: none;">
+        <div class="panel text-center">
+            <h3 class="panel-title">🔄 ZONIQ Swap Platform (DEX)</h3>
+            <p style="color: #9ca3af; font-size: 14px;">Liquidity pooling integration code is ready staged for Base L2 Router.</p>
+        </div>
+    </div>
+
+    <div id="page-vaults" class="page-section" style="display: none;">
+        <div class="panel text-center">
+            <h3 class="panel-title">🌾 ZONIQ Yield Optimizer Vaults</h3>
+            <p style="color: #9ca3af; font-size: 14px;">Automated compounding yield system configuration interface placeholder.</p>
+        </div>
+    </div>
+
+    <div id="page-governance" class="page-section" style="display: none;">
+        <div class="panel text-center">
+            <h3 class="panel-title">🔒 veZNQ Governance & Gauge Voting</h3>
+            <p style="color: #9ca3af; font-size: 14px;">Decentralized Autonomous Organization (DAO) voting protocol activation module.</p>
+        </div>
+    </div>
+</main>
 
     <!-- SCRIPT LOGIKA KONTROL INTERAKTIF -->
     <script>
@@ -481,6 +504,33 @@
 
         menuToggleBtn.addEventListener('click', toggleMobileMenu);
         sidebarOverlay.addEventListener('click', toggleMobileMenu); // Tutup menu jika area luar/gelap diklik
+
+        // LOGIKA SKRIP BERPINDAH HALAMAN SECARA DINAMIS (DAPP NAVIGATION HUB)
+function switchPage(pageId, element) {
+    // 1. Sembunyikan semua kontainer seksi halaman utama terlebih dahulu
+    const pages = document.querySelectorAll('.page-section');
+    pages.forEach(page => {
+        page.style.display = 'none';
+    });
+
+    // 2. Munculkan kontainer seksi halaman yang sedang diklik pengguna
+    const activePage = document.getElementById(`page-${pageId}`);
+    if (activePage) {
+        // Jika halaman dashboard, kembalikan format tampilan ke sistem kisi (grid)
+        if (pageId === 'dashboard') {
+            activePage.style.display = 'block';
+        } else {
+            activePage.style.display = 'block';
+        }
+    }
+
+    // 3. Atur status visual menyala (active state) pada link menu sidebar yang diklik
+    const menuItems = document.querySelectorAll('.nav-item');
+    menuItems.forEach(item => {
+        item.classList.remove('active');
+    });
+    element.classList.add('active');
+}
     </script>
 </body>
 </html>
