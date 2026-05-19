@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZoniqFi - dApp Dashboard</title>
+    <title>ZONIQ Finance - dApp Dashboard</title>
     <style>
         /* ==========================================================================
-           1. RESET & LOGIKA DUA BAHASA
+           1. RESET & LOGIKA DUA BAHASA (MURNI CSS)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -22,15 +22,18 @@
             overflow-x: hidden;
         }
 
+        /* LOGIKA TAMPILAN BAHASA */
         html[lang="en"] .lang-id { display: none !important; }
         html[lang="en"] .lang-en { display: block; }
         html[lang="en"] span.lang-en { display: inline; }
+        html[lang="en"] div.lang-en { display: block; }
         html[lang="id"] .lang-en { display: none !important; }
         html[lang="id"] .lang-id { display: block; }
         html[lang="id"] span.lang-id { display: inline; }
+        html[lang="id"] div.lang-id { display: block; }
 
         /* ==========================================================================
-           2. SIDEBAR NAVIGATION (DENGAN LOGIKA RESPONSIF HP)
+           2. SIDEBAR NAVIGATION & MOBILE INTERFACE
            ========================================================================== */
         aside {
             width: 260px;
@@ -71,9 +74,8 @@
             color: #3b82f6;
         }
 
-        /* TOMBOL PANAH MENYEMBUNYIKAN MENU DI HP (MOBILE TOGGLE BUTTON) */
         .menu-toggle {
-            display: none; /* Tersembunyi di komputer desktop */
+            display: none;
             position: fixed;
             bottom: 24px;
             right: 24px;
@@ -92,36 +94,21 @@
             justify-content: center;
             transition: transform 0.2s ease;
         }
-        .menu-toggle:active { transform: scale(0.9); }
 
-        /* Overlay gelap saat menu HP terbuka */
         .sidebar-overlay {
             display: none;
             position: fixed;
             inset: 0;
             background-color: rgba(0, 0, 0, 0.6);
-            backdrop-blur: 4px;
             z-index: 35;
         }
 
-        /* Media Query Khusus Layar Ponsel (HP) */
         @media (max-width: 768px) {
-            aside {
-                transform: translateX(-100%); /* Sembunyikan sidebar ke kiri luar layar */
-            }
-            aside.open {
-                transform: translateX(0); /* Munculkan sidebar kembali */
-            }
-            .menu-toggle {
-                display: flex; /* Tampilkan tombol di HP */
-            }
-            .main-content {
-                margin-left: 0 !important;
-                padding: 20px !important;
-            }
-            .sidebar-overlay.active {
-                display: block;
-            }
+            aside { transform: translateX(-100%); }
+            aside.open { transform: translateX(0); }
+            .menu-toggle { display: flex; }
+            .main-content { margin-left: 0 !important; padding: 20px !important; }
+            .sidebar-overlay.active { display: block; }
         }
 
         /* ==========================================================================
@@ -132,7 +119,6 @@
             flex-grow: 1;
             padding: 40px;
             max-width: 1200px;
-            transition: margin 0.3s ease;
         }
         .topbar {
             display: flex;
@@ -169,7 +155,6 @@
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         .dashboard-grid {
@@ -187,14 +172,9 @@
             border-radius: 20px;
             padding: 30px;
         }
-        .panel-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
+        .panel-title { font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 20px; }
 
-        /* Form Components */
+        /* Komponen Form */
         .form-group { margin-bottom: 20px; }
         .form-label {
             font-size: 11px;
@@ -240,9 +220,8 @@
             font-weight: 700;
             cursor: pointer;
             text-align: center;
-            transition: all 0.2s;
         }
-        .duration-btn:hover, .duration-btn.active {
+        .duration-btn.active {
             border-color: #3b82f6;
             color: #3b82f6;
             background-color: rgba(59, 130, 246, 0.05);
@@ -256,12 +235,7 @@
             margin: 24px 0;
             font-size: 13px;
         }
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        .summary-row:last-child { margin-bottom: 0; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
         .summary-label { color: #9ca3af; }
         .summary-value { font-weight: 600; color: #ffffff; }
         .summary-value.highlight { color: #22d3ee; font-weight: 700; }
@@ -276,7 +250,6 @@
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
         }
         .btn-action:hover { background-color: #1d4ed8; }
 
@@ -292,7 +265,6 @@
         }
         .reward-info h4 { font-size: 14px; color: #6b7280; font-weight: 600; margin-bottom: 4px; }
         .reward-info p { font-size: 20px; font-weight: 700; color: #ffffff; }
-        
         .btn-sm {
             background-color: #1e2533;
             border: 1px solid #2e374a;
@@ -302,175 +274,370 @@
             font-weight: 600;
             cursor: pointer;
         }
+
+        /* TOAST POP-UP TRANSAKSI */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 360px;
+            width: 100%;
+        }
+        .toast {
+            background-color: #0f131c;
+            border: 1px solid #22c55e;
+            border-left: 6px solid #22c55e;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-icon { font-size: 20px; line-height: 1; }
+        .toast-content { flex-grow: 1; }
+        .toast-title { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+        .toast-desc { font-size: 12px; color: #9ca3af; line-height: 1.4; }
+
+        /* ==========================================================================
+           4. SWAP BOX & VAULT TABLE STYLES (MURNI CSS)
+           ========================================================================== */
+        /* Swap Box Specifics */
+        .swap-box {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .swap-icon-container {
+            display: flex;
+            justify-content: center;
+            margin: -10px 0;
+            position: relative;
+            z-index: 2;
+        }
+        .swap-arrow-btn {
+            background-color: #1e2533;
+            border: 1px solid #2e374a;
+            color: #3b82f6;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swap-arrow-btn:hover { background-color: #2e374a; color: #22d3ee; }
+
+        /* Vault Table Specifics */
+        .table-responsive {
+            overflow-x: auto;
+            border: 1px solid #1e2533;
+            background-color: rgba(15, 23, 42, 0.4);
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            text-align: left;
+        }
+        th {
+            background-color: #0f131c;
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 16px 20px;
+            border-bottom: 1px solid #1e2533;
+        }
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+            color: #d1d5db;
+        }
+        tr:last-child td { border-bottom: none; }
+        .pool-title { font-weight: 700; color: #ffffff; }
+        .badge-pool {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background-color: #1e2533;
+            color: #9ca3af;
+            border: 1px solid #2e374a;
+        }
+        .badge-pool.boost {
+            background-color: rgba(34, 211, 238, 0.1);
+            color: #22d3ee;
+            border-color: rgba(34, 211, 238, 0.2);
+        }
     </style>
 </head>
 <body>
 
-    <!-- TOMBOL PANAH SAMBING WARNA-WARNI DI HP -->
-    <button id="menuToggleBtn" class="menu-toggle">☰</button>
+    <!-- NOTIFIKASI POP-UP TOAST -->
+    <div class="toast-container" id="toastContainer">
+        <div class="toast" id="transactionToast">
+            <div class="toast-icon">✅</div>
+            <div class="toast-content">
+                <div class="toast-title lang-en">Transaction Successful</div>
+                <div class="toast-title lang-id">Transaksi Berhasil</div>
+                <div class="toast-desc lang-en">Action processed on Base L2 network successfully.</div>
+                <div class="toast-desc lang-id">Aksi berhasil diproses pada jaringan Base L2.</div>
+            </div>
+        </div>
+    </div>
 
-    <!-- OVERLAY LAYAR GELAP UNTUK HP -->
+    <button id="menuToggleBtn" class="menu-toggle">☰</button>
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-    <!-- ==========================================================================
-     SIDEBAR UTAMA (app.html)
-     ========================================================================== -->
-<aside id="appSidebar">
-    <div>
-        <button onclick="window.location.href='index.html'" style="background: none; border: 1px solid #1e2533; color: #6b7280; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 24px; width: 100%; text-align: left; transition: all 0.2s;" onmouseover="this.style.color='#ffffff'; this.style.borderColor='#3b82f6';" onmouseout="this.style.color='#6b7280'; this.style.borderColor='#1e2533';">
-            <span class="lang-en">← Back to Home</span>
-            <span class="lang-id">← Kembali ke Beranda</span>
-        </button>
-
-        <!-- NAMA BRAND -->
-        <div class="logo">ZONIQ<span>.</span></div>
-        
-        <!-- LIST MENU DENGAN EVENT CLICK -->
-        <ul class="nav-links">
-            <li><a href="#" class="nav-item active" onclick="switchPage('dashboard', this)">📊 Dashboard</a></li>
-            <li><a href="#" class="nav-item" onclick="switchPage('swap', this)">🔄 Swap (DEX)</a></li>
-            <li><a href="#" class="nav-item" onclick="switchPage('vaults', this)">🌾 Vaults (Optimizer)</a></li>
-            <li><a href="#" class="nav-item" onclick="switchPage('governance', this)">🔒 veZNQ Governance</a></li>
-        </ul>
-    </div>
-    <div style="font-size: 11px; color: #4b5563; padding-left: 16px;">
-        Base Network Connected
-    </div>
-</aside>
-
-<!-- ==========================================================================
-     KONTEN UTAMA - PERBAIKAN TEKS KE $ZNQ / veZNQ
-     ========================================================================== -->
-<main class="main-content">
-    <header class="topbar">
+    <!-- SIDEBAR NAVIGASI KIRI -->
+    <aside id="appSidebar">
         <div>
-            <h2 class="lang-en" style="font-size: 24px; font-weight: 700;">Console Account</h2>
-            <h2 class="lang-id" style="font-size: 24px; font-weight: 700;">Konsol Akun</h2>
+            <button onclick="window.location.href='index.html'" style="background: none; border: 1px solid #1e2533; color: #6b7280; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 24px; width: 100%; text-align: left; transition: all 0.2s;" onmouseover="this.style.color='#ffffff'; this.style.borderColor='#3b82f6';" onmouseout="this.style.color='#6b7280'; this.style.borderColor='#1e2533';">
+                <span class="lang-en">← Back to Home</span>
+                <span class="lang-id">← Kembali ke Beranda</span>
+            </button>
+            
+            <div class="logo">ZONIQ<span>.</span></div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-item active" onclick="switchPage('dashboard', this)">📊 Dashboard</a></li>
+                <li><a href="#" class="nav-item" onclick="switchPage('swap', this)">🔄 Swap (DEX)</a></li>
+                <li><a href="#" class="nav-item" onclick="switchPage('vaults', this)">🌾 Vaults (Optimizer)</a></li>
+                <li><a href="#" class="nav-item" onclick="switchPage('governance', this)">🔒 veZNQ Governance</a></li>
+            </ul>
         </div>
-        <div class="right-controls">
-            <select id="appLangSwitcher" class="lang-select">
-                <option value="en">🌐 EN</option>
-                <option value="id">🌐 ID</option>
-            </select>
-            <button class="btn-wallet">0x71C...89bA</button>
-        </div>
-    </header>
+        <div style="font-size: 11px; color: #4b5563; padding-left: 16px;">Base Network Connected</div>
+    </aside>
 
-    <!-- AREA KONTEN DINAMIS -->
-    <div id="page-dashboard" class="page-section">
-        <section class="dashboard-grid">
-            <div class="panel">
-                <!-- PERBAIKAN HURUF F MENJADI Q -->
-                <h3 class="panel-title lang-en">Lock $ZNQ for veZNQ</h3>
-                <h3 class="panel-title lang-id">Kunci $ZNQ untuk veZNQ</h3>
+    <!-- AREA UTAMA DASHBOARD -->
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <h2 class="lang-en" style="font-size: 24px; font-weight: 700;">Console Account</h2>
+                <h2 class="lang-id" style="font-size: 24px; font-weight: 700;">Konsol Akun</h2>
+            </div>
+            <div class="right-controls">
+                <select id="appLangSwitcher" class="lang-select">
+                    <option value="en">🌐 EN</option>
+                    <option value="id">🌐 ID</option>
+                </select>
+                <button class="btn-wallet">0x71C...89bA</button>
+            </div>
+        </header>
+
+        <!-- SEKSI 1: DASHBOARD -->
+        <div id="page-dashboard" class="page-section">
+            <section class="dashboard-grid">
+                <div class="panel">
+                    <h3 class="panel-title lang-en">Lock $ZNQ for veZNQ</h3>
+                    <h3 class="panel-title lang-id">Kunci $ZNQ untuk veZNQ</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label lang-en">Amount to Lock</label>
+                        <label class="form-label lang-id">Jumlah untuk Dikunci</label>
+                        <div class="input-box">
+                            <input type="number" placeholder="0.0" value="1000">
+                            <span class="token-select">$ZNQ</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label lang-en">Lock Duration</label>
+                        <label class="form-label lang-id">Durasi Penguncian</label>
+                        <div class="duration-grid">
+                            <div class="duration-btn">1 W</div>
+                            <div class="duration-btn">1 M</div>
+                            <div class="duration-btn">1 Y</div>
+                            <div class="duration-btn active">4 Y (Max)</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span class="summary-label lang-en">Voting Power Received</span>
+                            <span class="summary-label lang-id">Kekuatan Suara Diterima</span>
+                            <span class="summary-value highlight">1,000.00 veZNQ</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label lang-en">Estimated Weekly Yield</span>
+                            <span class="summary-label lang-id">Estimasi Hasil Mingguan</span>
+                            <span class="summary-value">~14.50 USDC</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label lang-en">Unlock Date</span>
+                            <span class="summary-label lang-id">Tanggal Pembukaan Kunci</span>
+                            <span class="summary-value">May 18, 2030</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-action" id="executeBtn">
+                        <span class="lang-en">Execute Lock Transaction</span>
+                        <span class="lang-id">Eksekusi Transaksi Kunci</span>
+                    </button>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="panel" style="padding: 24px;">
+                        <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Your Governance Stash</h3>
+                        <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Simpanan Tata Kelola Anda</h3>
+                        <div class="reward-card">
+                            <div class="reward-info">
+                                <h4 class="lang-en">Locked Balance</h4>
+                                <h4 class="lang-id">Saldo Terkunci</h4>
+                                <p>1,000 $ZNQ</p>
+                            </div>
+                        </div>
+                        <div class="reward-card">
+                            <div class="reward-info">
+                                <h4 class="lang-en">Current Voting Weight</h4>
+                                <h4 class="lang-id">Bobot Suara Saat Ini</h4>
+                                <p style="color: #22d3ee;">1,000 veZNQ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel" style="padding: 24px;">
+                        <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Claimable Real Yield</h3>
+                        <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Bagi Hasil yang Dapat Diklaim</h3>
+                        <div class="reward-card" style="background-color: rgba(34, 211, 238, 0.02); border-color: rgba(34, 211, 238, 0.1);">
+                            <div class="reward-info">
+                                <h4>USDC Rewards</h4>
+                                <p style="color: #22d3ee;">142.50 USDC</p>
+                            </div>
+                            <button class="btn-sm" id="claimBtn">Claim</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SEKSI 2: KOTAK TRANSAKSI SWAP (DEX) -->
+        <div id="page-swap" class="page-section" style="display: none;">
+            <div class="panel swap-box">
+                <h3 class="panel-title lang-en">Swap Tokens</h3>
+                <h3 class="panel-title lang-id">Tukar Token</h3>
                 
+                <!-- Input Token Asal -->
                 <div class="form-group">
-                    <label class="form-label lang-en">Amount to Lock</label>
-                    <label class="form-label lang-id">Jumlah untuk Dikunci</label>
+                    <label class="form-label lang-en">From</label>
+                    <label class="form-label lang-id">Dari</label>
                     <div class="input-box">
-                        <input type="number" placeholder="0.0" value="1000">
-                        <span class="token-select">$ZNQ</span>
+                        <input type="number" placeholder="0.0" value="1">
+                        <span class="token-select">ETH</span>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label lang-en">Lock Duration</label>
-                    <label class="form-label lang-id">Durasi Penguncian</label>
-                    <div class="duration-grid">
-                        <div class="duration-btn">1 W</div>
-                        <div class="duration-btn">1 M</div>
-                        <div class="duration-btn">1 Y</div>
-                        <div class="duration-btn active">4 Y (Max)</div>
+                <!-- Tombol Tukar Arah Panah -->
+                <div class="swap-icon-container">
+                    <button class="swap-arrow-btn">⬇</button>
+                </div>
+
+                <!-- Input Token Tujuan -->
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="form-label lang-en">To (Estimated)</label>
+                    <label class="form-label lang-id">Ke (Estimasi)</label>
+                    <div class="input-box">
+                        <input type="number" placeholder="0.0" value="3450" readonly>
+                        <span class="token-select">USDC</span>
                     </div>
                 </div>
 
+                <!-- Detail Slip & Rute Transaksi -->
                 <div class="summary-box">
                     <div class="summary-row">
-                        <span class="summary-label lang-en">Voting Power Received</span>
-                        <span class="summary-label lang-id">Kekuatan Suara Diterima</span>
-                        <span class="summary-value highlight">1,000.00 veZNQ</span>
+                        <span class="summary-label lang-en">Slippage Tolerance</span>
+                        <span class="summary-label lang-id">Toleransi Slippage</span>
+                        <span class="summary-value">0.5%</span>
                     </div>
                     <div class="summary-row">
-                        <span class="summary-label lang-en">Estimated Weekly Yield</span>
-                        <span class="summary-label lang-id">Estimasi Hasil Mingguan</span>
-                        <span class="summary-value">~14.50 USDC</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="summary-label lang-en">Unlock Date</span>
-                        <span class="summary-label lang-id">Tanggal Pembukaan Kunci</span>
-                        <span class="summary-value">May 18, 2030</span>
+                        <span class="summary-label lang-en">Network Fee</span>
+                        <span class="summary-label lang-id">Biaya Jaringan</span>
+                        <span class="summary-value highlight">&lt; $0.01 (Base)</span>
                     </div>
                 </div>
 
-                <button class="btn-action" id="executeBtn">
-                    <span class="lang-en">Execute Lock Transaction</span>
-                    <span class="lang-id">Eksekusi Transaksi Kunci</span>
+                <button class="btn-action" id="swapActionBtn">
+                    <span class="lang-en">Swap Assets</span>
+                    <span class="lang-id">Tukar Aset</span>
                 </button>
             </div>
+        </div>
 
-            <!-- PANEL REWARD KANAN -->
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-                <div class="panel" style="padding: 24px;">
-                    <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Your Governance Stash</h3>
-                    <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Simpanan Tata Kelola Anda</h3>
-                    <div class="reward-card">
-                        <div class="reward-info">
-                            <h4 class="lang-en">Locked Balance</h4>
-                            <h4 class="lang-id">Saldo Terkunci</h4>
-                            <p>1,000 $ZNQ</p>
-                        </div>
-                    </div>
-                    <div class="reward-card">
-                        <div class="reward-info">
-                            <h4 class="lang-en">Current Voting Weight</h4>
-                            <h4 class="lang-id">Bobot Suara Saat Ini</h4>
-                            <p style="color: #22d3ee;">1,000 veZNQ</p>
-                        </div>
-                    </div>
+        <!-- SEKSI 3: TABEL BRANKAS INVESTASI AKTIF (VAULTS OPTIMIZER) -->
+        <div id="page-vaults" class="page-section" style="display: none;">
+            <div class="panel">
+                <h3 class="panel-title lang-en">Automated Compounding Vaults</h3>
+                <h3 class="panel-title lang-id">Brankas Otomatisasi Hasil</h3>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="lang-en">Vault Name</th><th class="lang-id">Nama Brankas</th>
+                                <th class="lang-en">Total Deposited (TVL)</th><th class="lang-id">Total Disetor (TVL)</th>
+                                <th class="lang-en">Your Balance</th><th class="lang-id">Saldo Anda</th>
+                                <th class="cyan-text">Boosted APY</th>
+                                <th style="text-align: right;" class="lang-en">Action</th><th style="text-align: right;" class="lang-id">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="pool-title">WETH / USDC</div>
+                                    <span class="badge-pool lang-en">Standard</span><span class="badge-pool lang-id">Standar</span>
+                                </td>
+                                <td>$18,452,000</td>
+                                <td>0.00 LP</td>
+                                <td class="boost-apr">32.8% 🔥</td>
+                                <td style="text-align: right;"><button class="btn-sm id-vault-btn">Deposit</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="pool-title">USDC / USDt</div>
+                                    <span class="badge-pool">Stable</span>
+                                </td>
+                                <td>$14,210,500</td>
+                                <td>540.20 LP</td>
+                                <td class="boost-apr">11.5% 🔥</td>
+                                <td style="text-align: right;"><button class="btn-sm id-vault-btn">Manage</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="pool-title">$ZNQ / WETH</div>
+                                    <span class="badge-pool boost">Volatile</span>
+                                </td>
+                                <td>$10,188,704</td>
+                                <td>1,250.00 LP</td>
+                                <td class="boost-apr">114.6% 🔥</td>
+                                <td style="text-align: right;"><button class="btn-sm id-vault-btn">Manage</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="panel" style="padding: 24px;">
-                    <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Claimable Real Yield</h3>
-                    <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Bagi Hasil yang Dapat Diklaim</h3>
-                    <div class="reward-card" style="background-color: rgba(34, 211, 238, 0.02); border-color: rgba(34, 211, 238, 0.1);">
-                        <div class="reward-info">
-                            <h4>USDC Rewards</h4>
-                            <p style="color: #22d3ee;">142.50 USDC</p>
-                        </div>
-                        <button class="btn-sm" id="claimBtn">Claim</button>
-                    </div>
-                </div>
             </div>
-        </section>
-    </div>
+        </div>
 
-    <!-- PLACEHOLDER HALAMAN FITUR BARU LAINNYA -->
-    <div id="page-swap" class="page-section" style="display: none;">
-        <div class="panel text-center">
-            <h3 class="panel-title">🔄 ZONIQ Swap Platform (DEX)</h3>
-            <p class="lang-en" style="color: #9ca3af; font-size: 14px;">Liquidity pooling integration code is ready staged for Base L2 Router.</p>
-            <p class="lang-id" style="color: #9ca3af; font-size: 14px;">Kode integrasi kolam likuiditas telah siap dipetakan untuk Router L2 Base.</p>
-            </div>
-    </div>
-
-    <div id="page-vaults" class="page-section" style="display: none;">
-        <div class="panel text-center">
-            <h3 class="panel-title">🌾 ZONIQ Yield Optimizer Vaults</h3>
-            <p class="lang-en" style="color: #9ca3af; font-size: 14px;">Automated compounding yield system configuration interface placeholder.</p>
-                <p class="lang-id" style="color: #9ca3af; font-size: 14px;">Antarmuka konfigurasi sistem otomatisasi pelipatganda hasil bunga investasi.</p>
-            </div>
-    </div>
-
-    <div id="page-governance" class="page-section" style="display: none;">
-        <div class="panel text-center">
-            <h3 class="panel-title">🔒 veZNQ Governance & Gauge Voting</h3>
-            <p class="lang-en" style="color: #9ca3af; font-size: 14px;">Decentralized Autonomous Organization (DAO) voting protocol activation module.</p>
+        <!-- SEKSI 4: GOVERNANCE -->
+        <div id="page-governance" class="page-section" style="display: none;">
+            <div class="panel" style="text-align: center;">
+                <h3 class="panel-title">🔒 veZNQ Governance & Gauge Voting</h3>
+                <p class="lang-en" style="color: #9ca3af; font-size: 14px;">Decentralized Autonomous Organization (DAO) voting protocol activation module.</p>
                 <p class="lang-id" style="color: #9ca3af; font-size: 14px;">Modul aktivasi protokol pemungutan suara Organisasi Otonom Terdesentralisasi (DAO).</p>
             </div>
-    </div>
-</main>
+        </div>
+    </main>
 
-    <!-- SCRIPT LOGIKA KONTROL INTERAKTIF -->
+    <!-- INTERACTIVE SCRIPT -->
     <script>
         // 1. Logika Pengalihan Dua Bahasa (EN/ID)
         document.getElementById('appLangSwitcher').addEventListener('change', function(e) {
@@ -486,7 +653,20 @@
             });
         });
 
-        // 3. LOGIKA TOMBOL PANAH FLOATING BERWARNA UNTUK MENU HP
+        // 3. Logika Navigasi Menu Sidebar (SPA)
+        function switchPage(pageId, element) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => { page.style.display = 'none'; });
+
+            const activePage = document.getElementById(`page-${pageId}`);
+            if (activePage) { activePage.style.display = 'block'; }
+
+            const menuItems = document.querySelectorAll('.nav-item');
+            menuItems.forEach(item => { item.classList.remove('active'); });
+            element.classList.add('active');
+        }
+
+        // 4. Logika Menu HP Hamburger Toggle
         const menuToggleBtn = document.getElementById('menuToggleBtn');
         const appSidebar = document.getElementById('appSidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -494,20 +674,34 @@
         function toggleMobileMenu() {
             const isOpen = appSidebar.classList.toggle('open');
             sidebarOverlay.classList.toggle('active');
-            
-            // Ubah ikon tombol panah: ☰ saat tertutup, dan ✕ (atau ikon kembali) saat menu terbuka
             if (isOpen) {
                 menuToggleBtn.innerHTML = '✕';
-                menuToggleBtn.style.background = 'linear-gradient(135deg, #ef4444 0%, #991b1b 100%)'; // Berubah merah saat menu terbuka
+                menuToggleBtn.style.background = 'linear-gradient(135deg, #ef4444 0%, #991b1b 100%)';
             } else {
                 menuToggleBtn.innerHTML = '☰';
-                menuToggleBtn.style.background = 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)'; // Kembali biru cerah khas Base
+                menuToggleBtn.style.background = 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)';
             }
         }
-
         menuToggleBtn.addEventListener('click', toggleMobileMenu);
-        sidebarOverlay.addEventListener('click', toggleMobileMenu); // Tutup menu jika area luar/gelap diklik
+        sidebarOverlay.addEventListener('click', toggleMobileMenu);
 
+        // 5. Logika Toast Notifikasi Pop-up (Multi-Binding)
+        const toast = document.getElementById('transactionToast');
+
+        function showNotification() {
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 4000);
+        }
+        
+        // Pasang event ke semua tombol aksi dApp
+        document.getElementById('executeBtn').addEventListener('click', showNotification);
+        document.getElementById('claimBtn').addEventListener('click', showNotification);
+        document.getElementById('swapActionBtn').addEventListener('click', showNotification);
+        
+        document.querySelectorAll('.id-vault-btn').forEach(btn => {
+            btn.addEventListener('click', showNotification);
+        });
+    
         // LOGIKA SKRIP BERPINDAH HALAMAN SECARA DINAMIS (DAPP NAVIGATION HUB)
 function switchPage(pageId, element) {
     // 1. Sembunyikan semua kontainer seksi halaman utama terlebih dahulu
