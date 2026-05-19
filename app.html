@@ -127,7 +127,7 @@
             margin-bottom: 40px;
             gap: 16px;
         }
-        @media (max-width: 480px) {
+        @media (max-width: 640px) {
             .topbar { flex-direction: column; align-items: flex-start; }
             .right-controls { width: 100%; justify-content: space-between; }
         }
@@ -146,7 +146,14 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .btn-wallet {
+
+        /* ==========================================================================
+           INTEGRASI STYLE MODUL WEB3 CONNECT SMART WALLET
+           ========================================================================== */
+        .web3-connect-container {
+            display: inline-block;
+        }
+        .btn-smart-connect {
             background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
             color: white;
             border: none;
@@ -155,7 +162,90 @@
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
+        .btn-smart-connect:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+            filter: brightness(1.05);
+        }
+        .wallet-icon {
+            width: 16px;
+            height: 16px;
+        }
+        .wallet-dropdown-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background-color: #0f131c;
+            border: 1px solid #1e2533;
+            padding: 6px 14px;
+            border-radius: 12px;
+        }
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .wallet-avatar {
+            position: relative;
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle, #3b82f6 0%, #8b5cf6 100%);
+            border-radius: 50%;
+        }
+        .badge-smart-wallet {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            background-color: #10b981;
+            color: white;
+            font-size: 7px;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 1px 3px;
+            border-radius: 4px;
+            border: 1.5px solid #0f131c;
+        }
+        .wallet-address-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .address-text {
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .network-text {
+            color: #6b7280;
+            font-size: 10px;
+            font-weight: 500;
+        }
+        .btn-disconnect {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .btn-disconnect:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+        .style-hidden {
+            display: none !important;
+        }
+        /* ========================================================================== */
 
         .dashboard-grid {
             display: grid;
@@ -258,6 +348,7 @@
             border: 1px solid #1e2533;
             border-radius: 16px;
             padding: 20px;
+            margin-bottom: 166px; /* Sesuai dengan markup asli */
             margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
@@ -381,37 +472,9 @@
             border-color: rgba(34, 211, 238, 0.2);
         }
     </style>
-
-    <style>
-  :root {
-    --primary-glow: #3b82f6;
-    --primary-hover: #2563eb;
-    --bg-dark-surface: #1e293b;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-    --border-color: rgba(255, 255, 255, 0.08);
-    --success-green: #10b981;
-  }
-  .web3-connect-container { display: inline-block; }
-  .btn-smart-connect { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, var(--primary-glow), #4f46e5); color: #ffffff; border: none; padding: 10px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); }
-  .btn-smart-connect:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); filter: brightness(1.1); }
-  .wallet-icon { width: 18px; height: 18px; }
-  .wallet-dropdown-status { display: flex; align-items: center; gap: 12px; background-color: var(--bg-dark-surface); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 14px; }
-  .wallet-info { display: flex; align-items: center; gap: 10px; }
-  .wallet-avatar { position: relative; width: 32px; height: 32px; background: radial-gradient(circle, #ec4899 0%, #8b5cf6 100%); border-radius: 50%; }
-  .badge-smart-wallet { position: absolute; bottom: -4px; right: -4px; background-color: var(--success-green); color: white; font-size: 8px; font-weight: 800; text-transform: uppercase; padding: 2px 4px; border-radius: 4px; border: 1.5px solid var(--bg-dark-surface); }
-  .wallet-address-details { display: flex; flex-direction: column; }
-  .address-text { color: var(--text-main); font-size: 14px; font-weight: 500; letter-spacing: 0.5px; }
-  .network-text { color: var(--text-muted); font-size: 11px; }
-  .btn-disconnect { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s; }
-  .btn-disconnect:hover { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; }
-  .style-hidden { display: none !important; }
-</style>
-    
 </head>
 <body>
 
-    <!-- NOTIFIKASI POP-UP TOAST -->
     <div class="toast-container" id="toastContainer">
         <div class="toast" id="transactionToast">
             <div class="toast-icon">✅</div>
@@ -427,7 +490,6 @@
     <button id="menuToggleBtn" class="menu-toggle">☰</button>
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-    <!-- SIDEBAR NAVIGASI KIRI -->
     <aside id="appSidebar">
         <div>
             <button onclick="window.location.href='index.html'" style="background: none; border: 1px solid #1e2533; color: #6b7280; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 24px; width: 100%; text-align: left; transition: all 0.2s;" onmouseover="this.style.color='#ffffff'; this.style.borderColor='#3b82f6';" onmouseout="this.style.color='#6b7280'; this.style.borderColor='#1e2533';">
@@ -446,7 +508,6 @@
         <div style="font-size: 11px; color: #4b5563; padding-left: 16px;">Base Network Connected</div>
     </aside>
 
-    <!-- AREA UTAMA DASHBOARD -->
     <main class="main-content">
         <header class="topbar">
             <div>
@@ -458,28 +519,39 @@
                     <option value="en">🌐 EN</option>
                     <option value="id">🌐 ID</option>
                 </select>
+                
                 <div class="web3-connect-container">
-  <button id="btn-connect-wallet" class="btn-smart-connect">
-    <svg class="wallet-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0 0-4z"></path><circle cx="16" cy="12" r="1"></circle></svg>
-    <span>Connect Wallet</span>
-  </button>
+                    <button id="btn-connect-wallet" class="btn-smart-connect">
+                        <svg class="wallet-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 0 0-4z"></path>
+                            <circle cx="16" cy="12" r="1"></circle>
+                        </svg>
+                        <span class="lang-en">Connect Wallet</span>
+                        <span class="lang-id">Hubungkan Dompet</span>
+                    </button>
 
-  <div id="wallet-connected-status" class="wallet-dropdown-status style-hidden">
-    <div class="wallet-info">
-      <div class="wallet-avatar"><span class="badge-smart-wallet">Smart</span></div>
-      <div class="wallet-address-details">
-        <span id="user-address" class="address-text">0x000...0000</span>
-        <span id="network-name" class="network-text">Connected</span>
-      </div>
-    </div>
-    <button id="btn-disconnect" class="btn-disconnect" title="Disconnect Wallet">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-    </button>
-  </div>
-</div>
+                    <div id="wallet-connected-status" class="wallet-dropdown-status style-hidden">
+                        <div class="wallet-info">
+                            <div class="wallet-avatar">
+                                <span class="badge-smart-wallet">Smart</span>
+                            </div>
+                            <div class="wallet-address-details">
+                                <span id="user-address" class="address-text">0x000...0000</span>
+                                <span id="network-name" class="network-text">Base Mainnet</span>
+                            </div>
+                        </div>
+                        <button id="btn-disconnect" class="btn-disconnect" title="Disconnect Wallet">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                </div>
         </header>
 
-        <!-- SEKSI 1: DASHBOARD -->
         <div id="page-dashboard" class="page-section">
             <section class="dashboard-grid">
                 <div class="panel">
@@ -565,13 +637,11 @@
             </section>
         </div>
 
-        <!-- SEKSI 2: KOTAK TRANSAKSI SWAP (DEX) -->
         <div id="page-swap" class="page-section" style="display: none;">
             <div class="panel swap-box">
                 <h3 class="panel-title lang-en">Swap Tokens</h3>
                 <h3 class="panel-title lang-id">Tukar Token</h3>
                 
-                <!-- Input Token Asal -->
                 <div class="form-group">
                     <label class="form-label lang-en">From</label>
                     <label class="form-label lang-id">Dari</label>
@@ -581,12 +651,10 @@
                     </div>
                 </div>
 
-                <!-- Tombol Tukar Arah Panah -->
                 <div class="swap-icon-container">
                     <button class="swap-arrow-btn">⬇</button>
                 </div>
 
-                <!-- Input Token Tujuan -->
                 <div class="form-group" style="margin-top: 10px;">
                     <label class="form-label lang-en">To (Estimated)</label>
                     <label class="form-label lang-id">Ke (Estimasi)</label>
@@ -596,7 +664,6 @@
                     </div>
                 </div>
 
-                <!-- Detail Slip & Rute Transaksi -->
                 <div class="summary-box">
                     <div class="summary-row">
                         <span class="summary-label lang-en">Slippage Tolerance</span>
@@ -617,7 +684,6 @@
             </div>
         </div>
 
-        <!-- SEKSI 3: TABEL BRANKAS INVESTASI AKTIF (VAULTS OPTIMIZER) -->
         <div id="page-vaults" class="page-section" style="display: none;">
             <div class="panel">
                 <h3 class="panel-title lang-en">Automated Compounding Vaults</h3>
@@ -671,216 +737,194 @@
             </div>
         </div>
 
-        <!-- ==========================================================================
-     SEKSI 4: VEZNQ GOVERNANCE & GAUGE VOTING (INTEGRASI PENUH)
-     ========================================================================== -->
-<div id="page-governance" class="page-section" style="display: none;">
-    <style>
-        /* Gaya Visual Khusus Modul Governance */
-        .gov-header {
-            margin-bottom: 24px;
-        }
-        .gov-banner {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
-            border: 1px solid rgba(59, 130, 246, 0.15);
-            padding: 24px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-        @media (max-width: 600px) { .gov-banner { flex-direction: column; align-items: flex-start; } }
-        
-        .gov-banner-text h4 { font-size: 16px; color: #ffffff; font-weight: 700; margin-bottom: 6px; }
-        .gov-banner-text p { font-size: 13px; color: #9ca3af; line-height: 1.5; margin: 0; }
-        
-        /* Bar Progress Total Alokasi Suara */
-        .vote-progress-container {
-            margin-bottom: 30px;
-            background-color: #0f131c;
-            border: 1px solid #1e2533;
-            padding: 20px;
-            border-radius: 16px;
-        }
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #6b7280;
-            margin-bottom: 10px;
-        }
-        .progress-bar-bg {
-            background-color: #080b11;
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-            border: 1px solid #1e2533;
-        }
-        .progress-bar-fill {
-            background: linear-gradient(90deg, #2563eb 0%, #22d3ee 100%);
-            height: 100%;
-            width: 0%; /* Diatur dinamis via JavaScript */
-            transition: width 0.3s ease;
-        }
+        <div id="page-governance" class="page-section" style="display: none;">
+            <style>
+                /* Gaya Visual Khusus Modul Governance */
+                .gov-header { margin-bottom: 24px; }
+                .gov-banner {
+                    background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+                    border: 1px solid rgba(59, 130, 246, 0.15);
+                    padding: 24px;
+                    border-radius: 16px;
+                    margin-bottom: 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                }
+                @media (max-width: 600px) { .gov-banner { flex-direction: column; align-items: flex-start; } }
+                
+                .gov-banner-text h4 { font-size: 16px; color: #ffffff; font-weight: 700; margin-bottom: 6px; }
+                .gov-banner-text p { font-size: 13px; color: #9ca3af; line-height: 1.5; margin: 0; }
+                
+                .vote-progress-container {
+                    margin-bottom: 30px;
+                    background-color: #0f131c;
+                    border: 1px solid #1e2533;
+                    padding: 20px;
+                    border-radius: 16px;
+                }
+                .progress-header {
+                    display: flex;
+                    justify-content: space-between;
+                    font-size: 12px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    color: #6b7280;
+                    margin-bottom: 10px;
+                }
+                .progress-bar-bg {
+                    background-color: #080b11;
+                    height: 12px;
+                    border-radius: 6px;
+                    overflow: hidden;
+                    border: 1px solid #1e2533;
+                }
+                .progress-bar-fill {
+                    background: linear-gradient(90deg, #2563eb 0%, #22d3ee 100%);
+                    height: 100%;
+                    width: 0%;
+                    transition: width 0.3s ease;
+                }
 
-        /* Tabel Pengaturan Bobot Emisi (Gauge Table) */
-        .table-panel {
-            background-color: #0f131c;
-            border: 1px solid #1e2533;
-            border-radius: 20px;
-            padding: 24px;
-        }
-        .gov-table-responsive {
-            overflow-x: auto;
-            margin-top: 15px;
-        }
-        .gov-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-            text-align: left;
-        }
-        .gov-table th {
-            background-color: #080b11;
-            color: #6b7280;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 14px 20px;
-            border-bottom: 1px solid #1e2533;
-        }
-        .gov-table td {
-            padding: 16px 20px;
-            border-bottom: 1px solid rgba(30, 37, 51, 0.6);
-            color: #d1d5db;
-            vertical-align: middle;
-        }
-        .gov-table tr:last-child td { border-bottom: none; }
-        
-        /* Input Angka Persentase */
-        .vote-input-wrapper {
-            display: flex;
-            align-items: center;
-            background-color: #080b11;
-            border: 1px solid #1e2533;
-            border-radius: 10px;
-            padding: 6px 12px;
-            width: 110px;
-        }
-        .vote-input-wrapper input {
-            background: none;
-            border: none;
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 700;
-            width: 100%;
-            outline: none;
-            text-align: right;
-        }
-        /* Menghilangkan panah spinner default bawaan browser */
-        .vote-input-wrapper input::-webkit-outer-spin-button,
-        .vote-input-wrapper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        .vote-input-wrapper span { color: #6b7280; font-size: 13px; font-weight: 700; margin-left: 4px; }
-    </style>
+                .table-panel {
+                    background-color: #0f131c;
+                    border: 1px solid #1e2533;
+                    border-radius: 20px;
+                    padding: 24px;
+                }
+                .gov-table-responsive { overflow-x: auto; margin-top: 15px; }
+                .gov-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
+                .gov-table th {
+                    background-color: #080b11;
+                    color: #6b7280;
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    padding: 14px 20px;
+                    border-bottom: 1px solid #1e2533;
+                }
+                .gov-table td {
+                    padding: 16px 20px;
+                    border-bottom: 1px solid rgba(30, 37, 51, 0.6);
+                    color: #d1d5db;
+                    vertical-align: middle;
+                }
+                .gov-table tr:last-child td { border-bottom: none; }
+                
+                .vote-input-wrapper {
+                    display: flex;
+                    align-items: center;
+                    background-color: #080b11;
+                    border: 1px solid #1e2533;
+                    border-radius: 10px;
+                    padding: 6px 12px;
+                    width: 110px;
+                }
+                .vote-input-wrapper input {
+                    background: none;
+                    border: none;
+                    color: #ffffff;
+                    font-size: 14px;
+                    font-weight: 700;
+                    width: 100%;
+                    outline: none;
+                    text-align: right;
+                }
+                .vote-input-wrapper input::-webkit-outer-spin-button,
+                .vote-input-wrapper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+                .vote-input-wrapper span { color: #6b7280; font-size: 13px; font-weight: 700; margin-left: 4px; }
+            </style>
 
-    <!-- BANNER RINGKASAN EPOCH TATA KELOLA -->
-    <div class="gov-banner">
-        <div class="gov-banner-text">
-            <h4 class="lang-en">Gauge Voting - Epoch 14 Active</h4>
-            <h4 class="lang-id">Pemungutan Suara Emisi - Epoh 14 Aktif</h4>
-            <p class="lang-en">Lock your $ZNF to gain veZNF. Use your voting weight weekly to direct daily $ZNF reward emissions to your preferred liquidity pools.</p>
-            <p class="lang-id">Kunci $ZNF Anda untuk mendapatkan veZNQ. Gunakan bobot hak suara Anda setiap minggu untuk mengarahkan emisi hadiah harian $ZNF ke kolam likuiditas pilihan Anda.</p>
-        </div>
-        <div style="text-align: right; min-width: 140px;">
-            <span class="lang-en" style="font-size: 11px; font-weight: 700; color: #6b7280; uppercase; display:block; margin-bottom:4px;">Time Remaining</span>
-            <span class="lang-id" style="font-size: 11px; font-weight: 700; color: #6b7280; uppercase; display:block; margin-bottom:4px;">Sisa Waktu</span>
-            <span style="font-size: 18px; font-weight: 700; color: #22d3ee;">2d 14h 32m</span>
-        </div>
-    </div>
-
-    <!-- PROGRESS AREA ALOKASI HAK SUARA -->
-    <div class="vote-progress-container">
-        <div class="progress-header">
-            <div>
-                <span class="lang-en">Your Voting Power Allocation</span>
-                <span class="lang-id">Alokasi Kekuatan Suara Anda</span>
+            <div class="gov-banner">
+                <div class="gov-banner-text">
+                    <h4 class="lang-en">Gauge Voting - Epoch 14 Active</h4>
+                    <h4 class="lang-id">Pemungutan Suara Emisi - Epoh 14 Aktif</h4>
+                    <p class="lang-en">Lock your $ZNF to gain veZNF. Use your voting weight weekly to direct daily $ZNF reward emissions to your preferred liquidity pools.</p>
+                    <p class="lang-id">Kunci $ZNF Anda untuk mendapatkan veZNQ. Gunakan bobot hak suara Anda setiap minggu untuk mengarahkan emisi hadiah harian $ZNF ke kolam likuiditas pilihan Anda.</p>
+                </div>
+                <div style="text-align: right; min-width: 140px;">
+                    <span class="lang-en" style="font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; display:block; margin-bottom:4px;">Time Remaining</span>
+                    <span class="lang-id" style="font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; display:block; margin-bottom:4px;">Sisa Waktu</span>
+                    <span style="font-size: 18px; font-weight: 700; color: #22d3ee;">2d 14h 32m</span>
+                </div>
             </div>
-            <div style="color: #ffffff;"><span id="totalAllocatedPercent">0</span>% / 100%</div>
-        </div>
-        <div class="progress-bar-bg">
-            <div id="govProgressBar" class="progress-bar-fill"></div>
-        </div>
-    </div>
 
-    <!-- PANEL TABEL GAUGE EMISI -->
-    <div class="table-panel">
-        <h3 class="panel-title lang-en" style="margin-bottom: 6px;">Pool Weight Allocations</h3>
-        <h3 class="panel-title lang-id" style="margin-bottom: 6px;">Alokasi Bobot Kolam</h3>
-        <p class="lang-en" style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Distribute your total veZNF weight across the available pools below. Ensure the total does not exceed 100%.</p>
-        <p class="lang-id" style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Distribusikan total bobot veZNF Anda ke kolam-kolam yang tersedia di bawah ini. Pastikan jumlah totalnya tidak melebihi 100%.</p>
-        
-        <div class="gov-table-responsive">
-            <table class="gov-table">
-                <thead>
-                    <tr>
-                        <th class="lang-en">Pool Pair</th><th class="lang-id">Pasangan Kolam</th>
-                        <th class="lang-en">Current Total Weight</th><th class="lang-id">Bobot Total Saat Ini</th>
-                        <th class="lang-en">Next Epoch Estimate</th><th class="lang-id">Estimasi Epoh Berikutnya</th>
-                        <th class="lang-en" style="text-align: right;">Your Allocation</th><th class="lang-id" style="text-align: right;">Alokasi Anda</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="font-weight: 700; color: #ffffff;">WETH / USDC</td>
-                        <td>42.51%</td>
-                        <td style="color: #22d3ee;">~1.42 $ZNF / block</td>
-                        <td style="text-align: right; display: flex; justify-content: flex-end;">
-                            <div class="vote-input-wrapper">
-                                <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
-                                <span>%</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700; color: #ffffff;">USDC / USDt</td>
-                        <td>21.14%</td>
-                        <td style="color: #22d3ee;">~0.71 $ZNF / block</td>
-                        <td style="text-align: right; display: flex; justify-content: flex-end;">
-                            <div class="vote-input-wrapper">
-                                <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
-                                <span>%</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 700; color: #ffffff;">$ZNF / WETH</td>
-                        <td>36.35%</td>
-                        <td style="color: #22d3ee;">~1.21 $ZNF / block</td>
-                        <td style="text-align: right; display: flex; justify-content: flex-end;">
-                            <div class="vote-input-wrapper">
-                                <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
-                                <span>%</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <div class="vote-progress-container">
+                <div class="progress-header">
+                    <div>
+                        <span class="lang-en">Your Voting Power Allocation</span>
+                        <span class="lang-id">Alokasi Kekuatan Suara Anda</span>
+                    </div>
+                    <div style="color: #ffffff;"><span id="totalAllocatedPercent">0</span>% / 100%</div>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="govProgressBar" class="progress-bar-fill"></div>
+                </div>
+            </div>
 
-        <!-- Tombol Pengiriman Hasil Vote -->
-        <button class="btn-action" id="submitVotesBtn" style="margin-top: 30px; background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);">
-            <span class="lang-en">Submit Gauge Votes</span>
-            <span class="lang-id">Kirim Pilihan Suara Emisi</span>
-        </button>
-    </div>
-</div>
+            <div class="table-panel">
+                <h3 class="panel-title lang-en" style="margin-bottom: 6px;">Pool Weight Allocations</h3>
+                <h3 class="panel-title lang-id" style="margin-bottom: 6px;">Alokasi Bobot Kolam</h3>
+                <p class="lang-en" style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Distribute your total veZNF weight across the available pools below. Ensure the total does not exceed 100%.</p>
+                <p class="lang-id" style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Distribusikan total bobot veZNF Anda ke kolam-kolam yang tersedia di bawah ini. Pastikan jumlah totalnya tidak melebihi 100%.</p>
+                
+                <div class="gov-table-responsive">
+                    <table class="gov-table">
+                        <thead>
+                            <tr>
+                                <th class="lang-en">Pool Pair</th><th class="lang-id">Pasangan Kolam</th>
+                                <th class="lang-en">Current Total Weight</th><th class="lang-id">Bobot Total Saat Ini</th>
+                                <th class="lang-en">Next Epoch Estimate</th><th class="lang-id">Estimasi Epoh Berikutnya</th>
+                                <th class="lang-en" style="text-align: right;">Your Allocation</th><th class="lang-id" style="text-align: right;">Alokasi Anda</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 700; color: #ffffff;">WETH / USDC</td>
+                                <td>42.51%</td>
+                                <td style="color: #22d3ee;">~1.42 $ZNF / block</td>
+                                <td style="text-align: right; display: flex; justify-content: flex-end;">
+                                    <div class="vote-input-wrapper">
+                                        <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
+                                        <span>%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: #ffffff;">USDC / USDt</td>
+                                <td>21.14%</td>
+                                <td style="color: #22d3ee;">~0.71 $ZNF / block</td>
+                                <td style="text-align: right; display: flex; justify-content: flex-end;">
+                                    <div class="vote-input-wrapper">
+                                        <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
+                                        <span>%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: #ffffff;">$ZNF / WETH</td>
+                                <td>36.35%</td>
+                                <td style="color: #22d3ee;">~1.21 $ZNF / block</td>
+                                <td style="text-align: right; display: flex; justify-content: flex-end;">
+                                    <div class="vote-input-wrapper">
+                                        <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
+                                        <span>%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="btn-action" id="submitVotesBtn" style="margin-top: 30px; background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);">
+                    <span class="lang-en">Submit Gauge Votes</span>
+                    <span class="lang-id">Kirim Pilihan Suara Emisi</span>
+                </button>
+            </div>
+        </div>
     </main>
 
-    <!-- INTERACTIVE SCRIPT -->
     <script>
         // 1. Logika Pengalihan Dua Bahasa (EN/ID)
         document.getElementById('appLangSwitcher').addEventListener('change', function(e) {
@@ -940,43 +984,69 @@
         document.getElementById('executeBtn').addEventListener('click', showNotification);
         document.getElementById('claimBtn').addEventListener('click', showNotification);
         document.getElementById('swapActionBtn').addEventListener('click', showNotification);
+        document.getElementById('submitVotesBtn').addEventListener('click', showNotification);
         
         document.querySelectorAll('.id-vault-btn').forEach(btn => {
             btn.addEventListener('click', showNotification);
         });
-    
+
+        // 6. Logika Perhitungan Gauge Voting Power Allocation
+        function calculateTotalVotes() {
+            const inputs = document.querySelectorAll('.gauge-input');
+            let total = 0;
+            inputs.forEach(input => {
+                let val = parseInt(input.value) || 0;
+                if (val < 0) val = 0;
+                if (val > 100) val = 100;
+                total += val;
+            });
+            
+            // Batasi total maksimal jika user input manual berlebih
+            if (total > 100) total = 100;
+
+            document.getElementById('totalAllocatedPercent').innerText = total;
+            document.getElementById('govProgressBar').style.width = total + '%';
+        }
+
+        // ==========================================================================
+        // 7. LOGIKA OPERASIONAL WALLET CONNECT / SMART WALLET
+        // ==========================================================================
+        const btnConnect = document.getElementById('btn-connect-wallet');
+        const statusConnected = document.getElementById('wallet-connected-status');
+        const addressText = document.getElementById('user-address');
+        const btnDisconnect = document.getElementById('btn-disconnect');
+
+        // Fungsi Handler Perubahan Status Tampilan Web3 dApp
+        function updateWalletUI(isConnected, address = "", network = "Base Mainnet") {
+            if (isConnected) {
+                btnConnect.classList.add('style-hidden');
+                statusConnected.classList.remove('style-hidden');
+                // Persingkat string wallet address (0x71C...89bA)
+                const abbreviatedAddress = address.substring(0, 6) + "..." + address.substring(address.length - 4);
+                addressText.innerText = abbreviatedAddress;
+            } else {
+                btnConnect.classList.remove('style-hidden');
+                statusConnected.classList.add('style-hidden');
+            }
+        }
+
+        // Simulasi Aksi Trigger Tombol Hubungkan (Ganti bagian ini dengan integrasi SDK Web3/Wagmi Anda)
+        btnConnect.addEventListener('click', () => {
+            console.log("Menghubungkan dApp ke provider Smart Wallet...");
+            
+            // Menggunakan dummy address akun pintar sesuai spesifikasi ZoniqFi sebelumnya
+            const mockSmartAccount = "0x71C231271f3b141151955F7a5c1A55f14A3B3a90";
+            updateWalletUI(true, mockSmartAccount, "Base Mainnet");
+            showNotification();
+        });
+
+        // Trigger Putuskan Hubungan Dompet
+        btnDisconnect.addEventListener('click', (e) => {
+            e.stopPropagation(); // Mencegah bubbling event
+            console.log("Memutus koneksi dari Smart Wallet.");
+            updateWalletUI(false);
+        });
+        // ==========================================================================
     </script>
-
-    <script>
-  const btnConnect = document.getElementById('btn-connect-wallet');
-  const statusConnected = document.getElementById('wallet-connected-status');
-  const addressText = document.getElementById('user-address');
-  const btnDisconnect = document.getElementById('btn-disconnect');
-  const networkText = document.getElementById('network-name');
-
-  function perbaruiTampilanDompet(isConnected, address = "", network = "Base Network") {
-    if (isConnected) {
-      btnConnect.classList.add('style-hidden');
-      statusConnected.classList.remove('style-hidden');
-      addressText.innerText = address.substring(0, 6) + "..." + address.substring(address.length - 4);
-      networkText.innerText = network;
-    } else {
-      btnConnect.classList.remove('style-hidden');
-      statusConnected.classList.add('style-hidden');
-    }
-  }
-
-  // Integrasikan fungsi ini ke SDK Wallet Anda nantinya
-  btnConnect.addEventListener('click', () => {
-    // Jalankan modal Smart Wallet Anda di sini
-    const dummyAddress = "0x71C231271f3b141151955F7a5c1A55f14A3B3a90"; 
-    perbaruiTampilanDompet(true, dummyAddress, "Base Mainnet");
-  });
-
-  btnDisconnect.addEventListener('click', () => {
-    perbaruiTampilanDompet(false);
-  });
-</script>
-    
 </body>
 </html>
