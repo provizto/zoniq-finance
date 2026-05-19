@@ -969,8 +969,20 @@
                     </svg>
                     <div class="wallet-option-info">
                         <div class="wallet-option-name">MetaMask Browser</div>
-                        <div class="wallet-option-desc lang-en">Connect via MetaMask extension or mobile app</div>
-                        <div class="wallet-option-desc lang-id">Hubungkan via ekstensi atau aplikasi MetaMask</div>
+                        <div class="wallet-option-desc lang-en">Connect extension or open in MetaMask Mobile App</div>
+                        <div class="wallet-option-desc lang-id">Hubungkan ekstensi atau buka di Aplikasi HP MetaMask</div>
+                    </div>
+                </button>
+
+                <button class="wallet-option-item" id="optTrustWallet">
+                    <svg class="wallet-option-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2L4 6V15C4 21.4 8.7 27.3 16 30C23.3 27.3 28 21.4 28 15V6L16 2Z" fill="#3375BB"/>
+                        <path d="M16 6L7 9V15C7 20 10.6 24.7 16 26.8V6Z" fill="#FFFFFF" opacity="0.2"/>
+                    </svg>
+                    <div class="wallet-option-info">
+                        <div class="wallet-option-name">Trust Wallet</div>
+                        <div class="wallet-option-desc lang-en">Connect to Trust Wallet or launch Mobile App</div>
+                        <div class="wallet-option-desc lang-id">Sambungkan ke Trust Wallet atau buka Aplikasi HP</div>
                     </div>
                 </button>
 
@@ -982,24 +994,28 @@
                     <div class="wallet-option-info">
                         <div class="wallet-option-name">
                             <span>WalletConnect</span>
-                            <span class="badge-beta">Base Testnet</span>
+                            <span class="badge-beta">Base L2</span>
                         </div>
-                        <div class="wallet-option-desc lang-en">Scan QR code using any multi-chain mobile wallet</div>
-                        <div class="wallet-option-desc lang-id">Pindai kode QR menggunakan dompet seluler apa pun</div>
+                        <div class="wallet-option-desc lang-en">Trigger standard system QR or inter-app registry</div>
+                        <div class="wallet-option-desc lang-id">Picu sistem QR standar atau registri antar-aplikasi</div>
                     </div>
                 </button>
             </div>
             
             <div class="wallet-modal-footer lang-en">
-                By connecting, you agree to ZoniqFi's <a href="terms.html" target="_blank">Terms of Service</a>. This experimental platform is provided "AS IS" during the beta stage.
+                By connecting, you agree to ZoniqFi's <a href="tos.html" target="_blank">Terms of Service</a>. This platform connects directly to decentralized networks.
             </div>
             <div class="wallet-modal-footer lang-id">
-                Dengan menghubungkan, Anda menyetujui <a href="terms.html" target="_blank">Ketentuan Layanan</a> ZoniqFi. Platform eksperimental ini disediakan "APA ADANYA" selama tahap ujicoba.
+                Dengan menghubungkan, Anda menyetujui <a href="tos.html" target="_blank">Ketentuan Layanan</a> ZoniqFi. Platform ini terhubung langsung ke jaringan terdesentralisasi.
             </div>
         </div>
     </div>
 
     <script>
+        // --- CONFIGURATION URL ---
+        // GANTI INI dengan URL asli website dApp Anda ketika sudah online / di-hosting.
+        const DAPP_URL = "https://zoniqfi.com"; 
+
         // --- AMBIL ELEMEN DOM ---
         const btnConnectTrigger = document.getElementById('btnConnectTrigger');
         const walletModal = document.getElementById('walletModal');
@@ -1009,7 +1025,12 @@
         const btnDisconnect = document.getElementById('btnDisconnect');
         const toast = document.getElementById('transactionToast');
 
-        // --- 1. LOGIKA INTERAKSI WALLET MODAL ---
+        // Deteksi apakah user membuka dApp menggunakan smartphone (iOS / Android)
+        function isMobileDevice() {
+            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        // --- 1. LOGIKA INTERAKSI WALLET MODAL & DEEP LINKS ---
         btnConnectTrigger.addEventListener('click', () => walletModal.classList.remove('style-hidden'));
         btnCloseModal.addEventListener('click', () => walletModal.classList.add('style-hidden'));
         walletModal.addEventListener('click', (e) => { if (e.target === walletModal) walletModal.classList.add('style-hidden'); });
@@ -1031,9 +1052,45 @@
             showNotification();
         }
 
-        document.getElementById('optSmartAccount').addEventListener('click', () => executeWalletConnection("Smart Account", "0x71C231271f3b141151955F7a5c1A55f14A3B3a90"));
-        document.getElementById('optMetaMask').addEventListener('click', () => executeWalletConnection("MetaMask", "0x9E59A83b0B286d528bBAf38A1a65Cc68F019058b"));
-        document.getElementById('optWalletConnect').addEventListener('click', () => executeWalletConnection("WalletConnect", "0x3Fbc5601aCc8B928aA638fdf9872f2E908ba009a"));
+        // Handler Smart Account
+        document.getElementById('optSmartAccount').addEventListener('click', () => {
+            executeWalletConnection("Smart Account", "0x71C231271f3b141151955F7a5c1A55f14A3B3a90");
+        });
+
+        // Handler MetaMask (Dengan Mobile Deep Link Mux)
+        document.getElementById('optMetaMask').addEventListener('click', () => {
+            if (isMobileDevice()) {
+                // Menghapus 'https://' untuk standar parameter link MetaMask
+                const cleanUrl = DAPP_URL.replace(/^https?:\/\//, '');
+                window.open(`https://metamask.app.link/dapp/${cleanUrl}`, '_blank');
+                walletModal.classList.add('style-hidden');
+            } else {
+                executeWalletConnection("MetaMask", "0x9E59A83b0B286d528bBAf38A1a65Cc68F019058b");
+            }
+        });
+
+        // Handler Trust Wallet (Dengan Mobile Deep Link Mux)
+        document.getElementById('optTrustWallet').addEventListener('click', () => {
+            if (isMobileDevice()) {
+                const encodedUrl = encodeURIComponent(DAPP_URL);
+                window.open(`https://link.trustwallet.com/open_url?url=${encodedUrl}`, '_blank');
+                walletModal.classList.add('style-hidden');
+            } else {
+                executeWalletConnection("Trust Wallet", "0x6A19A83b0B286d528bBAf38A1a65Cc68F01905C2");
+            }
+        });
+
+        // Handler WalletConnect (Memicu sistem inter-app OS)
+        document.getElementById('optWalletConnect').addEventListener('click', () => {
+            if (isMobileDevice()) {
+                // Simulasi pemanggilan URI 'wc:' WalletConnect v2 standard untuk memicu popup aplikasi dompet bawaan HP
+                window.location.href = "wc:00e4735a3d73d6115482b881@2?bridge=https%3A%2F%2Fwalletconnect.zoniqfi.com";
+                walletModal.classList.add('style-hidden');
+            } else {
+                executeWalletConnection("WalletConnect", "0x3Fbc5601aCc8B928aA638fdf9872f2E908ba009a");
+            }
+        });
+
         btnDisconnect.addEventListener('click', () => toggleWalletUI(false));
 
 
@@ -1051,7 +1108,6 @@
                 total += value;
             });
 
-            // Proteksi batas maksimal alokasi 100%
             if (total > 100) {
                 alert("Total alokasi melebihi 100%! Sistem otomatis membatasi nilai.");
                 let excess = total - 100;
@@ -1105,7 +1161,6 @@
             menuItems.forEach(item => { item.classList.remove('active'); });
             element.classList.add('active');
             
-            // Tutup menu mobile otomatis setelah memindahkan halaman
             if(window.innerWidth <= 768) toggleMobileMenu();
         }
 
