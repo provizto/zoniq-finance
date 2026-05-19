@@ -901,59 +901,6 @@
             btn.addEventListener('click', showNotification);
         });
     
-    import '@rainbow-me/rainbowkit/styles.css';
-import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { WagmiProvider, createConfig, http } from 'wagmi';
-import { base, baseSepolia } from 'wagmi/chains';
-import { coinbaseWallet, metaMaskWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
-
-// 1. Konfigurasi Client & Konektor Dompet ZoniqFi
-const config = getDefaultConfig({
-  appName: 'ZoniqFi',
-  projectId: 'YOUR_WALLETCONNECT_PROJECT_ID', // Dapatkan gratis di ://walletconnect.com
-  chains: [base, baseSepolia],
-  
-  // Mengaktifkan Coinbase Smart Wallet dengan fitur Passkey otomatis
-  wallets: [
-    {
-      groupName: 'Recommended / Direkomendasikan',
-      wallets: [
-        coinbaseWallet({ 
-          preference: 'smartWallet' // Wajib diatur 'smartWallet' untuk mengaktifkan Passkey/Gasless L2
-        }),
-        metaMaskWallet,
-      ],
-    },
-    {
-      groupName: 'Other Wallets / Dompet Lainnya',
-      wallets: [
-        walletConnectWallet,
-      ],
-    },
-  ],
-  
-  // Pengarah jalur RPC Node Terdesentralisasi
-  transports: {
-    [base.id]: http('https://base.org'),
-    [baseSepolia.id]: http('https://base.org'),
-  },
-});
-
-// 2. Integrasi Fungsi Pemantau Status Hubungan Dompet (Wallet Status Listener)
-// Fungsi ini otomatis mengubah teks tombol "0x71C...89bA" pada topbar kanan app.html Anda
-function listenWalletConnection() {
-  // Pustaka Wagmi akan mendeteksi status on-chain secara real-time
-  const account = config.getClient().getState().account;
-  const walletBtn = document.querySelector('.btn-wallet');
-  
-  if (account && walletBtn) {
-    const address = account.address;
-    // Format alamat dompet menjadi ringkas (Contoh: 0x71C...89bA)
-    walletBtn.innerText = `${address.substring(0, 5)}...${address.substring(address.length - 4)}`;
-    walletBtn.style.background = 'linear-gradient(135deg, #22c55e 0%, #15803d 100%)'; // Berubah hijau saat sukses terkoneksi
-  }
-}
-
     </script>
 </body>
 </html>
