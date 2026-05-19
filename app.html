@@ -380,6 +380,115 @@
             color: #22d3ee;
             border-color: rgba(34, 211, 238, 0.2);
         }
+
+        /* Styling Pop-Up Modal untuk app.html */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(5, 7, 12, 0.8); /* Warna gelap transparan */
+    backdrop-filter: blur(8px); /* Efek blur blur modern pada dasbor belakang */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    z-index: 99999; /* Memastikan modal berada paling depan */
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background-color: #111622; /* Warna card disesuaikan tema DeFi */
+    border: 1px solid #1f293d;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 380px;
+    padding: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    transform: scale(0.95);
+    transition: transform 0.25s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #8a9fc2;
+    font-size: 26px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #ffffff;
+}
+
+.wallet-option-btn {
+    width: 100%;
+    background-color: #171e2e;
+    border: 1px solid #222c41;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.wallet-option-btn:hover {
+    background-color: #1f293e;
+    border-color: #0052FF;
+}
+
+.badge-smart {
+    background-color: #0052FF;
+    color: white;
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.wallet-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wallet-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+}
+
     </style>
 </head>
 <body>
@@ -431,7 +540,7 @@
                     <option value="en">🌐 EN</option>
                     <option value="id">🌐 ID</option>
                 </select>
-                <button onclick="window.location.href='wallet.html'" class="btn-wallet">Connect Wallet</button>
+                <button id="connect-wallet-nav" class="btn-wallet">Connect Wallet</button>
             </div>
         </header>
 
@@ -902,5 +1011,125 @@
         });
     
     </script>
+
+    <!-- ISI UTAMA APP.HTML ANDA DI SINI (MAINTAIN CORE DASHBOARD) -->
+
+<!-- ========================================== -->
+<!-- SISIPKAN POP-UP MODAL INI DI ATAS </body> -->
+<!-- ========================================== -->
+<div id="wallet-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">Hubungkan Dompet</div>
+            <button id="close-modal-btn" class="close-btn">&times;</button>
+        </div>
+        
+        <!-- Pilihan 1: Coinbase Smart Wallet (Native Base L2) -->
+        <button id="choose-smart-wallet" class="wallet-option-btn">
+            <div class="wallet-info">
+                <img class="wallet-icon" src="https://githubusercontent.com" alt="Coinbase">
+                <span>Coinbase Smart Wallet</span>
+            </div>
+            <span class="badge-smart">Passkey / Instan</span>
+        </button>
+
+        <!-- Pilihan 2: MetaMask / Browser Extension -->
+        <button id="choose-injected-wallet" class="wallet-option-btn">
+            <div class="wallet-info">
+                <img class="wallet-icon" src="https://githubusercontent.com" alt="MetaMask">
+                <span>MetaMask & Browser Wallet</span>
+            </div>
+            <span>&rarr;</span>
+        </button>
+
+        <!-- Pilihan 3: Mobile Wallets (Scan QR Code) -->
+        <button id="choose-wallet-connect" class="wallet-option-btn">
+            <div class="wallet-info">
+                <img class="wallet-icon" src="https://githubusercontent.com" alt="WalletConnect">
+                <span>WalletConnect (Scan QR)</span>
+            </div>
+            <span>&rarr;</span>
+        </button>
+    </div>
+</div>
+
+    <script type="module">
+    import { createAppKit } from 'https://esm.sh'
+    import { base } from 'https://esm.sh/networks'
+
+    // 1. Masukkan Project ID Anda dari WalletConnect Cloud
+    const projectId = 'YOUR_WALLETCONNECT_PROJECT_ID'; 
+
+    // 2. Inisialisasi engine Web3
+    const appkit = createAppKit({
+        adapters: [],
+        networks: [base], // Kunci jaringan pada Base L2
+        projectId
+    });
+
+    // 3. Hubungkan ke elemen HTML app.html Anda
+    const modal = document.getElementById('wallet-modal');
+    const closeBtn = document.getElementById('close-modal-btn');
+    
+    // GANTI 'connect-wallet-nav' sesuai dengan ID tombol Connect asli yang ada di navbar app.html Anda
+    const navConnectBtn = document.getElementById('connect-wallet-nav'); 
+
+    // Logika pemicu klik tombol navbar asli
+    if (navConnectBtn) {
+        navConnectBtn.addEventListener('click', () => {
+            // Jika sudah terhubung, klik tombol akan membuka pengaturan akun (disconnect/switch net)
+            if (navConnectBtn.getAttribute('data-connected') === 'true') {
+                appkit.open({ view: 'Account' });
+            } else {
+                // Jika belum terhubung, munculkan pop-up kustom yang kita buat
+                modal.classList.add('active');
+            }
+        });
+    }
+
+    // Fungsi menutup pop-up
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
+
+    // Hubungkan tombol di dalam pop-up ke engine Web3
+    document.getElementById('choose-smart-wallet').addEventListener('click', async () => {
+        modal.classList.remove('active');
+        await appkit.open({ view: 'Connect' });
+    });
+
+    document.getElementById('choose-injected-wallet').addEventListener('click', async () => {
+        modal.classList.remove('active');
+        await appkit.open({ view: 'AllWallets' });
+    });
+
+    document.getElementById('choose-wallet-connect').addEventListener('click', async () => {
+        modal.classList.remove('active');
+        await appkit.open({ view: 'Connect' });
+    });
+
+    // Otomatis ubah UI Tombol Navbar Asli Anda saat Wallet terdeteksi masuk/keluar
+    appkit.subscribeAccount(account => {
+        if (!navConnectBtn) return;
+        
+        if (account.isConnected) {
+            const addr = account.address;
+            // Mengubah teks tombol navbar menjadi ringkasan address (cth: 0x71C...89bA)
+            navConnectBtn.innerText = `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
+            navConnectBtn.setAttribute('data-connected', 'true');
+            
+            // Mengubah style tombol navbar jadi pasif elegan (bisa disesuaikan dengan class css Anda)
+            navConnectBtn.style.background = '#171e2e';
+            navConnectBtn.style.border = '1px solid #222c41';
+        } else {
+            // Mengembalikan teks tombol navbar asli Anda saat terputus
+            navConnectBtn.innerText = 'Connect Wallet';
+            navConnectBtn.setAttribute('data-connected', 'false');
+            navConnectBtn.style.background = ''; // Kembalikan ke style css bawaan app.html Anda
+            navConnectBtn.style.border = '';
+        }
+    });
+</script>
+
+    
 </body>
 </html>
