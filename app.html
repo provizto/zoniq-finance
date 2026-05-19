@@ -1014,7 +1014,7 @@
     <script>
         // --- CONFIGURATION URL ---
         // GANTI INI dengan URL asli website dApp Anda ketika sudah online / di-hosting.
-        const DAPP_URL = "https://zoniqfi.com"; 
+        const DAPP_URL = "https://zoniqfinance.com"; 
 
         // --- AMBIL ELEMEN DOM ---
         const btnConnectTrigger = document.getElementById('btnConnectTrigger');
@@ -1065,7 +1065,7 @@
                 window.open(`https://metamask.app.link/dapp/${cleanUrl}`, '_blank');
                 walletModal.classList.add('style-hidden');
             } else {
-                executeWalletConnection("MetaMask", "0x9E59A83b0B286d528bBAf38A1a65Cc68F019058b");
+                executeWalletConnection("MetaMask", "0xe0F0eD0C7e64e21779615e90c884ec74B607778A");
             }
         });
 
@@ -1084,7 +1084,7 @@
         document.getElementById('optWalletConnect').addEventListener('click', () => {
             if (isMobileDevice()) {
                 // Simulasi pemanggilan URI 'wc:' WalletConnect v2 standard untuk memicu popup aplikasi dompet bawaan HP
-                window.location.href = "wc:00e4735a3d73d6115482b881@2?bridge=https%3A%2F%2Fwalletconnect.zoniqfi.com";
+                window.location.href = "wc:00e4735a3d73d6115482b881@2?bridge=https%3A%2F%2Fwalletconnect.zoniqfinance.com";
                 walletModal.classList.add('style-hidden');
             } else {
                 executeWalletConnection("WalletConnect", "0x3Fbc5601aCc8B928aA638fdf9872f2E908ba009a");
