@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZoniqFi - Dashboard Layout</title>
+    <title>ZoniqFi - Custom Wallet Modal</title>
     <style>
         /* ==========================================================================
-           1. CSS STYLING (Tema Gelap Premium ala DeFi)
+           1. CSS STYLING (Dasbor & Tombol Utama)
            ========================================================================== */
         body {
             margin: 0;
@@ -14,174 +14,250 @@
             background-color: #0b0e14;
             color: #ffffff;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
         }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background-color: #111622;
-            border-bottom: 1px solid #1f293d;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #0052FF; /* Biru khas Base Network */
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Tombol Connect Wallet Kustom Anda */
-        .my-custom-button {
+        .connect-trigger-btn {
             background: linear-gradient(135deg, #0052FF 0%, #003db3 100%);
-            color: #ffffff;
+            color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 15px;
+            padding: 14px 28px;
+            font-size: 16px;
             font-weight: 600;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 82, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
         }
 
-        .my-custom-button:hover {
+        .connect-trigger-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 82, 255, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 82, 255, 0.5);
         }
 
-        .my-custom-button:active {
-            transform: translateY(0);
-        }
-
-        main {
-            flex: 1;
+        /* ==========================================================================
+           2. CSS POP-UP MODAL (Kustom)
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 9999;
         }
 
-        .card {
-            background-color: #111622;
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: #121824;
             border: 1px solid #1f293d;
             border-radius: 24px;
-            padding: 40px;
-            text-align: center;
+            width: 90%;
             max-width: 400px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #8a9fc2;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Opsi Pilihan Wallet di Dalam Pop-up */
+        .wallet-option-btn {
             width: 100%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        h1 { 
-            margin-top: 0; 
-            font-size: 28px; 
-            letter-spacing: -0.5px;
-        }
-
-        p { 
-            color: #8a9fc2; 
-            line-height: 1.6; 
+            background-color: #1c2538;
+            border: 1px solid #28354f;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
             font-size: 15px;
-            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .wallet-option-btn:hover {
+            background-color: #24304a;
+            border-color: #0052FF;
+            transform: translateX(2px);
+        }
+
+        /* Tag penanda khusus untuk Smart Wallet */
+        .badge-smart {
+            background-color: #0052FF;
+            color: white;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .wallet-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .wallet-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
         }
     </style>
 </head>
 <body>
 
-    <!-- ==========================================================================
-       2. STRUKTUR HTML INTERFACES
-       ========================================================================== */ -->
-    <header>
-        <div class="logo">⚡ ZoniqFi</div>
-        <!-- Tombol Kustom Pertama di Navbar -->
-        <button id="nav-connect-btn" class="my-custom-button">Connect Wallet</button>
-    </header>
+    <!-- Tombol Pemicu Utama di Halaman Aplikasi -->
+    <button id="main-connect-btn" class="connect-trigger-btn">Connect Wallet</button>
 
-    <main>
-        <div class="card">
-            <h1>Selamat Datang</h1>
-            <p>Hubungkan dompet Anda untuk mulai berinteraksi dengan brankas likuiditas di jaringan Base L2.</p>
-            <!-- Tombol Kustom Kedua di Dalam Kartu Utama -->
-            <button id="hero-connect-btn" class="my-custom-button">Connect Wallet</button>
+    <!-- STRUCTURE POP-UP MODAL MULTI-WALLET -->
+    <div id="wallet-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Hubungkan Dompet</div>
+                <button id="close-modal-btn" class="close-btn">&times;</button>
+            </div>
+            
+            <!-- Metode 1: Coinbase Smart Wallet (Rekomendasi Utama Base L2) -->
+            <button id="choose-smart-wallet" class="wallet-option-btn">
+                <div class="wallet-info">
+                    <img class="wallet-icon" src="https://githubusercontent.com" alt="Coinbase">
+                    <span>Coinbase Smart Wallet</span>
+                </div>
+                <span class="badge-smart">Populer / Passkey</span>
+            </button>
+
+            <!-- Metode 2: Browser Wallets (MetaMask, Rabby, dll) -->
+            <button id="choose-injected-wallet" class="wallet-option-btn">
+                <div class="wallet-info">
+                    <img class="wallet-icon" src="https://githubusercontent.com" alt="MetaMask">
+                    <span>MetaMask & Browser Wallet</span>
+                </div>
+                <span>&rarr;</span>
+            </button>
+
+            <!-- Metode 3: Mobile Wallets (WalletConnect QR Code) -->
+            <button id="choose-wallet-connect" class="wallet-option-btn">
+                <div class="wallet-info">
+                    <img class="wallet-icon" src="https://githubusercontent.com" alt="WalletConnect">
+                    <span>WalletConnect (Scan QR)</span>
+                </div>
+                <span>&rarr;</span>
+            </button>
         </div>
-    </main>
+    </div>
 
     <!-- ==========================================================================
-       3. JAVASCRIPT INTEGRATION (Logika Multi-Wallet AppKit)
+       3. JAVASCRIPT INTEGRATION (Logika Buka Pop-Up & Web3 Core)
        ========================================================================== */ -->
     <script type="module">
         import { createAppKit } from 'https://esm.sh'
         import { base } from 'https://esm.sh/networks'
 
-        // 1. Ambil Project ID gratis Anda dari https://walletconnect.com
-        const projectId = 'YOUR_WALLETCONNECT_PROJECT_ID'; 
+        const projectId = 'YOUR_WALLETCONNECT_PROJECT_ID'; // Dapatkan gratis di ://walletconnect.com
 
-        // 2. Inisialisasi Konfigurasi Modal AppKit
+        // Inisialisasi mesin Web3 (AppKit) di latar belakang
         const appkit = createAppKit({
             adapters: [],
-            networks: [base], // Membatasi dan mengunci jaringan hanya pada Base L2
-            metadata: {
-                name: 'ZoniqFi Dashboard',
-                description: 'ZoniqFi Wallet Configuration',
-                url: window.location.origin,
-                icons: ['https://githubusercontent.com']
-            },
-            projectId,
-            features: {
-                analytics: true,
-                email: true, // Login Sosial: Mengizinkan login via Email / Akun Google
-                socials: ['google', 'apple', 'x', 'discord'],
-            },
-            themeMode: 'dark', // Menyelaraskan tampilan modal dengan tema gelap CSS
-            themeVariables: {
-                '--w3m-accent': '#0052FF', // Mengubah tombol aksen modal menjadi biru Base
-                '--w3m-border-radius-master': '12px'
+            networks: [base],
+            projectId
+        });
+
+        // Elemen DOM Pop-up kustom kita
+        const modal = document.getElementById('wallet-modal');
+        const triggerBtn = document.getElementById('main-connect-btn');
+        const closeBtn = document.getElementById('close-modal-btn');
+
+        // Fungsi Buka & Tutup Pop-Up Kustom
+        triggerBtn.addEventListener('click', () => {
+            // Jika sudah terhubung, klik tombol akan langsung membuka dashboard profil wallet
+            if (triggerBtn.getAttribute('data-connected') === 'true') {
+                appkit.open({ view: 'Account' });
+            } else {
+                // Jika belum terhubung, munculkan Pop-Up kustom buatan kita
+                modal.classList.add('active');
             }
         });
 
-        // 3. Daftarkan Semua Tombol Connect Wallet di Halaman Anda
-        const connectButtons = [
-            document.getElementById('nav-connect-btn'),
-            document.getElementById('hero-connect-btn')
-        ];
+        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
 
-        // 4. Tambahkan Event Listener Klik untuk Setiap Tombol
-        connectButtons.forEach(button => {
-            if (button) {
-                button.addEventListener('click', async () => {
-                    // Membuka modal pemilihan wallet saat tombol diklik
-                    await appkit.open(); 
-                });
-            }
+        /* ==========================================================================
+           LOGIKA KLIK DI DALAM POP-UP (Menghubungkan ke SDK Dompet Masing-Masing)
+           ========================================================================== */
+        
+        // 1. Opsi Coinbase Smart Wallet (Buka instan dengan preferensi Smart Wallet Base)
+        document.getElementById('choose-smart-wallet').addEventListener('click', async () => {
+            modal.classList.remove('active');
+            await appkit.open({ view: 'Connect' }); // Membuka modul otentikasi Coinbase/Smart Wallet
         });
 
-        // 5. Pantau Status Akun Secara Real-Time (Ubah UI saat Connect/Disconnect)
+        // 2. Opsi Browser Wallet (MetaMask / Extension terdeteksi)
+        document.getElementById('choose-injected-wallet').addEventListener('click', async () => {
+            modal.classList.remove('active');
+            await appkit.open({ view: 'AllWallets' });
+        });
+
+        // 3. Opsi WalletConnect (Langsung tembak ke tampilan QR Code)
+        document.getElementById('choose-wallet-connect').addEventListener('click', async () => {
+            modal.classList.remove('active');
+            await appkit.open({ view: 'Connect' });
+        });
+
+        // Sinkronisasi status akun ke Tombol Pemicu Utama
         appkit.subscribeAccount(account => {
-            connectButtons.forEach(button => {
-                if (!button) return;
-
-                if (account.isConnected) {
-                    // Potong alamat dompet menjadi format rapi (contoh: 0x71C...89bA)
-                    const address = account.address;
-                    const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-                    
-                    // Perbarui tampilan tombol saat wallet terhubung
-                    button.innerText = shortAddress;
-                    button.style.background = '#1c2434'; // Mengubah tombol jadi warna abu gelap transparan
-                    button.style.border = '1px solid #1f293d';
-                } else {
-                    // Kembalikan tampilan tombol ke awal jika koneksi terputus
-                    button.innerText = 'Connect Wallet';
-                    button.style.background = 'linear-gradient(135deg, #0052FF 0%, #003db3 100%)';
-                    button.style.border = 'none';
-                }
-            });
+            if (account.isConnected) {
+                const addr = account.address;
+                triggerBtn.innerText = `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
+                triggerBtn.setAttribute('data-connected', 'true');
+                triggerBtn.style.background = '#1c2434';
+            } else {
+                triggerBtn.innerText = 'Connect Wallet';
+                triggerBtn.setAttribute('data-connected', 'false');
+                triggerBtn.style.background = 'linear-gradient(135deg, #0052FF 0%, #003db3 100%)';
+            }
         });
     </script>
 </body>
