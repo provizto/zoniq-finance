@@ -1,262 +1,411 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en" id="walletPageNode" class="dark-mode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZoniqFi - Custom Wallet Modal</title>
+    <title>ZoniqFi - Access Wallet Gateway</title>
     <style>
         /* ==========================================================================
-           1. CSS STYLING (Dasbor & Tombol Utama)
+           1. VARIABEL WARNA (DARK / LIGHT THEME)
            ========================================================================== */
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0e14;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        :root {
+            --bg-page: #080b11;
+            --bg-card: #0f131c;
+            --bg-item: #080b11;
+            --bg-hover: #121824;
+            --border-line: #1e2533;
+            --border-hover: #2e374a;
+            --text-title: #ffffff;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-dark: #6b7280;
+            --shadow-box: rgba(0, 0, 0, 0.5);
         }
 
-        .connect-trigger-btn {
-            background: linear-gradient(135deg, #0052FF 0%, #003db3 100%);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
-        }
-
-        .connect-trigger-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 82, 255, 0.5);
+        html.light-mode {
+            --bg-page: #f4f6f9;
+            --bg-card: #ffffff;
+            --bg-item: #f8fafc;
+            --bg-hover: #f1f5f9;
+            --border-line: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --text-title: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --text-dark: #64748b;
+            --shadow-box: rgba(15, 23, 42, 0.08);
         }
 
         /* ==========================================================================
-           2. CSS POP-UP MODAL (Kustom)
+           2. RESET & LOGIKA MULTILANGUAGE
            ========================================================================== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 9999;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        /* Sembunyikan/Tampilkan Bahasa Berdasarkan Atribut Lang di Tag HTML */
+        html[lang="en"] .lang-id { display: none !important; }
+        html[lang="en"] .lang-en { display: block; }
+        html[lang="en"] span.lang-en { display: inline; }
+        html[lang="id"] .lang-en { display: none !important; }
+        html[lang="id"] .lang-id { display: block; }
+        html[lang="id"] span.lang-id { display: inline; }
 
-        .modal-content {
-            background-color: #121824;
-            border: 1px solid #1f293d;
+        /* ==========================================================================
+           3. DESAIN KARTU GATEWAY WALLET
+           ========================================================================== */
+        .gateway-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-line);
             border-radius: 24px;
-            width: 90%;
-            max-width: 400px;
-            padding: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: #8a9fc2;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        /* Opsi Pilihan Wallet di Dalam Pop-up */
-        .wallet-option-btn {
             width: 100%;
-            background-color: #1c2538;
-            border: 1px solid #28354f;
-            border-radius: 14px;
-            padding: 14px 18px;
-            margin-bottom: 12px;
+            max-width: 460px;
+            padding: 32px;
+            box-shadow: 0 20px 40px var(--shadow-box);
+        }
+
+        .gateway-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: white;
-            font-size: 15px;
+            align-items: flex-start;
+            margin-bottom: 28px;
+        }
+
+        .gateway-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-title);
+            margin-bottom: 6px;
+        }
+
+        .gateway-subtitle {
+            font-size: 13px;
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        /* Kontrol Theme & Bahasa */
+        .controls-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-ctrl {
+            background-color: var(--bg-item);
+            border: 1px solid var(--border-line);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
             font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-ctrl:hover {
+            background-color: var(--bg-hover);
+            border-color: var(--border-hover);
         }
 
-        .wallet-option-btn:hover {
-            background-color: #24304a;
-            border-color: #0052FF;
-            transform: translateX(2px);
+        /* List Opsi Wallet */
+        .wallet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
 
-        /* Tag penanda khusus untuk Smart Wallet */
-        .badge-smart {
-            background-color: #0052FF;
-            color: white;
-            font-size: 11px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .wallet-info {
+        .wallet-item {
+            background-color: var(--bg-item);
+            border: 1px solid var(--border-line);
+            border-radius: 16px;
+            padding: 16px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .wallet-item:hover {
+            background-color: var(--bg-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
         }
 
         .wallet-icon {
-            width: 28px;
-            height: 28px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        /* Modifikasi Icon Khusus Smart Account */
+        .icon-smart {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            border-radius: 12px;
+        }
+
+        .wallet-info {
+            flex-grow: 1;
+        }
+
+        .wallet-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 3px;
+        }
+
+        .wallet-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        .wallet-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        /* Badges */
+        .badge {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
             border-radius: 6px;
+            text-transform: uppercase;
+        }
+        .badge-blue { background-color: rgba(37, 99, 235, 0.1); color: #3b82f6; }
+        .badge-cyan { background-color: rgba(34, 211, 238, 0.1); color: #22d3ee; }
+
+        /* Desain Khusus Opsi Unggulan (Smart Account) */
+        .wallet-item.featured {
+            border-color: rgba(37, 99, 235, 0.4);
+            background: linear-gradient(135deg, var(--bg-item) 0%, rgba(37, 99, 235, 0.02) 100%);
+        }
+        .wallet-item.featured:hover {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, var(--bg-hover) 0%, rgba(37, 99, 235, 0.05) 100%);
+        }
+
+        .gateway-footer {
+            margin-top: 24px;
+            font-size: 11px;
+            color: var(--text-dark);
+            text-align: center;
+            line-height: 1.5;
+        }
+        .gateway-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
 
-    <!-- Tombol Pemicu Utama di Halaman Aplikasi -->
-    <button id="main-connect-btn" class="connect-trigger-btn">Connect Wallet</button>
-
-    <!-- STRUCTURE POP-UP MODAL MULTI-WALLET -->
-    <div id="wallet-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Hubungkan Dompet</div>
-                <button id="close-modal-btn" class="close-btn">&times;</button>
+    <div class="gateway-card">
+        <div class="gateway-header">
+            <div>
+                <h3 class="gateway-title lang-en">Select Wallet</h3>
+                <h3 class="gateway-title lang-id">Pilih Dompet</h3>
+                <p class="gateway-subtitle lang-en">Choose how you want to connect to the decentralized network.</p>
+                <p class="gateway-subtitle lang-id">Pilih cara Anda terhubung ke jaringan terdesentralisasi.</p>
             </div>
             
-            <!-- Metode 1: Coinbase Smart Wallet (Rekomendasi Utama Base L2) -->
-            <button id="choose-smart-wallet" class="wallet-option-btn">
-                <div class="wallet-info">
-                    <img class="wallet-icon" src="https://githubusercontent.com" alt="Coinbase">
-                    <span>Coinbase Smart Wallet</span>
-                </div>
-                <span class="badge-smart">Populer / Passkey</span>
-            </button>
+            <div class="controls-row">
+                <button id="themeToggleBtn" class="btn-ctrl" title="Change Theme">🌙</button>
+                <button id="langToggleBtn" class="btn-ctrl">ID</button>
+            </div>
+        </div>
 
-            <!-- Metode 2: Browser Wallets (MetaMask, Rabby, dll) -->
-            <button id="choose-injected-wallet" class="wallet-option-btn">
+        <div class="wallet-list">
+            
+            <div class="wallet-item featured" id="targetSmartAccount">
+                <div class="wallet-icon icon-smart">✨</div>
                 <div class="wallet-info">
-                    <img class="wallet-icon" src="https://githubusercontent.com" alt="MetaMask">
-                    <span>MetaMask & Browser Wallet</span>
+                    <div class="wallet-name-row">
+                        <span class="wallet-name">Smart Account</span>
+                        <span class="badge badge-blue">Next-Gen</span>
+                    </div>
+                    <p class="wallet-desc lang-en">Log in instantly using Passkey, Google, or Apple ID.</p>
+                    <p class="wallet-desc lang-id">Masuk instan menggunakan Passkey, Google, atau Apple ID.</p>
                 </div>
-                <span>&rarr;</span>
-            </button>
+            </div>
 
-            <!-- Metode 3: Mobile Wallets (WalletConnect QR Code) -->
-            <button id="choose-wallet-connect" class="wallet-option-btn">
+            <div class="wallet-item" id="targetMetaMask">
+                <svg class="wallet-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M29 16L25 9L18 5L16 8L14 5L7 9L3 16L7 21L16 27L25 21L29 16Z" fill="#E2761B"/>
+                    <path d="M16 27L25 21L22 17L16 20L10 17L7 21L16 27Z" fill="#E4761B"/>
+                    <path d="M14 5L16 8L18 5L25 9L23 15L16 12L9 15L7 9L14 5Z" fill="#F6851B"/>
+                </svg>
                 <div class="wallet-info">
-                    <img class="wallet-icon" src="https://githubusercontent.com" alt="WalletConnect">
-                    <span>WalletConnect (Scan QR)</span>
+                    <div class="wallet-name-row">
+                        <span class="wallet-name">MetaMask</span>
+                    </div>
+                    <p class="wallet-desc lang-en">Connect browser extension or redirect to MetaMask App.</p>
+                    <p class="wallet-desc lang-id">Hubungkan ekstensi browser atau alihkan langsung ke Aplikasi HP.</p>
                 </div>
-                <span>&rarr;</span>
-            </button>
+            </div>
+
+            <div class="wallet-item" id="targetTrustWallet">
+                <svg class="wallet-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 2L4 6V15C4 21.4 8.7 27.3 16 30C23.3 27.3 28 21.4 28 15V6L16 2Z" fill="#3375BB"/>
+                    <path d="M16 6L7 9V15C7 20 10.6 24.7 16 26.8V6Z" fill="#FFFFFF" opacity="0.2"/>
+                </svg>
+                <div class="wallet-info">
+                    <div class="wallet-name-row">
+                        <span class="wallet-name">Trust Wallet</span>
+                    </div>
+                    <p class="wallet-desc lang-en">Open standard DApp environment on multi-chain mobile app.</p>
+                    <p class="wallet-desc lang-id">Buka lingkungan dApp standar pada aplikasi mobile multi-chain.</p>
+                </div>
+            </div>
+
+            <div class="wallet-item" id="targetWalletConnect">
+                <svg class="wallet-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.5 10.5C19.3579 6.35786 12.6421 6.35786 8.5 10.5L6.5 12.5L10.5 16.5L12.5 14.5C14.433 12.567 17.567 12.567 19.5 14.5L21.5 16.5L25.5 12.5L23.5 10.5Z" fill="#3B99FC"/>
+                    <path d="M12.5 18.5L8.5 14.5L4.5 18.5L10.5 24.5L12.5 22.5L14.5 24.5L20.5 18.5L16.5 14.5L12.5 18.5Z" fill="#3B99FC"/>
+                </svg>
+                <div class="wallet-info">
+                    <div class="wallet-name-row">
+                        <span class="wallet-name">WalletConnect</span>
+                        <span class="badge badge-cyan">Base L2</span>
+                    </div>
+                    <p class="wallet-desc lang-en">Scan QR code or use safe inter-app mobile registry protocol.</p>
+                    <p class="wallet-desc lang-id">Pindai kode QR atau gunakan protokol registri seluler antar-aplikasi.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="gateway-footer">
+            <span class="lang-en">New to Web3 wallets? <a href="https://ethereum.org/en/wallets/" target="_blank">Learn how it works</a></span>
+            <span class="lang-id">Baru mengenali dompet Web3? <a href="https://ethereum.org/id/wallets/" target="_blank">Pelajari cara kerjanya</a></span>
         </div>
     </div>
 
-    <!-- ==========================================================================
-       3. JAVASCRIPT INTEGRATION (Logika Buka Pop-Up & Web3 Core)
-       ========================================================================== */ -->
-    <script type="module">
-        import { createAppKit } from 'https://esm.sh'
-        import { base } from 'https://esm.sh/networks'
+    <script>
+        // --- CONFIG WEBSITE dApp UTAMA ---
+        // Ganti URL di bawah ini dengan alamat hosting dApp dashboard Anda yang asli
+        const REAL_DAPP_URL = "https://zoniqfinance.com";
 
-        const projectId = 'YOUR_WALLETCONNECT_PROJECT_ID'; // Dapatkan gratis di ://walletconnect.com
+        const pageNode = document.getElementById('walletPageNode');
+        const themeBtn = document.getElementById('themeToggleBtn');
+        const langBtn = document.getElementById('langToggleBtn');
 
-        // Inisialisasi mesin Web3 (AppKit) di latar belakang
-        const appkit = createAppKit({
-            adapters: [],
-            networks: [base],
-            projectId
+        // Deteksi Perangkat Mobile Pengguna
+        function isMobile() {
+            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        // ==========================================================================
+        //  SISTEM DEEP LINKING (INTEGRASI 4 CARA)
+        // ==========================================================================
+
+        // Cara 1: Smart Account Handler
+        document.getElementById('targetSmartAccount').addEventListener('click', () => {
+            alert(pageNode.getAttribute('lang') === 'id' ? 
+                "Memicu Integrasi Smart Account (ERC-4337)... Mengalihkan ke dashboard." : 
+                "Triggering Smart Account Integration (ERC-4337)... Redirecting to dashboard.");
+            window.location.href = "dashboard.html?method=smartaccount";
         });
 
-        // Elemen DOM Pop-up kustom kita
-        const modal = document.getElementById('wallet-modal');
-        const triggerBtn = document.getElementById('main-connect-btn');
-        const closeBtn = document.getElementById('close-modal-btn');
-
-        // Fungsi Buka & Tutup Pop-Up Kustom
-        triggerBtn.addEventListener('click', () => {
-            // Jika sudah terhubung, klik tombol akan langsung membuka dashboard profil wallet
-            if (triggerBtn.getAttribute('data-connected') === 'true') {
-                appkit.open({ view: 'Account' });
+        // Cara 2: MetaMask Mobile Auto-Redirect
+        document.getElementById('targetMetaMask').addEventListener('click', () => {
+            if (isMobile()) {
+                // Menghapus 'https://' untuk menyesuaikan skema link MetaMask Mobile
+                const targetUrlClean = REAL_DAPP_URL.replace(/^https?:\/\//, '');
+                window.open(`https://metamask.app.link/dapp/${targetUrlClean}`, '_blank');
             } else {
-                // Jika belum terhubung, munculkan Pop-Up kustom buatan kita
-                modal.classList.add('active');
+                alert(pageNode.getAttribute('lang') === 'id' ? 
+                    "Ekstensi MetaMask Terdeteksi! Menghubungkan akun..." : 
+                    "MetaMask Extension Detected! Syncing secure account...");
+                window.location.href = "dashboard.html?wallet=metamask&status=connected";
             }
         });
 
-        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-        modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
-
-        /* ==========================================================================
-           LOGIKA KLIK DI DALAM POP-UP (Menghubungkan ke SDK Dompet Masing-Masing)
-           ========================================================================== */
-        
-        // 1. Opsi Coinbase Smart Wallet (Buka instan dengan preferensi Smart Wallet Base)
-        document.getElementById('choose-smart-wallet').addEventListener('click', async () => {
-            modal.classList.remove('active');
-            await appkit.open({ view: 'Connect' }); // Membuka modul otentikasi Coinbase/Smart Wallet
-        });
-
-        // 2. Opsi Browser Wallet (MetaMask / Extension terdeteksi)
-        document.getElementById('choose-injected-wallet').addEventListener('click', async () => {
-            modal.classList.remove('active');
-            await appkit.open({ view: 'AllWallets' });
-        });
-
-        // 3. Opsi WalletConnect (Langsung tembak ke tampilan QR Code)
-        document.getElementById('choose-wallet-connect').addEventListener('click', async () => {
-            modal.classList.remove('active');
-            await appkit.open({ view: 'Connect' });
-        });
-
-        // Sinkronisasi status akun ke Tombol Pemicu Utama
-        appkit.subscribeAccount(account => {
-            if (account.isConnected) {
-                const addr = account.address;
-                triggerBtn.innerText = `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`;
-                triggerBtn.setAttribute('data-connected', 'true');
-                triggerBtn.style.background = '#1c2434';
+        // Cara 3: Trust Wallet Mobile Auto-Redirect
+        document.getElementById('targetTrustWallet').addEventListener('click', () => {
+            if (isMobile()) {
+                const encodedUrl = encodeURIComponent(REAL_DAPP_URL);
+                window.open(`https://link.trustwallet.com/open_url?url=${encodedUrl}`, '_blank');
             } else {
-                triggerBtn.innerText = 'Connect Wallet';
-                triggerBtn.setAttribute('data-connected', 'false');
-                triggerBtn.style.background = 'linear-gradient(135deg, #0052FF 0%, #003db3 100%)';
+                alert(pageNode.getAttribute('lang') === 'id' ? 
+                    "Menghubungkan via Browser Extension Trust Wallet..." : 
+                    "Connecting via Trust Wallet Browser Extension...");
+                window.location.href = "dashboard.html?wallet=trust&status=connected";
+            }
+        });
+
+        // Cara 4: WalletConnect Protocol Bridge
+        document.getElementById('targetWalletConnect').addEventListener('click', () => {
+            if (isMobile()) {
+                // Skema URI Protokol universal 'wc:' memicu sistem OS memunculkan lembar pilihan wallet di HP
+                window.location.href = "wc:00e4735a3d73d6115482b881@2?bridge=https%3A%2F%2Fwalletconnect.zoniqfinance.com";
+            } else {
+                alert(pageNode.getAttribute('lang') === 'id' ? 
+                    "Membuka QR Code Modal WalletConnect v2..." : 
+                    "Opening WalletConnect v2 QR Code Modal Window...");
+                window.location.href = "dashboard.html?wallet=walletconnect&status=connected";
+            }
+        });
+
+        // ==========================================================================
+        //  LOGIKA TEMA (DARK / LIGHT) & LOGIKA BAHASA (EN / ID)
+        // ==========================================================================
+        
+        // Manajemen Tema
+        const localTheme = localStorage.getItem('zoniqfi-gateway-theme') || 'dark';
+        setTheme(localTheme);
+
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = pageNode.classList.contains('dark-mode') ? 'dark' : 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        function setTheme(mode) {
+            if (mode === 'light') {
+                pageNode.classList.remove('dark-mode');
+                pageNode.classList.add('light-mode');
+                themeBtn.innerText = '☀️';
+                localStorage.setItem('zoniqfi-gateway-theme', 'light');
+            } else {
+                pageNode.classList.remove('light-mode');
+                pageNode.classList.add('dark-mode');
+                themeBtn.innerText = '🌙';
+                localStorage.setItem('zoniqfi-gateway-theme', 'dark');
+            }
+        }
+
+        // Manajemen Bahasa
+        langBtn.addEventListener('click', () => {
+            const currentLang = pageNode.getAttribute('lang');
+            if (currentLang === 'en') {
+                pageNode.setAttribute('lang', 'id');
+                langBtn.innerText = 'EN';
+            } else {
+                pageNode.setAttribute('lang', 'en');
+                langBtn.innerText = 'ID';
             }
         });
     </script>
