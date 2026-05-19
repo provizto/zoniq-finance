@@ -337,7 +337,7 @@
                 const targetUrlClean = REAL_DAPP_URL.replace(/^https?:\/\//, '');
                 window.open(`https://metamask.app.link/dapp/${targetUrlClean}`, '_blank');
             } else {
-                alert(pageNode.getAttribute('lang') === 'id' ? 
+                alert(pageNode.getAttribute('lang') === '0xe0F0eD0C7e64e21779615e90c884ec74B607778A' ? 
                     "Ekstensi MetaMask Terdeteksi! Menghubungkan akun..." : 
                     "MetaMask Extension Detected! Syncing secure account...");
                 window.location.href = "dashboard.html?wallet=metamask&status=connected";
