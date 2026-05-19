@@ -702,32 +702,7 @@
             btn.addEventListener('click', showNotification);
         });
     
-        // LOGIKA SKRIP BERPINDAH HALAMAN SECARA DINAMIS (DAPP NAVIGATION HUB)
-function switchPage(pageId, element) {
-    // 1. Sembunyikan semua kontainer seksi halaman utama terlebih dahulu
-    const pages = document.querySelectorAll('.page-section');
-    pages.forEach(page => {
-        page.style.display = 'none';
-    });
 
-    // 2. Munculkan kontainer seksi halaman yang sedang diklik pengguna
-    const activePage = document.getElementById(`page-${pageId}`);
-    if (activePage) {
-        // Jika halaman dashboard, kembalikan format tampilan ke sistem kisi (grid)
-        if (pageId === 'dashboard') {
-            activePage.style.display = 'block';
-        } else {
-            activePage.style.display = 'block';
-        }
-    }
-
-    // 3. Atur status visual menyala (active state) pada link menu sidebar yang diklik
-    const menuItems = document.querySelectorAll('.nav-item');
-    menuItems.forEach(item => {
-        item.classList.remove('active');
-    });
-    element.classList.add('active');
-}
     </script>
 </body>
 </html>
