@@ -431,7 +431,9 @@
                     <option value="en">🌐 EN</option>
                     <option value="id">🌐 ID</option>
                 </select>
-                <button class="btn-wallet">0x71C...89bA</button>
+                <button class="btn-wallet" id="connectWalletBtn">
+                    Connect Wallet
+                </button>
             </div>
         </header>
 
@@ -741,6 +743,22 @@
         .vote-input-wrapper input::-webkit-outer-spin-button,
         .vote-input-wrapper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .vote-input-wrapper span { color: #6b7280; font-size: 13px; font-weight: 700; margin-left: 4px; }
+
+        .wallet-option {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #2e374a;
+    background-color: #080b11;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.wallet-option:hover {
+    background-color: #1e2533;
+}
     </style>
 
     <!-- BANNER RINGKASAN EPOCH TATA KELOLA -->
@@ -900,7 +918,81 @@
         document.querySelectorAll('.id-vault-btn').forEach(btn => {
             btn.addEventListener('click', showNotification);
         });
+
+        </script>
+
+        <script>
+const connectBtn = document.getElementById("connectWalletBtn");
+const modal = document.getElementById("walletModal");
+
+connectBtn.onclick = () => {
+    modal.style.display = "flex";
+};
+
+function closeWalletModal() {
+    modal.style.display = "none";
+}
+
+// =======================
+// METAMASK CONNECT
+// =======================
+async function connectMetaMask() {
+    if (typeof window.ethereum !== "undefined") {
+        try {
+            const accounts = await window.ethereum.request({
+                method: "eth_requestAccounts",
+            });
+
+            const address = accounts[0];
+            setWallet(address);
+            closeWalletModal();
+        } catch (err) {
+            alert("User rejected connection");
+        }
+    } else {
+        alert("MetaMask not installed");
+    }
+}
+
+// =======================
+// WALLETCONNECT (SIMULASI SIMPLE)
+// =======================
+function connectWalletConnect() {
+    // NOTE: versi real butuh library WalletConnect
+    alert("WalletConnect integration needed (Web3Modal / WalletConnect v2)");
+
+    // simulasi address
+    const fakeAddress = "0xWC...1234";
+    setWallet(fakeAddress);
+    closeWalletModal();
+}
+
+// =======================
+// SET WALLET UI
+// =======================
+function setWallet(address) {
+    const short =
+        address.substring(0, 6) +
+        "..." +
+        address.substring(address.length - 4);
+
+    connectBtn.innerText = short;
+}
+</script>
+
+    <!-- WALLET MODAL -->
+<div id="walletModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
+    <div style="background:#0f131c; padding:24px; border-radius:16px; width:300px; border:1px solid #1e2533;">
+        <h3 style="margin-bottom:16px;">Select Wallet</h3>
+
+        <button class="wallet-option" onclick="connectMetaMask()">🦊 MetaMask</button>
+        <button class="wallet-option" onclick="connectWalletConnect()">🔗 WalletConnect</button>
+
+        <button onclick="closeWalletModal()" style="margin-top:12px; width:100%; background:#1e2533; border:none; padding:10px; border-radius:10px; color:white;">
+            Close
+        </button>
+    </div>
+</div>
     
-    </script>
 </body>
 </html>
