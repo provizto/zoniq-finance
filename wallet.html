@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZoniqFi - Connect Wallet</title>
+    <title>ZoniqFi - Dashboard Layout</title>
     <style>
-        /* --- CSS STYLING (Tema Gelap ala DeFi) --- */
+        /* ==========================================================================
+           1. CSS STYLING (Tema Gelap Premium ala DeFi)
+           ========================================================================== */
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -28,32 +30,32 @@
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #0052FF; /* Warna Khas Base Network */
+            color: #0052FF; /* Biru khas Base Network */
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Desain Tombol Connect Wallet */
-        .web3-btn {
+        /* Tombol Connect Wallet Kustom Anda */
+        .my-custom-button {
             background: linear-gradient(135deg, #0052FF 0%, #003db3 100%);
-            color: white;
+            color: #ffffff;
             border: none;
             padding: 12px 24px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 82, 255, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 82, 255, 0.2);
         }
 
-        .web3-btn:hover {
+        .my-custom-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 82, 255, 0.5);
+            box-shadow: 0 6px 16px rgba(0, 82, 255, 0.4);
         }
 
-        .web3-btn:active {
+        .my-custom-button:active {
             transform: translateY(0);
         }
 
@@ -73,42 +75,57 @@
             text-align: center;
             max-width: 400px;
             width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        h1 { margin-top: 0; font-size: 28px; }
-        p { color: #8a9fc2; line-height: 1.6; }
+        h1 { 
+            margin-top: 0; 
+            font-size: 28px; 
+            letter-spacing: -0.5px;
+        }
+
+        p { 
+            color: #8a9fc2; 
+            line-height: 1.6; 
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
 
+    <!-- ==========================================================================
+       2. STRUKTUR HTML INTERFACES
+       ========================================================================== */ -->
     <header>
         <div class="logo">⚡ ZoniqFi</div>
-        <!-- Tombol Khusus Web3Modal dari Script -->
-        <appkit-button></appkit-button>
+        <!-- Tombol Kustom Pertama di Navbar -->
+        <button id="nav-connect-btn" class="my-custom-button">Connect Wallet</button>
     </header>
 
     <main>
         <div class="card">
             <h1>Selamat Datang</h1>
             <p>Hubungkan dompet Anda untuk mulai berinteraksi dengan brankas likuiditas di jaringan Base L2.</p>
-            <!-- Tombol alternatif di tengah halaman -->
-            <appkit-button></appkit-button>
+            <!-- Tombol Kustom Kedua di Dalam Kartu Utama -->
+            <button id="hero-connect-btn" class="my-custom-button">Connect Wallet</button>
         </div>
     </main>
 
-    <!-- --- JAVASCRIPT INTEGRATION --- -->
-    <!-- Mengunduh AppKit (Web3Modal) khusus untuk Vanilla JS / HTML via CDN -->
+    <!-- ==========================================================================
+       3. JAVASCRIPT INTEGRATION (Logika Multi-Wallet AppKit)
+       ========================================================================== */ -->
     <script type="module">
         import { createAppKit } from 'https://esm.sh'
-        import { mainnet, base } from 'https://esm.sh/networks'
+        import { base } from 'https://esm.sh/networks'
 
-        // 1. Ambil Project ID gratis dari https://walletconnect.com
+        // 1. Ambil Project ID gratis Anda dari https://walletconnect.com
         const projectId = 'YOUR_WALLETCONNECT_PROJECT_ID'; 
 
-        // 2. Konfigurasi dan Inisialisasi Modal
+        // 2. Inisialisasi Konfigurasi Modal AppKit
         const appkit = createAppKit({
-            adapters: [], 
-            networks: [base], // Mengunci aplikasi agar fokus utama di Base Network
+            adapters: [],
+            networks: [base], // Membatasi dan mengunci jaringan hanya pada Base L2
             metadata: {
                 name: 'ZoniqFi Dashboard',
                 description: 'ZoniqFi Wallet Configuration',
@@ -118,21 +135,53 @@
             projectId,
             features: {
                 analytics: true,
-                email: true, // Mengaktifkan opsi ke-4: Login Sosial via Email/Google (Web3Auth alternatif)
-                socials: ['google', 'apple', 'x', 'discord'], // Login instan tanpa download wallet
+                email: true, // Login Sosial: Mengizinkan login via Email / Akun Google
+                socials: ['google', 'apple', 'x', 'discord'],
             },
-            themeMode: 'dark', // Menyesuaikan dengan CSS tema gelap kita
+            themeMode: 'dark', // Menyelaraskan tampilan modal dengan tema gelap CSS
             themeVariables: {
-                '--w3m-accent': '#0052FF', // Mengubah warna utama modal menjadi biru Base
+                '--w3m-accent': '#0052FF', // Mengubah tombol aksen modal menjadi biru Base
                 '--w3m-border-radius-master': '12px'
             }
-        })
+        });
 
-        // Pengaturan opsional: Deteksi jika user berhasil terhubung
-        appkit.subscribeAccount(account => {
-            if (account.isConnected) {
-                console.log("Wallet terhubung ke alamat:", account.address);
+        // 3. Daftarkan Semua Tombol Connect Wallet di Halaman Anda
+        const connectButtons = [
+            document.getElementById('nav-connect-btn'),
+            document.getElementById('hero-connect-btn')
+        ];
+
+        // 4. Tambahkan Event Listener Klik untuk Setiap Tombol
+        connectButtons.forEach(button => {
+            if (button) {
+                button.addEventListener('click', async () => {
+                    // Membuka modal pemilihan wallet saat tombol diklik
+                    await appkit.open(); 
+                });
             }
+        });
+
+        // 5. Pantau Status Akun Secara Real-Time (Ubah UI saat Connect/Disconnect)
+        appkit.subscribeAccount(account => {
+            connectButtons.forEach(button => {
+                if (!button) return;
+
+                if (account.isConnected) {
+                    // Potong alamat dompet menjadi format rapi (contoh: 0x71C...89bA)
+                    const address = account.address;
+                    const shortAddress = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+                    
+                    // Perbarui tampilan tombol saat wallet terhubung
+                    button.innerText = shortAddress;
+                    button.style.background = '#1c2434'; // Mengubah tombol jadi warna abu gelap transparan
+                    button.style.border = '1px solid #1f293d';
+                } else {
+                    // Kembalikan tampilan tombol ke awal jika koneksi terputus
+                    button.innerText = 'Connect Wallet';
+                    button.style.background = 'linear-gradient(135deg, #0052FF 0%, #003db3 100%)';
+                    button.style.border = 'none';
+                }
+            });
         });
     </script>
 </body>
