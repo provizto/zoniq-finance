@@ -1,63 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" id="appNode" class="dark-mode">
+<html lang="en" id="appNode">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZoniqFi - dApp Dashboard</title>
     <style>
         /* ==========================================================================
-           1. VARIABEL WARNA (DARK & LIGHT MODE)
-           ========================================================================== */
-        :root {
-            --bg-main: #080b11;
-            --bg-panel: #0f131c;
-            --bg-input: #080b11;
-            --bg-hover: #121824;
-            --bg-reward: #111622;
-            --border-primary: #1e2533;
-            --border-secondary: #2e374a;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --text-dark: #6b7280;
-            --text-title: #ffffff;
-            --shadow-modal: rgba(0, 0, 0, 0.6);
-            --bg-modal-overlay: rgba(3, 5, 9, 0.85);
-        }
-
-        html.light-mode {
-            --bg-main: #f4f6f9;
-            --bg-panel: #ffffff;
-            --bg-input: #f8fafc;
-            --bg-hover: #f1f5f9;
-            --bg-reward: #f8fafc;
-            --border-primary: #e2e8f0;
-            --border-secondary: #cbd5e1;
-            --text-main: #1e293b;
-            --text-muted: #475569;
-            --text-dark: #64748b;
-            --text-title: #0f172a;
-            --shadow-modal: rgba(15, 23, 42, 0.15);
-            --bg-modal-overlay: rgba(15, 23, 42, 0.4);
-        }
-
-        /* ==========================================================================
-           2. RESET & MULTILANGUAGE CONFIG
+           1. RESET & LOGIKA DUA BAHASA (MURNI CSS)
            ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            background-color: #080b11;
+            color: #f3f4f6;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
+        /* LOGIKA TAMPILAN BAHASA */
         html[lang="en"] .lang-id { display: none !important; }
         html[lang="en"] .lang-en { display: block; }
         html[lang="en"] span.lang-en { display: inline; }
@@ -67,15 +32,16 @@
         html[lang="id"] span.lang-id { display: inline; }
         html[lang="id"] div.lang-id { display: block; }
 
+        /* Utility helper class */
         .style-hidden { display: none !important; }
 
         /* ==========================================================================
-           3. SIDEBAR NAVIGATION
+           2. SIDEBAR NAVIGATION & MOBILE INTERFACE
            ========================================================================== */
         aside {
             width: 260px;
-            background-color: var(--bg-panel);
-            border-right: 1px solid var(--border-primary);
+            background-color: #0f131c;
+            border-right: 1px solid #1e2533;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -83,36 +49,65 @@
             position: fixed;
             height: 100vh;
             z-index: 40;
+            transition: transform 0.3s ease;
         }
-        .logo { font-size: 22px; font-weight: 800; color: var(--text-title); margin-bottom: 40px; padding-left: 10px; }
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
         .logo span { color: #3b82f6; }
+        
         .nav-links { list-style: none; }
         .nav-links li { margin-bottom: 8px; }
         .nav-links a {
             display: block;
             padding: 12px 16px;
-            color: var(--text-muted);
+            color: #9ca3af;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
             border-radius: 12px;
+            transition: all 0.2s;
         }
         .nav-links a:hover, .nav-links a.active {
             background-color: rgba(59, 130, 246, 0.1);
             color: #3b82f6;
         }
 
-        /* Responsif HP Mobile Menu Toggle */
         .menu-toggle {
-            display: none; position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px;
-            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%); border: none; border-radius: 50%;
-            color: white; font-size: 24px; font-weight: bold; cursor: pointer; z-index: 50;
-            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4); align-items: center; justify-content: center;
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 50;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
         }
-        .sidebar-overlay { display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6); z-index: 35; }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 35;
+        }
 
         @media (max-width: 768px) {
-            aside { transform: translateX(-100%); transition: transform 0.3s ease; }
+            aside { transform: translateX(-100%); }
             aside.open { transform: translateX(0); }
             .menu-toggle { display: flex; }
             .main-content { margin-left: 0 !important; padding: 20px !important; }
@@ -120,134 +115,488 @@
         }
 
         /* ==========================================================================
-           4. MAIN INTERFACE LAYOUT
+           3. AREA KONTEN UTAMA & DASHBOARD LAYOUT
            ========================================================================== */
-        .main-content { margin-left: 260px; flex-grow: 1; padding: 40px; max-width: 1200px; }
-        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; gap: 16px; }
-        @media (max-width: 580px) {
+        .main-content {
+            margin-left: 260px;
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 16px;
+        }
+        @media (max-width: 480px) {
             .topbar { flex-direction: column; align-items: flex-start; }
             .right-controls { width: 100%; justify-content: space-between; }
         }
-        .right-controls { display: flex; align-items: center; gap: 12px; }
-        
-        .lang-select, .theme-toggle-btn {
-            background-color: var(--bg-panel); border: 1px solid var(--border-primary);
-            color: var(--text-main); padding: 10px 14px; border-radius: 12px;
-            font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center;
+        .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        .theme-toggle-btn { font-size: 16px; width: 42px; height: 40px; justify-content: center; }
-
+        .lang-select {
+            background-color: #1e2533;
+            border: 1px solid #2e374a;
+            color: #d1d5db;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
         .btn-wallet {
             background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
-            color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
+        .btn-wallet:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Status setelah wallet terhubung */
         .wallet-active-status {
-            background-color: var(--bg-panel); border: 1px solid var(--border-primary);
-            padding: 8px 16px; border-radius: 12px; display: flex; align-items: center; gap: 12px;
+            background-color: #0f131c;
+            border: 1px solid #1e2533;
+            padding: 8px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        .address-badge { background-color: rgba(34, 211, 238, 0.1); color: #22d3ee; padding: 4px 10px; border-radius: 8px; font-family: monospace; font-size: 13px; font-weight: 700; }
-        .btn-disconnect { background: none; border: none; color: #ef4444; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .address-badge {
+            background-color: rgba(34, 211, 238, 0.1);
+            color: #22d3ee;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .btn-disconnect {
+            background: none;
+            border: none;
+            color: #ef4444;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-        /* Grid Dashboard & Panel */
-        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        @media (max-width: 1024px) { .dashboard-grid { grid-template-columns: 1fr; } }
-        
-        .panel { background-color: var(--bg-panel); border: 1px solid var(--border-primary); border-radius: 20px; padding: 30px; }
-        .panel-title { font-size: 18px; font-weight: 700; color: var(--text-title); margin-bottom: 20px; }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        @media (max-width: 1024px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
 
-        /* Form Components */
+        .panel {
+            background-color: #0f131c;
+            border: 1px solid #1e2533;
+            border-radius: 20px;
+            padding: 30px;
+        }
+        .panel-title { font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 20px; }
+
+        /* Komponen Form */
         .form-group { margin-bottom: 20px; }
-        .form-label { font-size: 11px; font-weight: 700; color: var(--text-dark); text-transform: uppercase; margin-bottom: 8px; display: block; }
-        .input-box { background-color: var(--bg-input); border: 1px solid var(--border-primary); border-radius: 14px; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .input-box input { background: none; border: none; color: var(--text-title); font-size: 20px; font-weight: 700; width: 70%; outline: none; }
+        .form-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .input-box {
+            background-color: #080b11;
+            border: 1px solid #1e2533;
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .input-box input {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            width: 70%;
+            outline: none;
+        }
         .token-select { font-weight: 700; color: #3b82f6; font-size: 16px; }
 
-        .duration-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
-        .duration-btn { background-color: var(--bg-input); border: 1px solid var(--border-primary); color: var(--text-muted); padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; }
-        .duration-btn.active { border-color: #3b82f6; color: #3b82f6; background-color: rgba(59, 130, 246, 0.05); }
+        .duration-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .duration-btn {
+            background-color: #080b11;
+            border: 1px solid #1e2533;
+            color: #9ca3af;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+        }
+        .duration-btn.active {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
 
-        .summary-box { background-color: rgba(59, 130, 246, 0.03); border: 1px solid rgba(59, 130, 246, 0.1); border-radius: 12px; padding: 16px; margin: 24px 0; font-size: 13px; }
+        .summary-box {
+            background-color: rgba(59, 130, 246, 0.03);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 24px 0;
+            font-size: 13px;
+        }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
-        .summary-label { color: var(--text-muted); }
-        .summary-value { font-weight: 600; color: var(--text-title); }
+        .summary-label { color: #9ca3af; }
+        .summary-value { font-weight: 600; color: #ffffff; }
         .summary-value.highlight { color: #22d3ee; font-weight: 700; }
-        
-        .btn-action { width: 100%; background-color: #2563eb; color: white; border: none; padding: 16px; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; }
-        .reward-card { background-color: var(--bg-reward); border: 1px solid var(--border-primary); border-radius: 16px; padding: 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-        .reward-info h4 { font-size: 14px; color: var(--text-dark); font-weight: 600; margin-bottom: 4px; }
-        .reward-info p { font-size: 20px; font-weight: 700; color: var(--text-title); }
-        .btn-sm { background-color: var(--bg-input); border: 1px solid var(--border-primary); color: var(--text-title); padding: 8px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; }
+
+        .btn-action {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-action:hover { background-color: #1d4ed8; }
+
+        .reward-card {
+            background-color: #111622;
+            border: 1px solid #1e2533;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .reward-info h4 { font-size: 14px; color: #6b7280; font-weight: 600; margin-bottom: 4px; }
+        .reward-info p { font-size: 20px; font-weight: 700; color: #ffffff; }
+        .btn-sm {
+            background-color: #1e2533;
+            border: 1px solid #2e374a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* TOAST POP-UP TRANSAKSI */
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 360px;
+            width: 100%;
+        }
+        .toast {
+            background-color: #0f131c;
+            border: 1px solid #22c55e;
+            border-left: 6px solid #22c55e;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            display: flex;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast-icon { font-size: 20px; line-height: 1; }
+        .toast-content { flex-grow: 1; }
+        .toast-title { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+        .toast-desc { font-size: 12px; color: #9ca3af; line-height: 1.4; }
 
         /* ==========================================================================
-           5. DEX SWAP & VAULTS OPTIMIZER MODULES
+           4. SWAP BOX & VAULT TABLE STYLES (MURNI CSS)
            ========================================================================== */
-        .swap-box { max-width: 480px; margin: 0 auto; }
-        .swap-icon-container { display: flex; justify-content: center; margin: -10px 0; position: relative; z-index: 2; }
-        .swap-arrow-btn { background-color: var(--bg-input); border: 1px solid var(--border-primary); color: #3b82f6; width: 36px; height: 36px; border-radius: 10px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        
-        .table-responsive { overflow-x: auto; border: 1px solid var(--border-primary); background-color: var(--bg-panel); border-radius: 16px; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
-        th { background-color: var(--bg-input); color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 16px 20px; border-bottom: 1px solid var(--border-primary); }
-        td { padding: 18px 20px; border-bottom: 1px solid var(--border-primary); color: var(--text-main); }
-        .pool-title { font-weight: 700; color: var(--text-title); }
-        .badge-pool { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background-color: var(--bg-input); color: var(--text-muted); border: 1px solid var(--border-primary); }
-        .badge-pool.boost { background-color: rgba(34, 211, 238, 0.1); color: #22d3ee; border-color: rgba(34, 211, 238, 0.2); }
+        /* Swap Box Specifics */
+        .swap-box {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .swap-icon-container {
+            display: flex;
+            justify-content: center;
+            margin: -10px 0;
+            position: relative;
+            z-index: 2;
+        }
+        .swap-arrow-btn {
+            background-color: #1e2533;
+            border: 1px solid #2e374a;
+            color: #3b82f6;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swap-arrow-btn:hover { background-color: #2e374a; color: #22d3ee; }
+
+        /* Vault Table Specifics */
+        .table-responsive {
+            overflow-x: auto;
+            border: 1px solid #1e2533;
+            background-color: rgba(15, 23, 42, 0.4);
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            text-align: left;
+        }
+        th {
+            background-color: #0f131c;
+            color: #9ca3af;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 16px 20px;
+            border-bottom: 1px solid #1e2533;
+        }
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(30, 41, 59, 0.5);
+            color: #d1d5db;
+        }
+        tr:last-child td { border-bottom: none; }
+        .pool-title { font-weight: 700; color: #ffffff; }
+        .badge-pool {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            background-color: #1e2533;
+            color: #9ca3af;
+            border: 1px solid #2e374a;
+        }
+        .badge-pool.boost {
+            background-color: rgba(34, 211, 238, 0.1);
+            color: #22d3ee;
+            border-color: rgba(34, 211, 238, 0.2);
+        }
 
         /* ==========================================================================
-           6. GAUGE EMISSION VOTING MODULES
+           5. VEZNQ GOVERNANCE & GAUGE VOTING STYLES
            ========================================================================== */
-        .gov-banner { background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%); border: 1px solid rgba(59, 130, 246, 0.15); padding: 24px; border-radius: 16px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
-        .gov-banner-text h4 { font-size: 16px; color: var(--text-title); font-weight: 700; margin-bottom: 6px; }
-        .gov-banner-text p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-        .vote-progress-container { margin-bottom: 30px; background-color: var(--bg-panel); border: 1px solid var(--border-primary); padding: 20px; border-radius: 16px; }
-        .progress-header { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-dark); margin-bottom: 10px; }
-        .progress-bar-bg { background-color: var(--bg-input); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-primary); }
-        .progress-bar-fill { background: linear-gradient(90deg, #2563eb 0%, #22d3ee 100%); height: 100%; width: 0%; transition: width 0.2s ease; }
-        .vote-input-wrapper { display: flex; align-items: center; background-color: var(--bg-input); border: 1px solid var(--border-primary); border-radius: 10px; padding: 6px 12px; width: 110px; }
-        .vote-input-wrapper input { background: none; border: none; color: var(--text-title); font-size: 14px; font-weight: 700; width: 100%; outline: none; text-align: right; }
-        .vote-input-wrapper span { color: var(--text-dark); font-size: 13px; font-weight: 700; margin-left: 4px; }
+        .gov-banner {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(6, 182, 212, 0.05) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        @media (max-width: 600px) { .gov-banner { flex-direction: column; align-items: flex-start; } }
+        
+        .gov-banner-text h4 { font-size: 16px; color: #ffffff; font-weight: 700; margin-bottom: 6px; }
+        .gov-banner-text p { font-size: 13px; color: #9ca3af; line-height: 1.5; margin: 0; }
+        
+        .vote-progress-container {
+            margin-bottom: 30px;
+            background-color: #0f131c;
+            border: 1px solid #1e2533;
+            padding: 20px;
+            border-radius: 16px;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+        .progress-bar-bg {
+            background-color: #080b11;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #1e2533;
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #2563eb 0%, #22d3ee 100%);
+            height: 100%;
+            width: 0%; 
+            transition: width 0.3s ease;
+        }
+
+        .table-panel {
+            background-color: #0f131c;
+            border: 1px solid #1e2533;
+            border-radius: 20px;
+            padding: 24px;
+        }
+        .gov-table-responsive { overflow-x: auto; margin-top: 15px; }
+        .gov-table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
+        .gov-table th {
+            background-color: #080b11;
+            color: #6b7280;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 14px 20px;
+            border-bottom: 1px solid #1e2533;
+        }
+        .gov-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(30, 37, 51, 0.6);
+            color: #d1d5db;
+            vertical-align: middle;
+        }
+        .gov-table tr:last-child td { border-bottom: none; }
+        
+        .vote-input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #080b11;
+            border: 1px solid #1e2533;
+            border-radius: 10px;
+            padding: 6px 12px;
+            width: 110px;
+        }
+        .vote-input-wrapper input {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            width: 100%;
+            outline: none;
+            text-align: right;
+        }
+        .vote-input-wrapper input::-webkit-outer-spin-button,
+        .vote-input-wrapper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .vote-input-wrapper span { color: #6b7280; font-size: 13px; font-weight: 700; margin-left: 4px; }
 
         /* ==========================================================================
-           7. WALLET INTERACTIVE GATEWAY MODAL (4 WAYS CONNECTIVITY)
+           6. WALLET SELECTION POP-UP MODAL STYLES
            ========================================================================== */
         .wallet-modal-overlay {
-            position: fixed; inset: 0; background-color: var(--bg-modal-overlay); backdrop-filter: blur(8px);
-            z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px;
+            position: fixed; inset: 0;
+            background-color: rgba(3, 5, 9, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
         }
         .wallet-modal-card {
-            background-color: var(--bg-panel); border: 1px solid var(--border-primary); border-radius: 24px;
-            width: 100%; max-width: 440px; padding: 24px; box-shadow: 0 20px 40px var(--shadow-modal); position: relative;
+            background-color: #0f131c;
+            border: 1px solid #1e2533;
+            border-radius: 24px;
+            width: 100%; max-width: 440px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: relative;
+            animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .wallet-modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
-        .wallet-modal-header h3 { font-size: 18px; font-weight: 700; color: var(--text-title); margin-bottom: 4px; }
-        .wallet-modal-header p { font-size: 12px; color: var(--text-dark); }
-        .wallet-modal-close { background: none; border: none; color: var(--text-dark); font-size: 16px; cursor: pointer; padding: 4px; }
-        .wallet-modal-close:hover { color: var(--text-title); }
+        @keyframes modalSlideUp {
+            from { transform: translateY(15px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .wallet-modal-header {
+            display: flex; justify-content: space-between;
+            align-items: flex-start; margin-bottom: 20px;
+        }
+        .wallet-modal-header h3 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .wallet-modal-header p { font-size: 12px; color: #6b7280; }
+        .wallet-modal-close {
+            background: none; border: none; color: #6b7280;
+            font-size: 16px; cursor: pointer; padding: 4px;
+        }
+        .wallet-modal-close:hover { color: #fff; }
 
         .wallet-options-list { display: flex; flex-direction: column; gap: 12px; }
         .wallet-option-item {
-            background-color: var(--bg-input); border: 1px solid var(--border-primary); border-radius: 16px;
-            padding: 14px 18px; display: flex; align-items: center; gap: 16px; cursor: pointer; text-align: left; width: 100%;
+            background-color: #080b11;
+            border: 1px solid #1e2533;
+            border-radius: 16px;
+            padding: 14px 18px;
+            display: flex; align-items: center; gap: 16px;
+            cursor: pointer; text-align: left; width: 100%;
+            transition: all 0.2s ease;
         }
-        .wallet-option-item:hover { background-color: var(--bg-hover); border-color: var(--border-secondary); }
-        .wallet-option-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+        .wallet-option-item:hover {
+            background-color: #121824; border-color: #2e374a; transform: scale(1.01);
+        }
+        .wallet-option-icon {
+            width: 36px; height: 36px; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
+        }
         
-        .logo-smart { background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%); border-radius: 10px; border: 1px solid rgba(37, 99, 235, 0.3); }
-        .highlight-smart { border-color: rgba(37, 99, 235, 0.4); background: linear-gradient(135deg, var(--bg-input) 0%, rgba(37, 99, 235, 0.02) 100%); }
-        .highlight-smart:hover { border-color: #2563eb; background: linear-gradient(135deg, var(--bg-hover) 0%, rgba(37, 99, 235, 0.05) 100%); }
+        .logo-smart {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            border-radius: 10px; border: 1px solid rgba(37, 99, 235, 0.3);
+        }
+        .highlight-smart {
+            border-color: rgba(37, 99, 235, 0.4);
+            background: linear-gradient(135deg, #080b11 0%, rgba(37, 99, 235, 0.03) 100%);
+        }
+        .highlight-smart:hover {
+            border-color: #2563eb;
+            background: linear-gradient(135deg, #121824 0%, rgba(37, 99, 235, 0.06) 100%);
+        }
 
         .wallet-option-info { flex-grow: 1; }
-        .wallet-option-name { font-size: 14px; font-weight: 700; color: var(--text-title); margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
-        .wallet-option-desc { font-size: 11px; color: var(--text-dark); line-height: 1.3; }
-        .badge-recommended { background-color: rgba(34, 211, 238, 0.1); color: #22d3ee; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
-        .badge-beta { background-color: rgba(239, 68, 68, 0.1); color: #ef4444; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; margin-left: auto; }
+        .wallet-option-name { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+        .wallet-option-desc { font-size: 11px; color: #6b7280; line-height: 1.3; }
+        
+        .badge-recommended {
+            background-color: rgba(34, 211, 238, 0.1); color: #22d3ee;
+            font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 6px; text-transform: uppercase;
+        }
+        .badge-beta {
+            background-color: rgba(239, 68, 68, 0.1); color: #ef4444;
+            font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; margin-left: auto;
+        }
 
-        /* TOAST TRANSAKSI */
-        .toast-container { position: fixed; top: 24px; right: 24px; z-index: 100; display: flex; flex-direction: column; gap: 12px; max-width: 360px; width: 100%; }
-        .toast { background-color: var(--bg-panel); border: 1px solid #22c55e; border-left: 6px solid #22c55e; border-radius: 12px; padding: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); display: flex; gap: 12px; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .toast.show { transform: translateX(0); }
-        .toast-title { font-size: 14px; font-weight: 700; color: var(--text-title); margin-bottom: 4px; }
-        .toast-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+        .wallet-modal-footer { margin-top: 18px; font-size: 10px; color: #4b5563; text-align: center; line-height: 1.4; }
+        .wallet-modal-footer a { color: #3b82f6; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -256,10 +605,10 @@
         <div class="toast" id="transactionToast">
             <div class="toast-icon">✅</div>
             <div class="toast-content">
-                <div class="toast-title lang-en">Action Processed</div>
-                <div class="toast-title lang-id">Aksi Diproses</div>
-                <div class="toast-desc lang-en">Secure execution triggered on Base L2 network.</div>
-                <div class="toast-desc lang-id">Eksekusi aman dipicu pada jaringan Base L2.</div>
+                <div class="toast-title lang-en">Transaction Successful</div>
+                <div class="toast-title lang-id">Transaksi Berhasil</div>
+                <div class="toast-desc lang-en">Action processed on Base L2 network successfully.</div>
+                <div class="toast-desc lang-id">Aksi berhasil diproses pada jaringan Base L2.</div>
             </div>
         </div>
     </div>
@@ -269,6 +618,11 @@
 
     <aside id="appSidebar">
         <div>
+            <button onclick="window.location.href='index.html'" style="background: none; border: 1px solid #1e2533; color: #6b7280; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 24px; width: 100%; text-align: left; transition: all 0.2s;" onmouseover="this.style.color='#ffffff'; this.style.borderColor='#3b82f6';" onmouseout="this.style.color='#6b7280'; this.style.borderColor='#1e2533';">
+                <span class="lang-en">← Back to Home</span>
+                <span class="lang-id">← Kembali ke Beranda</span>
+            </button>
+            
             <div class="logo">ZoniqFi<span>.</span></div>
             <ul class="nav-links">
                 <li><a href="#" class="nav-item active" onclick="switchPage('dashboard', this)">📊 Dashboard</a></li>
@@ -277,28 +631,32 @@
                 <li><a href="#" class="nav-item" onclick="switchPage('governance', this)">🔒 veZNF Governance</a></li>
             </ul>
         </div>
-        <div style="font-size: 11px; color: var(--text-dark); padding-left: 16px;">Base Network Connected</div>
+        <div style="font-size: 11px; color: #4b5563; padding-left: 16px;">Base Network Connected</div>
     </aside>
 
     <main class="main-content">
         <header class="topbar">
             <div>
-                <h2 class="lang-en" style="font-size: 24px; font-weight: 700; color: var(--text-title);">Console Account</h2>
-                <h2 class="lang-id" style="font-size: 24px; font-weight: 700; color: var(--text-title);">Konsol Akun</h2>
+                <h2 class="lang-en" style="font-size: 24px; font-weight: 700;">Console Account</h2>
+                <h2 class="lang-id" style="font-size: 24px; font-weight: 700;">Konsol Akun</h2>
             </div>
             <div class="right-controls">
-                <button id="themeToggleTrigger" class="theme-toggle-btn">🌙</button>
                 <select id="appLangSwitcher" class="lang-select">
                     <option value="en">🌐 EN</option>
                     <option value="id">🌐 ID</option>
                 </select>
+                
                 <button class="btn-wallet" id="btnConnectTrigger">
                     <span class="lang-en">Connect Wallet</span>
                     <span class="lang-id">Hubungkan Dompet</span>
                 </button>
+
                 <div id="walletConnectedStatus" class="wallet-active-status style-hidden">
                     <div id="userAddress" class="address-badge">0x000...0000</div>
-                    <button id="btnDisconnect" class="btn-disconnect"><span class="lang-en">Disconnect</span><span class="lang-id">Putuskan</span></button>
+                    <button id="btnDisconnect" class="btn-disconnect">
+                        <span class="lang-en">Disconnect</span>
+                        <span class="lang-id">Putuskan</span>
+                    </button>
                 </div>
             </div>
         </header>
@@ -308,45 +666,180 @@
                 <div class="panel">
                     <h3 class="panel-title lang-en">Lock $ZNF for veZNF</h3>
                     <h3 class="panel-title lang-id">Kunci $ZNF untuk veZNF</h3>
+                    
                     <div class="form-group">
                         <label class="form-label lang-en">Amount to Lock</label>
-                        <label class="form-label lang-id">Jumlah Kunci</label>
-                        <div class="input-box"><input type="number" value="1000"><span class="token-select">$ZNF</span></div>
-                    </div>
-                    <div class="form-group">
-                        <div class="duration-grid">
-                            <div class="duration-btn">1 W</div><div class="duration-btn">1 M</div><div class="duration-btn">1 Y</div><div class="duration-btn active">4 Y (Max)</div>
+                        <label class="form-label lang-id">Jumlah untuk Dikunci</label>
+                        <div class="input-box">
+                            <input type="number" placeholder="0.0" value="1000">
+                            <span class="token-select">$ZNF</span>
                         </div>
                     </div>
-                    <button class="btn-action" onclick="showNotification()"><span class="lang-en">Execute Lock</span><span class="lang-id">Eksekusi Kunci</span></button>
+
+                    <div class="form-group">
+                        <label class="form-label lang-en">Lock Duration</label>
+                        <label class="form-label lang-id">Durasi Penguncian</label>
+                        <div class="duration-grid">
+                            <div class="duration-btn">1 W</div>
+                            <div class="duration-btn">1 M</div>
+                            <div class="duration-btn">1 Y</div>
+                            <div class="duration-btn active">4 Y (Max)</div>
+                        </div>
+                    </div>
+
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span class="summary-label lang-en">Voting Power Received</span>
+                            <span class="summary-label lang-id">Kekuatan Suara Diterima</span>
+                            <span class="summary-value highlight">1,000.00 veZNF</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label lang-en">Estimated Weekly Yield</span>
+                            <span class="summary-label lang-id">Estimasi Hasil Mingguan</span>
+                            <span class="summary-value">~14.50 USDC</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label lang-en">Unlock Date</span>
+                            <span class="summary-label lang-id">Tanggal Pembukaan Kunci</span>
+                            <span class="summary-value">May 18, 2030</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-action" id="executeBtn">
+                        <span class="lang-en">Execute Lock Transaction</span>
+                        <span class="lang-id">Eksekusi Transaksi Kunci</span>
+                    </button>
                 </div>
-                <div class="panel">
-                    <h3 class="panel-title lang-en">Rewards</h3>
-                    <h3 class="panel-title lang-id">Hadiah</h3>
-                    <div class="reward-card"><div><h4>USDC</h4><p>142.50</p></div><button class="btn-sm" onclick="showNotification()">Claim</button></div>
+
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="panel" style="padding: 24px;">
+                        <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Your Governance Stash</h3>
+                        <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Simpanan Tata Kelola Anda</h3>
+                        <div class="reward-card">
+                            <div class="reward-info">
+                                <h4 class="lang-en">Locked Balance</h4>
+                                <h4 class="lang-id">Saldo Terkunci</h4>
+                                <p>1,000 $ZNF</p>
+                            </div>
+                        </div>
+                        <div class="reward-card">
+                            <div class="reward-info">
+                                <h4 class="lang-en">Current Voting Weight</h4>
+                                <h4 class="lang-id">Bobot Suara Saat Ini</h4>
+                                <p style="color: #22d3ee;">1,000 veZNF</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel" style="padding: 24px;">
+                        <h3 class="panel-title lang-en" style="font-size: 15px; margin-bottom: 16px;">Claimable Real Yield</h3>
+                        <h3 class="panel-title lang-id" style="font-size: 15px; margin-bottom: 16px;">Bagi Hasil yang Dapat Diklaim</h3>
+                        <div class="reward-card" style="background-color: rgba(34, 211, 238, 0.02); border-color: rgba(34, 211, 238, 0.1);">
+                            <div class="reward-info">
+                                <h4>USDC Rewards</h4>
+                                <p style="color: #22d3ee;">142.50 USDC</p>
+                            </div>
+                            <button class="btn-sm" id="claimBtn">Claim</button>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
 
         <div id="page-swap" class="page-section" style="display: none;">
             <div class="panel swap-box">
-                <h3 class="panel-title lang-en">Swap Assets</h3>
-                <div class="form-group"><div class="input-box"><input type="number" value="1"><span class="token-select">ETH</span></div></div>
-                <div class="swap-icon-container"><button class="swap-arrow-btn">⬇</button></div>
-                <div class="form-group" style="margin-top:10px;"><div class="input-box"><input type="number" value="3450" readonly><span class="token-select">USDC</span></div></div>
-                <button class="btn-action" onclick="showNotification()">Swap</button>
+                <h3 class="panel-title lang-en">Swap Tokens</h3>
+                <h3 class="panel-title lang-id">Tukar Token</h3>
+                
+                <div class="form-group">
+                    <label class="form-label lang-en">From</label>
+                    <label class="form-label lang-id">Dari</label>
+                    <div class="input-box">
+                        <input type="number" placeholder="0.0" value="1">
+                        <span class="token-select">ETH</span>
+                    </div>
+                </div>
+
+                <div class="swap-icon-container">
+                    <button class="swap-arrow-btn">⬇</button>
+                </div>
+
+                <div class="form-group" style="margin-top: 10px;">
+                    <label class="form-label lang-en">To (Estimated)</label>
+                    <label class="form-label lang-id">Ke (Estimasi)</label>
+                    <div class="input-box">
+                        <input type="number" placeholder="0.0" value="3450" readonly>
+                        <span class="token-select">USDC</span>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <div class="summary-row">
+                        <span class="summary-label lang-en">Slippage Tolerance</span>
+                        <span class="summary-label lang-id">Toleransi Slippage</span>
+                        <span class="summary-value">0.5%</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label lang-en">Network Fee</span>
+                        <span class="summary-label lang-id">Biaya Jaringan</span>
+                        <span class="summary-value highlight">&lt; $0.01 (Base)</span>
+                    </div>
+                </div>
+
+                <button class="btn-action" id="swapActionBtn">
+                    <span class="lang-en">Swap Assets</span>
+                    <span class="lang-id">Tukar Aset</span>
+                </button>
             </div>
         </div>
 
         <div id="page-vaults" class="page-section" style="display: none;">
             <div class="panel">
-                <h3 class="panel-title">Yield Optimizer Vaults</h3>
+                <h3 class="panel-title lang-en">Automated Compounding Vaults</h3>
+                <h3 class="panel-title lang-id">Brankas Otomatisasi Hasil</h3>
+                
                 <div class="table-responsive">
                     <table>
-                        <thead><tr><th>Vault</th><th>TVL</th><th>APY</th><th style="text-align:right;">Action</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th class="lang-en">Vault Name</th><th class="lang-id">Nama Brankas</th>
+                                <th class="lang-en">Total Deposited (TVL)</th><th class="lang-id">Total Disetor (TVL)</th>
+                                <th class="lang-en">Your Balance</th><th class="lang-id">Saldo Anda</th>
+                                <th style="color: #22d3ee;">Boosted APY</th>
+                                <th style="text-align: right;" class="lang-en">Action</th><th style="text-align: right;" class="lang-id">Aksi</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            <tr><td><div class="pool-title">WETH / USDC</div></td><td>$18.4M</td><td style="color:#22d3ee;">32.8%</td><td style="text-align:right;"><button class="btn-sm" onclick="showNotification()">Deposit</button></td></tr>
-                            <tr><td><div class="pool-title">$ZNF / WETH</div></td><td>$10.1M</td><td style="color:#22d3ee;">114.6%</td><td style="text-align:right;"><button class="btn-sm" onclick="showNotification()">Deposit</button></td></tr>
+                            <tr>
+                                <td>
+                                    <div class="pool-title">WETH / USDC</div>
+                                    <span class="badge-pool lang-en">Standard</span><span class="badge-pool lang-id">Standar</span>
+                                </td>
+                                <td>$18,452,000</td>
+                                <td>0.00 LP</td>
+                                <td style="color: #22d3ee; font-weight: 700;">32.8% 🔥</td>
+                                <td style="text-align: right;"><button class="btn-sm id-vault-btn">Deposit</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="pool-title">USDC / USDt</div>
+                                    <span class="badge-pool">Stable</span>
+                                </td>
+                                <td>$14,210,500</td>
+                                <td>540.20 LP</td>
+                                <td style="color: #22d3ee; font-weight: 700;">11.5% 🔥</td>
+                                <td style="text-align: right;"><button class="btn-sm id-vault-btn">Manage</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="pool-title">$ZNF / WETH</div>
+                                    <span class="badge-pool boost">Volatile</span>
+                                </td>
+                                <td>$10,188,704</td>
+                                <td>1,250.00 LP</td>
+                                <td style="color: #22d3ee; font-weight: 700;">114.6% 🔥</td>
+                                <td style="text-align: right;"><button class="btn-sm id-vault-btn">Manage</button></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -356,21 +849,89 @@
         <div id="page-governance" class="page-section" style="display: none;">
             <div class="gov-banner">
                 <div class="gov-banner-text">
-                    <h4 class="lang-en">Gauge Allocation Active</h4>
-                    <p class="lang-en">Direct emissions to your preferred liquidity pools.</p>
+                    <h4 class="lang-en">Gauge Voting - Epoch 14 Active</h4>
+                    <h4 class="lang-id">Pemungutan Suara Emisi - Epoh 14 Aktif</h4>
+                    <p class="lang-en">Lock your $ZNF to gain veZNF. Use your voting weight weekly to direct daily $ZNF reward emissions to your preferred liquidity pools.</p>
+                    <p class="lang-id">Kunci $ZNF Anda untuk mendapatkan veZNF. Gunakan bobot hak suara Anda setiap minggu untuk mengarahkan emisi hadiah harian $ZNF ke kolam likuiditas pilihan Anda.</p>
+                </div>
+                <div style="text-align: right; min-width: 140px;">
+                    <span class="lang-en" style="font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; display:block; margin-bottom:4px;">Time Remaining</span>
+                    <span class="lang-id" style="font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; display:block; margin-bottom:4px;">Sisa Waktu</span>
+                    <span style="font-size: 18px; font-weight: 700; color: #22d3ee;">2d 14h 32m</span>
                 </div>
             </div>
+
             <div class="vote-progress-container">
-                <div class="progress-header"><div>Allocated Power</div><div><span id="totalAllocatedPercent">0</span>% / 100%</div></div>
-                <div class="progress-bar-bg"><div id="govProgressBar" class="progress-bar-fill"></div></div>
+                <div class="progress-header">
+                    <div>
+                        <span class="lang-en">Your Voting Power Allocation</span>
+                        <span class="lang-id">Alokasi Kekuatan Suara Anda</span>
+                    </div>
+                    <div style="color: #ffffff;"><span id="totalAllocatedPercent">0</span>% / 100%</div>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="govProgressBar" class="progress-bar-fill"></div>
+                </div>
             </div>
+
             <div class="table-panel">
-                <table class="gov-table">
-                    <tbody>
-                        <tr><td>WETH / USDC</td><td style="text-align:right;"><div class="vote-input-wrapper"><input type="number" class="gauge-input" value="0" oninput="calculateTotalVotes()"><span>%</span></div></td></tr>
-                    </tbody>
-                </table>
-                <button class="btn-action" style="margin-top:20px;" onclick="showNotification()">Submit Votes</button>
+                <h3 class="panel-title lang-en" style="margin-bottom: 6px;">Pool Weight Allocations</h3>
+                <h3 class="panel-title lang-id" style="margin-bottom: 6px;">Alokasi Bobot Kolam</h3>
+                <p class="lang-en" style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Distribute your total veZNF weight across the available pools below. Ensure the total does not exceed 100%.</p>
+                <p class="lang-id" style="color: #6b7280; font-size: 13px; margin-bottom: 20px;">Distribusikan total bobot veZNF Anda ke kolam-kolam yang tersedia di bawah ini. Pastikan jumlah totalnya tidak melebihi 100%.</p>
+                
+                <div class="gov-table-responsive">
+                    <table class="gov-table">
+                        <thead>
+                            <tr>
+                                <th class="lang-en">Pool Pair</th><th class="lang-id">Pasangan Kolam</th>
+                                <th class="lang-en">Current Total Weight</th><th class="lang-id">Bobot Total Saat Ini</th>
+                                <th class="lang-en">Next Epoch Estimate</th><th class="lang-id">Estimasi Epoh Berikutnya</th>
+                                <th class="lang-en" style="text-align: right;">Your Allocation</th><th class="lang-id" style="text-align: right;">Alokasi Anda</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: 700; color: #ffffff;">WETH / USDC</td>
+                                <td>42.51%</td>
+                                <td style="color: #22d3ee;">~1.42 $ZNF / block</td>
+                                <td style="text-align: right; display: flex; justify-content: flex-end;">
+                                    <div class="vote-input-wrapper">
+                                        <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
+                                        <span>%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: #ffffff;">USDC / USDt</td>
+                                <td>21.14%</td>
+                                <td style="color: #22d3ee;">~0.71 $ZNF / block</td>
+                                <td style="text-align: right; display: flex; justify-content: flex-end;">
+                                    <div class="vote-input-wrapper">
+                                        <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
+                                        <span>%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 700; color: #ffffff;">$ZNF / WETH</td>
+                                <td>36.35%</td>
+                                <td style="color: #22d3ee;">~1.21 $ZNF / block</td>
+                                <td style="text-align: right; display: flex; justify-content: flex-end;">
+                                    <div class="vote-input-wrapper">
+                                        <input type="number" class="gauge-input" min="0" max="100" value="0" oninput="calculateTotalVotes()">
+                                        <span>%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="btn-action" id="submitVotesBtn" style="margin-top: 30px; background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);">
+                    <span class="lang-en">Submit Gauge Votes</span>
+                    <span class="lang-id">Kirim Pilihan Suara Emisi</span>
+                </button>
             </div>
         </div>
     </main>
@@ -379,146 +940,249 @@
         <div class="wallet-modal-card">
             <div class="wallet-modal-header">
                 <div>
-                    <h3 class="lang-en">Connect Wallet</h3>
-                    <h3 class="lang-id">Hubungkan Dompet</h3>
-                    <p class="lang-en">Select method to access Base Network</p>
+                    <h3 class="lang-en">Connect your Wallet</h3>
+                    <h3 class="lang-id">Hubungkan Dompet Anda</h3>
+                    <p class="lang-en">Select your preferred secure connection method</p>
+                    <p class="lang-id">Pilih metode koneksi aman pilihan Anda</p>
                 </div>
                 <button id="btnCloseModal" class="wallet-modal-close">✕</button>
             </div>
+
             <div class="wallet-options-list">
                 <button class="wallet-option-item highlight-smart" id="optSmartAccount">
                     <div class="wallet-option-icon logo-smart">✨</div>
                     <div class="wallet-option-info">
-                        <div class="wallet-option-name">Smart Account <span class="badge-recommended">New</span></div>
-                        <div class="wallet-option-desc">Passkey, Google, or Apple login</div>
+                        <div class="wallet-option-name">
+                            <span>Smart Account</span>
+                            <span class="badge-recommended">Recommended</span>
+                        </div>
+                        <div class="wallet-option-desc lang-en">Create or login via Passkey, Google, or Apple ID</div>
+                        <div class="wallet-option-desc lang-id">Buat atau masuk via Passkey, Google, atau Apple ID</div>
                     </div>
                 </button>
+
                 <button class="wallet-option-item" id="optMetaMask">
-                    <div class="wallet-option-icon">🦊</div>
+                    <svg class="wallet-option-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M29 16L25 9L18 5L16 8L14 5L7 9L3 16L7 21L16 27L25 21L29 16Z" fill="#E2761B"/>
+                        <path d="M16 27L25 21L22 17L16 20L10 17L7 21L16 27Z" fill="#E4761B"/>
+                        <path d="M14 5L16 8L18 5L25 9L23 15L16 12L9 15L7 9L14 5Z" fill="#F6851B"/>
+                    </svg>
                     <div class="wallet-option-info">
-                        <div class="wallet-option-name">MetaMask App</div>
-                        <div class="wallet-option-desc">Extension or Mobile Auto-Redirect</div>
+                        <div class="wallet-option-name">MetaMask Browser</div>
+                        <div class="wallet-option-desc lang-en">Connect extension or open in MetaMask Mobile App</div>
+                        <div class="wallet-option-desc lang-id">Hubungkan ekstensi atau buka di Aplikasi HP MetaMask</div>
                     </div>
                 </button>
+
                 <button class="wallet-option-item" id="optTrustWallet">
-                    <div class="wallet-option-icon">🛡️</div>
+                    <svg class="wallet-option-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2L4 6V15C4 21.4 8.7 27.3 16 30C23.3 27.3 28 21.4 28 15V6L16 2Z" fill="#3375BB"/>
+                        <path d="M16 6L7 9V15C7 20 10.6 24.7 16 26.8V6Z" fill="#FFFFFF" opacity="0.2"/>
+                    </svg>
                     <div class="wallet-option-info">
                         <div class="wallet-option-name">Trust Wallet</div>
-                        <div class="wallet-option-desc">Multi-chain system connectivity</div>
+                        <div class="wallet-option-desc lang-en">Connect to Trust Wallet or launch Mobile App</div>
+                        <div class="wallet-option-desc lang-id">Sambungkan ke Trust Wallet atau buka Aplikasi HP</div>
                     </div>
                 </button>
+
                 <button class="wallet-option-item" id="optWalletConnect">
-                    <div class="wallet-option-icon">🌐</div>
+                    <svg class="wallet-option-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M23.5 10.5C19.3579 6.35786 12.6421 6.35786 8.5 10.5L6.5 12.5L10.5 16.5L12.5 14.5C14.433 12.567 17.567 12.567 19.5 14.5L21.5 16.5L25.5 12.5L23.5 10.5Z" fill="#3B99FC"/>
+                        <path d="M12.5 18.5L8.5 14.5L4.5 18.5L10.5 24.5L12.5 22.5L14.5 24.5L20.5 18.5L16.5 14.5L12.5 18.5Z" fill="#3B99FC"/>
+                    </svg>
                     <div class="wallet-option-info">
-                        <div class="wallet-option-name">WalletConnect <span class="badge-beta">v2</span></div>
-                        <div class="wallet-option-desc">Safe universal mobile registry</div>
+                        <div class="wallet-option-name">
+                            <span>WalletConnect</span>
+                            <span class="badge-beta">Base L2</span>
+                        </div>
+                        <div class="wallet-option-desc lang-en">Trigger standard system QR or inter-app registry</div>
+                        <div class="wallet-option-desc lang-id">Picu sistem QR standar atau registri antar-aplikasi</div>
                     </div>
                 </button>
+            </div>
+            
+            <div class="wallet-modal-footer lang-en">
+                By connecting, you agree to ZoniqFi's <a href="tos.html" target="_blank">Terms of Service</a>. This platform connects directly to decentralized networks.
+            </div>
+            <div class="wallet-modal-footer lang-id">
+                Dengan menghubungkan, Anda menyetujui <a href="terms.html" target="_blank">Ketentuan Layanan</a> ZoniqFi. Platform ini terhubung langsung ke jaringan terdesentralisasi.
             </div>
         </div>
     </div>
 
     <script>
-        // CONFIG UTAMA DEEP LINK (Ubah ke URL dApp asli setelah hosting online)
-        const DAPP_URL = "https://zoniqfi.com";
+        // --- CONFIGURATION URL ---
+        // GANTI INI dengan URL asli website dApp Anda ketika sudah online / di-hosting.
+        const DAPP_URL = "https://zoniqfi.com"; 
 
-        const appNode = document.getElementById('appNode');
-        const themeToggleTrigger = document.getElementById('themeToggleTrigger');
+        // --- AMBIL ELEMEN DOM ---
         const btnConnectTrigger = document.getElementById('btnConnectTrigger');
         const walletModal = document.getElementById('walletModal');
         const btnCloseModal = document.getElementById('btnCloseModal');
         const walletConnectedStatus = document.getElementById('walletConnectedStatus');
         const userAddress = document.getElementById('userAddress');
         const btnDisconnect = document.getElementById('btnDisconnect');
+        const toast = document.getElementById('transactionToast');
 
-        function isMobileDevice() { return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent); }
+        // Deteksi apakah user membuka dApp menggunakan smartphone (iOS / Android)
+        function isMobileDevice() {
+            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
 
-        // MANAJEMEN TEMA (DARK / LIGHT THEME TOGGLE)
-        const savedTheme = localStorage.getItem('zoniqfi-integrated-theme') || 'dark';
-        applyTheme(savedTheme);
+        // --- 1. LOGIKA INTERAKSI WALLET MODAL & DEEP LINKS ---
+        btnConnectTrigger.addEventListener('click', () => walletModal.classList.remove('style-hidden'));
+        btnCloseModal.addEventListener('click', () => walletModal.classList.add('style-hidden'));
+        walletModal.addEventListener('click', (e) => { if (e.target === walletModal) walletModal.classList.add('style-hidden'); });
 
-        themeToggleTrigger.addEventListener('click', () => {
-            const current = appNode.classList.contains('dark-mode') ? 'light' : 'dark';
-            applyTheme(current);
-        });
-
-        function applyTheme(theme) {
-            if (theme === 'light') {
-                appNode.classList.remove('dark-mode'); appNode.classList.add('light-mode');
-                themeToggleTrigger.innerText = '☀️'; localStorage.setItem('zoniqfi-integrated-theme', 'light');
+        function toggleWalletUI(isConnected, address = "") {
+            if (isConnected) {
+                btnConnectTrigger.classList.add('style-hidden');
+                walletConnectedStatus.classList.remove('style-hidden');
+                userAddress.innerText = address.substring(0, 6) + "..." + address.substring(address.length - 4);
             } else {
-                appNode.classList.remove('light-mode'); appNode.classList.add('dark-mode');
-                themeToggleTrigger.innerText = '🌙'; localStorage.setItem('zoniqfi-integrated-theme', 'dark');
+                btnConnectTrigger.classList.remove('style-hidden');
+                walletConnectedStatus.classList.add('style-hidden');
             }
         }
 
-        // KONTROL MODAL WALLET
-        btnConnectTrigger.addEventListener('click', () => walletModal.classList.remove('style-hidden'));
-        btnCloseModal.addEventListener('click', () => walletModal.classList.add('style-hidden'));
-        btnDisconnect.addEventListener('click', () => {
-            btnConnectTrigger.classList.remove('style-hidden'); walletConnectedStatus.classList.add('style-hidden');
-        });
-
-        function connectSimulatedWallet(address) {
+        function executeWalletConnection(walletType, dummyAddress) {
             walletModal.classList.add('style-hidden');
-            btnConnectTrigger.classList.add('style-hidden');
-            walletConnectedStatus.classList.remove('style-hidden');
-            userAddress.innerText = address.substring(0,6) + "..." + address.substring(address.length - 4);
+            toggleWalletUI(true, dummyAddress);
             showNotification();
         }
 
-        // INTEGRASI SISTEM DEEP LINKING (4 CARA KONEKSI)
-        document.getElementById('optSmartAccount').addEventListener('click', () => connectSimulatedWallet("0x71C231271f3b141151955F7a5c1A55f14A3B3a90"));
-        
+        // Handler Smart Account
+        document.getElementById('optSmartAccount').addEventListener('click', () => {
+            executeWalletConnection("Smart Account", "0x71C231271f3b141151955F7a5c1A55f14A3B3a90");
+        });
+
+        // Handler MetaMask (Dengan Mobile Deep Link Mux)
         document.getElementById('optMetaMask').addEventListener('click', () => {
             if (isMobileDevice()) {
-                window.open(`https://metamask.app.link/dapp/${DAPP_URL.replace(/^https?:\/\//, '')}`, '_blank');
+                // Menghapus 'https://' untuk standar parameter link MetaMask
+                const cleanUrl = DAPP_URL.replace(/^https?:\/\//, '');
+                window.open(`https://metamask.app.link/dapp/${cleanUrl}`, '_blank');
+                walletModal.classList.add('style-hidden');
             } else {
-                connectSimulatedWallet("0x9E59A83b0B286d528bBAf38A1a65Cc68F019058b");
+                executeWalletConnection("MetaMask", "0x9E59A83b0B286d528bBAf38A1a65Cc68F019058b");
             }
         });
 
+        // Handler Trust Wallet (Dengan Mobile Deep Link Mux)
         document.getElementById('optTrustWallet').addEventListener('click', () => {
             if (isMobileDevice()) {
-                window.open(`https://link.trustwallet.com/open_url?url=${encodeURIComponent(DAPP_URL)}`, '_blank');
+                const encodedUrl = encodeURIComponent(DAPP_URL);
+                window.open(`https://link.trustwallet.com/open_url?url=${encodedUrl}`, '_blank');
+                walletModal.classList.add('style-hidden');
             } else {
-                connectSimulatedWallet("0x6A19A83b0B286d528bBAf38A1a65Cc68F01905C2");
+                executeWalletConnection("Trust Wallet", "0x6A19A83b0B286d528bBAf38A1a65Cc68F01905C2");
             }
         });
 
+        // Handler WalletConnect (Memicu sistem inter-app OS)
         document.getElementById('optWalletConnect').addEventListener('click', () => {
             if (isMobileDevice()) {
+                // Simulasi pemanggilan URI 'wc:' WalletConnect v2 standard untuk memicu popup aplikasi dompet bawaan HP
                 window.location.href = "wc:00e4735a3d73d6115482b881@2?bridge=https%3A%2F%2Fwalletconnect.zoniqfi.com";
+                walletModal.classList.add('style-hidden');
             } else {
-                connectSimulatedWallet("0x3Fbc5601aCc8B928aA638fdf9872f2E908ba009a");
+                executeWalletConnection("WalletConnect", "0x3Fbc5601aCc8B928aA638fdf9872f2E908ba009a");
             }
         });
 
-        // SPA ROUTING MENU
-        function switchPage(pageId, element) {
-            document.querySelectorAll('.page-section').forEach(p => p.style.display = 'none');
-            const page = document.getElementById(`page-${pageId}`);
-            if (page) page.style.display = 'block';
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            element.classList.add('active');
-        }
+        btnDisconnect.addEventListener('click', () => toggleWalletUI(false));
 
-        // GAUGE VOTING LOGIC
+
+        // --- 2. LOGIKA PERHITUNGAN GAUGE VOTING ---
         function calculateTotalVotes() {
+            const inputs = document.querySelectorAll('.gauge-input');
+            const progressFill = document.getElementById('govProgressBar');
+            const totalText = document.getElementById('totalAllocatedPercent');
+            
             let total = 0;
-            document.querySelectorAll('.gauge-input').forEach(i => total += parseInt(i.value) || 0);
-            if (total > 100) { total = 100; event.target.value = 0; }
-            document.getElementById('totalAllocatedPercent').innerText = total;
-            document.getElementById('govProgressBar').style.width = total + '%';
+            inputs.forEach(input => {
+                let value = parseInt(input.value) || 0;
+                if (value < 0) value = 0;
+                if (value > 100) value = 100;
+                total += value;
+            });
+
+            if (total > 100) {
+                alert("Total alokasi melebihi 100%! Sistem otomatis membatasi nilai.");
+                let excess = total - 100;
+                event.target.value = Math.max(0, parseInt(event.target.value) - excess);
+                total = 100;
+            }
+
+            totalText.innerText = total;
+            progressFill.style.width = total + '%';
         }
 
-        // TOAST NOTIFICATION HELPERS
+
+        // --- 3. LOGIKA TOAST NOTIFIKASI ---
         function showNotification() {
-            const t = document.getElementById('transactionToast'); t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3500);
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 4000);
+        }
+        
+        document.getElementById('executeBtn').addEventListener('click', showNotification);
+        document.getElementById('claimBtn').addEventListener('click', showNotification);
+        document.getElementById('swapActionBtn').addEventListener('click', showNotification);
+        document.getElementById('submitVotesBtn').addEventListener('click', showNotification);
+        document.querySelectorAll('.id-vault-btn').forEach(btn => btn.addEventListener('click', showNotification));
+
+
+        // --- 4. LOGIKA PENGALIHAN DUA BAHASA (EN/ID) ---
+        document.getElementById('appLangSwitcher').addEventListener('change', function(e) {
+            document.getElementById('appNode').setAttribute('lang', e.target.value);
+        });
+
+
+        // --- 5. SELEKSI TOMBOL DURASI ---
+        const durationBtns = document.querySelectorAll('.duration-btn');
+        durationBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                durationBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+
+        // --- 6. LOGIKA NAVIGASI MENU SIDEBAR (SPA) ---
+        function switchPage(pageId, element) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => { page.style.display = 'none'; });
+
+            const activePage = document.getElementById(`page-${pageId}`);
+            if (activePage) { activePage.style.display = 'block'; }
+
+            const menuItems = document.querySelectorAll('.nav-item');
+            menuItems.forEach(item => { item.classList.remove('active'); });
+            element.classList.add('active');
+            
+            if(window.innerWidth <= 768) toggleMobileMenu();
         }
 
-        document.getElementById('appLangSwitcher').addEventListener('change', (e) => appNode.setAttribute('lang', e.target.value));
+
+        // --- 7. LOGIKA MENU HAMBURGER (RESPONSIF HP) ---
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const appSidebar = document.getElementById('appSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleMobileMenu() {
+            const isOpen = appSidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+            if (isOpen) {
+                menuToggleBtn.innerHTML = '✕';
+                menuToggleBtn.style.background = 'linear-gradient(135deg, #ef4444 0%, #991b1b 100%)';
+            } else {
+                menuToggleBtn.innerHTML = '☰';
+                menuToggleBtn.style.background = 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)';
+            }
+        }
+        menuToggleBtn.addEventListener('click', toggleMobileMenu);
+        sidebarOverlay.addEventListener('click', toggleMobileMenu);
     </script>
 </body>
 </html>
