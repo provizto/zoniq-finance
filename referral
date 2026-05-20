@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZoniqFi ($ZNF) - Referral Dashboard</title>
+    <!-- Google Fonts untuk tampilan modern -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* --- RESET & ROOT VARIABLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --bg-color: #0b0e14;
+            --card-bg: #151a24;
+            --text-main: #ffffff;
+            --text-muted: #8892b0;
+            --primary: #00ffcc; /* Neon Cyan */
+            --secondary: #9d4edd; /* Purple */
+            --danger: #ff4d4d;
+            --shadow-glow: rgba(0, 255, 204, 0.3);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* --- HEADER SECTION --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #232d3f;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .wallet-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tier-badge {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.2), rgba(0, 255, 204, 0.2));
+            border: 1px solid var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .btn-connect {
+            background-color: var(--card-bg);
+            border: 1px solid #232d3f;
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-connect:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--shadow-glow);
+        }
+
+        /* --- MAIN GRID LAYOUT --- */
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid #232d3f;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        /* --- LEFT PANEL: LINK GENERATOR --- */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .input-field {
+            flex: 1;
+            background-color: #0b0e14;
+            border: 1px solid #232d3f;
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .btn-action {
+            background: linear-gradient(45deg, var(--secondary), #7b2cbf);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        .btn-copy {
+            background: linear-gradient(45deg, var(--primary), #00b395);
+            color: #0b0e14;
+            font-weight: 700;
+        }
+
+        /* --- GAMIFICATION PROGRESS BAR --- */
+        .milestone-container {
+            margin-top: 15px;
+        }
+
+        .progress-bar-wrapper {
+            position: relative;
+            height: 8px;
+            background-color: #0b0e14;
+            border-radius: 4px;
+            margin: 30px 0;
+        }
+
+        .progress-fill {
+            width: 40%; /* Menggambarkan progress 40% (misal mengundang 4 orang) */
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            border-radius: 4px;
+            box-shadow: 0 0 8px var(--shadow-glow);
+        }
+
+        .checkpoint {
+            position: absolute;
+            top: -10px;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .checkpoint-dot {
+            width: 26px;
+            height: 26px;
+            background-color: #151a24;
+            border: 2px solid #232d3f;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkpoint.active .checkpoint-dot {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 8px var(--shadow-glow);
+        }
+
+        .checkpoint.claimed .checkpoint-dot {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: #0b0e14;
+        }
+
+        /* --- RIGHT PANEL: STATS & CLAIM --- */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background-color: #0b0e14;
+            border: 1px solid #232d3f;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .unclaimed-box {
+            border-color: var(--primary);
+            background: linear-gradient(180deg, #151a24 0%, rgba(0, 255, 204, 0.03) 100%);
+        }
+
+        .unclaimed-box .stat-value {
+            color: var(--primary);
+        }
+
+        .btn-claim {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(45deg, var(--primary), #00b395);
+            color: #0b0e14;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            animation: pulseGlow 2s infinite ease-in-out;
+            transition: transform 0.2s;
+        }
+
+        .btn-claim:active {
+            transform: scale(0.98);
+        }
+
+        .gas-warning {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* --- LEADERBOARD TABLE --- */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .leaderboard-table th {
+            text-align: left;
+            padding: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+            border-bottom: 1px solid #232d3f;
+        }
+
+        .leaderboard-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #1a2230;
+        }
+
+        .my-rank {
+            background-color: rgba(255, 215, 0, 0.05);
+            color: #ffd700;
+            font-weight: 600;
+        }
+        
+        .my-rank td {
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(0, 255, 204, 0.4); }
+            50% { box-shadow: 0 0 18px rgba(0, 255, 204, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(0, 255, 204, 0.4); }
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 900px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">ZoniqFi</div>
+        <div class="wallet-status">
+            <div class="tier-badge">Tier 1: Nano Affiliate</div>
+            <button class="btn-connect">0x7a...2b9d</button>
+        </div>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="dashboard-container">
+        
+        <!-- LEFT COLUMN -->
+        <div class="left-panel">
+            
+            <!-- REFERRAL LINK GENERATOR -->
+            <div class="card">
+                <div class="card-title">🔗 Tautan Rujukan Anda</div>
+                <p style="font-size: 13px; color: var(--text-muted);">Bagikan tautan ini ke komunitas Anda untuk mendapatkan komisi 10% dari Fee DEX & 5% dari Yield Optimizer secara otomatis.</p>
+                <div class="input-group">
+                    <input type="text" class="input-field" value="https://zoniqfi.com" readonly id="refLink">
+                    <button class="btn-action btn-copy" onclick="copyReferralLink()">Copy Link</button>
+                </div>
+
+                <div class="card-title" style="margin-top: 30px;">✍️ Kustomisasi Kode (Khusus Tier 2+)</div>
+                <p style="font-size: 13px; color: var(--text-muted);">Ubah akhiran kode rujukan Anda agar lebih menarik (Maksimal 15 karakter).</p>
+                <div class="input-group">
+                    <input type="text" class="input-field" placeholder="Masukkan kode kustom Anda (Contoh: CUANMAX)">
+                    <button class="btn-action">Update Kode</button>
+                </div>
+            </div>
+
+            <!-- GAMIFICATION MILESTONE PROGRESS -->
+            <div class="card">
+                <div class="card-title">🎁 Pencapaian Rujukan (Milestone)</div>
+                <p style="font-size: 13px; color: var(--text-muted);">Undang lebih banyak pengguna aktif untuk membuka hadiah langsung dalam bentuk token $ZNF!</p>
+                
+                <div class="milestone-container">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-fill"></div>
+                        
+                        <!-- Checkpoint 1 -->
+                        <div class="checkpoint claimed" style="left: 0%;">
+                            <div class="checkpoint-dot">✔</div>
+                            <span>Mulai</span>
+                        </div>
+                        <!-- Checkpoint 2 -->
+                        <div class="checkpoint claimed" style="left: 20%;">
+                            <div class="checkpoint-dot">🎁</div>
+                            <span>3 Teman</span>
+                        </div>
+                        <!-- Checkpoint 3 -->
+                        <div class="checkpoint active" style="left: 60%;">
+                            <div class="checkpoint-dot">🔒</div>
+                            <span>10 Teman</span>
+                        </div>
+                        <!-- Checkpoint 4 -->
+                        <div class="checkpoint" style="left: 100%;">
+                            <div class="checkpoint-dot">🔒</div>
+                            <span>25 Teman</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEADERBOARD COMPONENT -->
+            <div class="card">
+                <div class="card-title">🏆 Papan Peringkat Bulan Ini (Leaderboard)</div>
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Peringkat</th>
+                            <th>Alamat Dompet</th>
+                            <th>Total Undangan</th>
+                            <th>Estimasi Bonus</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🥇 1</td>
+                            <td>0x9f...38da</td>
+                            <td>142 orang</td>
+                            <td>+$500 $ZNF</td>
+                        </tr>
+                        <tr>
+                            <td>🥈 2</td>
+                            <td>0x4b...92ee</td>
+                            <td>98 orang</td>
+                            <td>+$250 $ZNF</td>
+                        </tr>
+                        <tr>
+                            <td>🥉 3</td>
+                            <td>0x1a...71bc</td>
+                            <td>55 orang</td>
+                            <td>+$100 $ZNF</td>
+                        </tr>
+                        <!-- Baris Posisi Pengguna Sendiri -->
+                        <tr class="my-rank">
+                            <td># 24</td>
+                            <td>0x7a...2b9d (Anda)</td>
+                            <td>4 orang</td>
+                            <td>Kejar Peringkat!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right-panel">
+            
+            <!-- STATS & CLAIM PANEL -->
+            <div class="card">
+                <div class="card-title">📊 Statistik Akumulasi</div>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Total Teman Diundang</div>
+                        <div class="stat-value">4 orang</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Total Volume Transaksi Teman</div>
+                        <div class="stat-value">$12,450.00</div>
+                    </div>
+                    <div class="stat-box unclaimed-box">
+                        <div class="stat-label">Komisi Belum Diklaim</div>
+                        <div class="stat-value">340.50 $ZNF</div>
+                    </div>
+                </div>
+
+                <button class="btn-claim" onclick="simulateClaim()">Claim Rewards</button>
+                <div class="gas-warning">⚠️ Pastikan Anda memiliki saldo koin asli jaringan yang cukup untuk membayar Gas Fee klaim transaksi ini.</div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- SCRIPT SEDERHANA UNTUK INTERAKSI PENGGUNA -->
+    <script>
+        function copyReferralLink() {
+            var copyText = document.getElementById("refLink");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* Untuk perangkat seluler */
+            navigator.clipboard.writeText(copyText.value);
+            
+            var copyButton = document.querySelector(".btn-copy");
+            copyButton.innerText = "Copied! ✔";
+            setTimeout(function() {
+                copyButton.innerText = "Copy Link";
+            }, 2000);
+        }
+
+        function simulateClaim() {
+            alert("Memulai koneksi smart contract... Pastikan Anda menyetujui transaksi pop-up yang muncul di ekstensi dompet Anda (Simulasi).");
+        }
+    </script>
+</body>
+</html>
