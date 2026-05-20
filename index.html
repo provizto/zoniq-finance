@@ -33,20 +33,26 @@
         html[lang="en"] .lang-en { display: block; }
         html[lang="en"] span.lang-en { display: inline; }
         html[lang="en"] tr.lang-en { display: table-row; }
+        html[lang="en"] li.lang-en { display: flex; }
 
         /* Sembunyikan elemen EN saat dokumen dialihkan ke bahasa ID */
         html[lang="id"] .lang-en { display: none !important; }
         html[lang="id"] .lang-id { display: block; }
         html[lang="id"] span.lang-id { display: inline; }
         html[lang="id"] tr.lang-id { display: table-row; }
+        html[lang="id"] li.lang-id { display: flex; }
 
         /* ==========================================================================
-           3. GAYA VISUAL KOMPONEN (STYLING)
+           3. GAYA VISUAL KOMPONEN (STYLING UTAMA)
            ========================================================================== */
         header {
             border-bottom: 1px solid #1e293b;
             padding: 20px 0;
             background-color: rgba(11, 15, 25, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
         }
         .nav-container {
             display: flex;
@@ -217,14 +223,193 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .btn-sm:hover { background-color: #2563eb; color: #white; }
+        .btn-sm:hover { background-color: #2563eb; color: #ffffff; }
 
-        /* FOOTER */
+        /* ==========================================================================
+           4. STYLING VARIABEL & STRUKTUR ROADMAP (INTEGRASI BARU)
+           ========================================================================== */
+        :root {
+            --roadmap-card-bg: #0f172a;
+            --roadmap-text-muted: #9ca3af;
+            --primary-glow: #00ffcc; 
+            --secondary-glow: #9d4edd; 
+            --roadmap-border: #1e293b;
+        }
+
+        .roadmap-section {
+            margin-bottom: 100px;
+            text-align: left;
+        }
+
+        .roadmap-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .roadmap-header h2 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .roadmap-header p {
+            font-size: 14px;
+            color: var(--roadmap-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* STRUKTUR LINIMASA VERTIKAL */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-left: 30px;
+            border-left: 2px solid var(--roadmap-border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        /* Titik Indikator di Garis Kiri */
+        .timeline-dot {
+            position: absolute;
+            left: -41px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #0b0f19;
+            border: 3px solid var(--roadmap-border);
+            z-index: 5;
+            transition: all 0.3s;
+        }
+
+        /* Status Aktif / Selesai pada Titik Indikator */
+        .timeline-item.completed .timeline-dot {
+            border-color: var(--primary-glow);
+            background-color: var(--primary-glow);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
+        }
+
+        .timeline-item.in-progress .timeline-dot {
+            border-color: var(--secondary-glow);
+            background-color: #0b0f19;
+            box-shadow: 0 0 10px rgba(157, 78, 221, 0.4);
+        }
+
+        /* KOTAK KARTU ROADMAP */
+        .roadmap-card {
+            background-color: var(--roadmap-card-bg);
+            border: 1px solid var(--roadmap-border);
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.in-progress .roadmap-card {
+            border-color: rgba(157, 78, 221, 0.4);
+            background: linear-gradient(180deg, #0f172a 0%, rgba(157, 78, 221, 0.02) 100%);
+        }
+
+        .roadmap-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* DETAIL ISI KARTU */
+        .card-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quarter-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Label Status Badge */
+        .status-tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid transparent;
+        }
+
+        .tag-completed {
+            background-color: rgba(0, 255, 204, 0.08);
+            color: var(--primary-glow);
+            border-color: rgba(0, 255, 204, 0.2);
+        }
+
+        .tag-progress {
+            background-color: rgba(157, 78, 221, 0.08);
+            color: var(--secondary-glow);
+            border-color: rgba(157, 78, 221, 0.2);
+        }
+
+        .tag-upcoming {
+            background-color: rgba(136, 146, 176, 0.05);
+            color: var(--roadmap-text-muted);
+            border-color: rgba(136, 146, 176, 0.1);
+        }
+
+        /* DAFTAR TARGET TARGET MILESTONE */
+        .milestone-list {
+            list-style: none;
+            font-size: 13px;
+            color: var(--roadmap-text-muted);
+            line-height: 1.6;
+        }
+
+        .milestone-list li {
+            margin-bottom: 8px;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        /* Ikon Indikator List */
+        .milestone-list li::before {
+            content: "▪";
+            color: var(--secondary-glow);
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .timeline-item.completed .milestone-list li::before {
+            content: "✓";
+            color: var(--primary-glow);
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .card-header-flex { flex-direction: column; align-items: flex-start; }
+            .roadmap-section { padding: 0 10px; }
+        }
+
+        /* ==========================================================================
+           5. FOOTER KAKI HALAMAN
+           ========================================================================== */
         footer {
             border-top: 1px solid #111827;
             padding: 30px 0;
             font-size: 13px;
             color: #4b5563;
+            margin-top: 40px;
         }
         .footer-container {
             display: flex;
@@ -241,12 +426,10 @@
 </head>
 <body>
 
-    <!-- NAVIGASI UTAMA -->
     <header>
         <div class="wrapper nav-container">
             <div class="logo">ZoniqFi<span>.</span></div>
             <div class="right-nav">
-                <!-- PENGALIH BAHASA -->
                 <select id="langSwitcher" class="lang-select">
                     <option value="en">🌐 EN</option>
                     <option value="id">🌐 ID</option>
@@ -259,10 +442,8 @@
         </div>
     </header>
 
-    <!-- KONTEN UTAMA -->
     <main class="wrapper">
         
-        <!-- HERO SECTION -->
         <section class="hero">
             <div class="badge">🚀 Native on Base Layer 2</div>
             
@@ -273,21 +454,18 @@
             <p class="lang-id">Berdagang dengan slippage rendah, otomatiskan hasil investasi Anda, dan raih pendapatan protokol riil dalam USDC dengan mengunci $ZNF.</p>
             
             <div style="display: flex; justify-content: center; gap: 16px; margin-top: 32px;">
-        <!-- TOMBOL LAUNCH APP -->
-        <button onclick="window.location.href='app.html'" class="btn" style="padding: 14px 36px; font-size: 15px;">
-            <span class="lang-en">Launch App</span>
-            <span class="lang-id">Buka Aplikasi</span>
-        </button>
+                <button onclick="window.location.href='app.html'" class="btn" style="padding: 14px 36px; font-size: 15px;">
+                    <span class="lang-en">Launch App</span>
+                    <span class="lang-id">Buka Aplikasi</span>
+                </button>
 
-        <!-- TOMBOL READ WHITEPAPER (BARU DITAMBAHKAN) -->
-        <button onclick="window.location.href='whitepaper.html'" class="btn" style="background-color: #1e293b; border: 1px solid #334155; color: #d1d5db; padding: 14px 36px; font-size: 15px;" onmouseover="this.style.backgroundColor='#334155'; this.style.color='#ffffff';" onmouseout="this.style.backgroundColor='#1e293b'; this.style.color='#d1d5db';">
-            <span class="lang-en">Read Whitepaper</span>
-            <span class="lang-id">Baca Whitepaper</span>
-        </button>
-    </div>
+                <button onclick="window.location.href='whitepaper.html'" class="btn" style="background-color: #1e293b; border: 1px solid #334155; color: #d1d5db; padding: 14px 36px; font-size: 15px;" onmouseover="this.style.backgroundColor='#334155'; this.style.color='#ffffff';" onmouseout="this.style.backgroundColor='#1e293b'; this.style.color='#d1d5db';">
+                    <span class="lang-en">Read Whitepaper</span>
+                    <span class="lang-id">Baca Whitepaper</span>
+                </button>
+            </div>
         </section>
 
-        <!-- DASHBOARD STATISTIK -->
         <section class="stats-grid">
             <div class="stat-item">
                 <p class="lang-en">Total Value Locked</p>
@@ -311,7 +489,6 @@
             </div>
         </section>
 
-        <!-- FITUR PRODUK KARTU -->
         <section class="features-grid">
             <div class="card">
                 <h3>ZoniqFi AMM DEX</h3>
@@ -325,7 +502,6 @@
             </div>
         </section>
 
-        <!-- TABEL LIKUIDITAS -->
         <section class="table-section">
             <h2 class="lang-en">Supported Liquidity Pools</h2>
             <h2 class="lang-id">Kolam Likuiditas yang Didukung</h2>
@@ -371,9 +547,100 @@
             </div>
         </section>
 
+        <section class="roadmap-section">
+            <div class="roadmap-header">
+                <h2 class="lang-en">Strategic Roadmap</h2>
+                <h2 class="lang-id">Rencana Strategis Roadmap</h2>
+                
+                <p class="lang-en">Quarterly ecosystem development timeline for community transparency and Ecosystem Grants accreditation.</p>
+                <p class="lang-id">Peta jalan pengembangan ekosistem ZoniqFi ($ZNF) berbasis kuartal untuk transparansi komunitas dan akreditasi dana hibah (Ecosystem Grants).</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item completed">
+                    <div class="timeline-dot"></div>
+                    <div class="roadmap-card">
+                        <div class="card-header-flex">
+                            <div class="quarter-title">Q1 2026: Core Code Architecture</div>
+                            <span class="status-tag tag-completed">Completed</span>
+                        </div>
+                        <ul class="milestone-list">
+                            <li class="lang-en">Comprehensive technical design documentation (Architecture Whitepaper) and GitBook public documentation release.</li>
+                            <li class="lang-id">Penyusunan dokumen teknis lengkap (Architecture Whitepaper) dan perilisan GitBook Dokumentasi publik.</li>
+                            
+                            <li class="lang-en">Completion of core smart contract codebase for AMM DEX and Yield Optimizer vaults on GitHub.</li>
+                            <li class="lang-id">Penyelesaian basis kode smart contract inti untuk DEX AMM dan brankas Yield Optimizer di GitHub.</li>
+                            
+                            <li class="lang-en">Administrative proposal documentation submission to the ecosystem grant committee.</li>
+                            <li class="lang-id">Pengajuan proposal dokumen administrasi ke komite hibah (Grant Application Phase).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item in-progress">
+                    <div class="timeline-dot"></div>
+                    <div class="roadmap-card">
+                        <div class="card-header-flex">
+                            <div class="quarter-title">Q2 2026: Validation & Public Testnet</div>
+                            <span class="status-tag tag-progress">In Progress</span>
+                        </div>
+                        <ul class="milestone-list">
+                            <li class="lang-en">ZoniqFi Public Testnet launch to evaluate network load and community transaction performance.</li>
+                            <li class="lang-id">Peluncuran ZoniqFi Public Testnet untuk uji coba beban interaksi transaksi komunitas.</li>
+                            
+                            <li class="lang-en">Bug Bounty program activation in collaboration with third-party security researchers to intercept vulnerabilities.</li>
+                            <li class="lang-id">Pembukaan program Bug Bounty kerja sama pihak ketiga untuk menyaring celah keamanan kode siber.</li>
+                            
+                            <li class="lang-en">Completion of full security audit report (Full Smart Contract Audit) by globally accredited firms.</li>
+                            <li class="lang-id">Penyelesaian laporan audit keamanan penuh (Full Smart Contract Audit) oleh firma auditor berakreditasi global.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="roadmap-card">
+                        <div class="card-header-flex">
+                            <div class="quarter-title">Q3 2026: Mainnet Launch & Liquidity Bootstrapping</div>
+                            <span class="status-tag tag-upcoming">Upcoming</span>
+                        </div>
+                        <ul class="milestone-list">
+                            <li class="lang-en">Official Mainnet deployment of core DEX and Yield Optimizer vault infrastructure.</li>
+                            <li class="lang-id">Implementasi resmi peluncuran produk DEX dan Yield Optimizer di jaringan utama (Mainnet Deploy).</li>
+                            
+                            <li class="lang-en">$ZNF Token Generation Event (TGE) and Initial DEX Offering (IDO) token launch.</li>
+                            <li class="lang-id">Eksekusi Token Generation Event (TGE) $ZNF beserta peluncuran Initial DEX Offering (IDO).</li>
+                            
+                            <li class="lang-en">Targeting an initial ecosystem milestone of at least $1 Million Total Value Locked (TVL).</li>
+                            <li class="lang-id">Pencapaian target pertumbuhan awal ekosistem: Membidik angka Total Value Locked (TVL) minimal $1 Juta.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="roadmap-card">
+                        <div class="card-header-flex">
+                            <div class="quarter-title">Q4 2026: Multi-Chain Scaling & Governance</div>
+                            <span class="status-tag tag-upcoming">Upcoming</span>
+                        </div>
+                        <ul class="milestone-list">
+                            <li class="lang-en">Cross-chain Smart Routing integration for Yield Optimizer vaults to optimize multi-network gas costs.</li>
+                            <li class="lang-id">Ekspansi fitur Yield Optimizer lintas jaringan blockchain (Cross-chain Smart Routing) untuk efisiensi biaya gas.</li>
+                            
+                            <li class="lang-en">Decentralized governance platform setup (ZoniqFi DAO) powered by Snapshot voting systems.</li>
+                            <li class="lang-id">Perilisan sistem voting tata kelola terdesentralisasi (ZoniqFi DAO) menggunakan platform Snapshot.</li>
+                            
+                            <li class="lang-en">Ecosystem Impact Report compilation as a baseline prerequisite for subsequent grant funding waves.</li>
+                            <li class="lang-id">Penyusunan Laporan Dampak Ekosistem (Ecosystem Impact Report) sebagai prasyarat pengajuan hibah gelombang lanjutan.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- FOOTER KAKI HALAMAN -->
     <footer>
         <div class="wrapper footer-container">
             <div>&copy; 2026 Zoniq Finance. Built on Base Ecosystem.</div>
@@ -386,7 +653,6 @@
         </div>
     </footer>
 
-    <!-- INTERACTIVE LANGUAGE LOGIC -->
     <script>
         // Mengubah atribut [lang] pada tag html utama berdasarkan seleksi menu drop-down
         document.getElementById('langSwitcher').addEventListener('change', function(e) {
