@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZoniqFi ($ZNF) - Referral Dashboard</title>
-    <!-- Google Fonts untuk tampilan modern -->
+    <title>ZoniqFi ($ZNF) - Anti-Sybil Referral Dashboard</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        /* --- RESET & ROOT VARIABLES --- */
+        /* --- ROOT & CORE STYLES --- */
         * {
             margin: 0;
             padding: 0;
@@ -22,8 +21,9 @@
             --text-muted: #8892b0;
             --primary: #00ffcc; /* Neon Cyan */
             --secondary: #9d4edd; /* Purple */
+            --warning: #ffb703;
             --danger: #ff4d4d;
-            --shadow-glow: rgba(0, 255, 204, 0.3);
+            --shadow-glow: rgba(0, 255, 204, 0.2);
         }
 
         body {
@@ -33,7 +33,6 @@
             padding: 20px;
         }
 
-        /* --- HEADER SECTION --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -60,7 +59,7 @@
         }
 
         .tier-badge {
-            background: linear-gradient(135deg, rgba(157, 78, 221, 0.2), rgba(0, 255, 204, 0.2));
+            background: rgba(0, 255, 204, 0.1);
             border: 1px solid var(--primary);
             padding: 6px 12px;
             border-radius: 20px;
@@ -69,23 +68,7 @@
             color: var(--primary);
         }
 
-        .btn-connect {
-            background-color: var(--card-bg);
-            border: 1px solid #232d3f;
-            color: var(--text-main);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-connect:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px var(--shadow-glow);
-        }
-
-        /* --- MAIN GRID LAYOUT --- */
+        /* --- LAYOUT --- */
         .dashboard-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -99,24 +82,50 @@
             border: 1px solid #232d3f;
             border-radius: 16px;
             padding: 25px;
-        }
-
-        /* --- LEFT PANEL: LINK GENERATOR --- */
-        .left-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+            margin-bottom: 25px;
         }
 
         .card-title {
             font-size: 18px;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
+        /* --- ANTI-SYBIL RULES BANNER --- */
+        .sybil-rules-banner {
+            background: rgba(255, 183, 3, 0.05);
+            border: 1px solid var(--warning);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sybil-rules-banner h4 {
+            color: var(--warning);
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sybil-rules-list {
+            list-style: none;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .sybil-rules-list li {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- INPUTS & BUTTONS --- */
         .input-group {
             display: flex;
             gap: 10px;
@@ -133,51 +142,30 @@
             font-size: 14px;
         }
 
-        .input-field:focus {
-            outline: none;
-            border-color: var(--secondary);
-        }
-
-        .btn-action {
-            background: linear-gradient(45deg, var(--secondary), #7b2cbf);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.3s;
-        }
-
-        .btn-action:hover {
-            opacity: 0.9;
-        }
-
         .btn-copy {
             background: linear-gradient(45deg, var(--primary), #00b395);
             color: #0b0e14;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
             font-weight: 700;
+            cursor: pointer;
         }
 
-        /* --- GAMIFICATION PROGRESS BAR --- */
-        .milestone-container {
-            margin-top: 15px;
-        }
-
+        /* --- PROGRESS BAR GAMIFIKASI --- */
         .progress-bar-wrapper {
             position: relative;
             height: 8px;
             background-color: #0b0e14;
             border-radius: 4px;
-            margin: 30px 0;
+            margin: 35px 0 20px 0;
         }
 
         .progress-fill {
-            width: 40%; /* Menggambarkan progress 40% (misal mengundang 4 orang) */
+            width: 30%; /* Berdasarkan logika: Hanya 3 teman aktif dari total 5 undangan */
             height: 100%;
             background: linear-gradient(90deg, var(--secondary), var(--primary));
             border-radius: 4px;
-            box-shadow: 0 0 8px var(--shadow-glow);
         }
 
         .checkpoint {
@@ -201,9 +189,7 @@
             justify-content: center;
             align-items: center;
             margin-bottom: 5px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
+            font-weight: bold;
         }
 
         .checkpoint.active .checkpoint-dot {
@@ -218,14 +204,48 @@
             color: #0b0e14;
         }
 
-        /* --- RIGHT PANEL: STATS & CLAIM --- */
-        .right-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
+        /* --- BADGES STATUS TEMAN --- */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
         }
 
-        .stats-grid {
+        .status-active {
+            background-color: rgba(0, 255, 204, 0.1);
+            color: var(--primary);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+        }
+
+        .status-pending {
+            background-color: rgba(255, 183, 3, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+        }
+
+        /* --- TABLES --- */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 10px;
+            color: var(--text-muted);
+            border-bottom: 1px solid #232d3f;
+        }
+
+        .data-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #1a2230;
+        }
+
+        /* --- RIGHT SIDEBAR STATS --- */
+        .stats-list {
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -239,24 +259,21 @@
             border-radius: 8px;
         }
 
+        .stat-split {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+        }
+
         .stat-label {
             font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 5px;
         }
 
         .stat-value {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
-        }
-
-        .unclaimed-box {
-            border-color: var(--primary);
-            background: linear-gradient(180deg, #151a24 0%, rgba(0, 255, 204, 0.03) 100%);
-        }
-
-        .unclaimed-box .stat-value {
-            color: var(--primary);
         }
 
         .btn-claim {
@@ -266,174 +283,137 @@
             border: none;
             background: linear-gradient(45deg, var(--primary), #00b395);
             color: #0b0e14;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            animation: pulseGlow 2s infinite ease-in-out;
-            transition: transform 0.2s;
+            box-shadow: 0 0 15px var(--shadow-glow);
         }
 
-        .btn-claim:active {
-            transform: scale(0.98);
+        /* State ketika tombol dinonaktifkan oleh sistem smart contract */
+        .btn-claim:disabled {
+            background: #232d3f;
+            color: var(--text-muted);
+            box-shadow: none;
+            cursor: not-allowed;
         }
 
-        .gas-warning {
+        .info-note {
             font-size: 11px;
             color: var(--text-muted);
             text-align: center;
             margin-top: 10px;
+            line-height: 1.4;
         }
 
-        /* --- LEADERBOARD TABLE --- */
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .leaderboard-table th {
-            text-align: left;
-            padding: 10px;
-            color: var(--text-muted);
-            font-weight: 500;
-            border-bottom: 1px solid #232d3f;
-        }
-
-        .leaderboard-table td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #1a2230;
-        }
-
-        .my-rank {
-            background-color: rgba(255, 215, 0, 0.05);
-            color: #ffd700;
-            font-weight: 600;
-        }
-        
-        .my-rank td {
-            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        /* --- ANIMATIONS --- */
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 5px rgba(0, 255, 204, 0.4); }
-            50% { box-shadow: 0 0 18px rgba(0, 255, 204, 0.8); }
-            100% { box-shadow: 0 0 5px rgba(0, 255, 204, 0.4); }
-        }
-
-        /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 900px) {
-            .dashboard-container {
-                grid-template-columns: 1fr;
-            }
+            .dashboard-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
     <header>
         <div class="logo">ZoniqFi</div>
         <div class="wallet-status">
-            <div class="tier-badge">Tier 1: Nano Affiliate</div>
-            <button class="btn-connect">0x7a...2b9d</button>
+            <div class="tier-badge">Tier 1</div>
+            <button class="btn-connect" style="background:#151a24; color:white; border:1px solid #232d3f; padding:8px 15px; border-radius:8px;">0x7a...2b9d</button>
         </div>
     </header>
 
-    <!-- MAIN DASHBOARD CONTENT -->
     <main class="dashboard-container">
         
-        <!-- LEFT COLUMN -->
-        <div class="left-panel">
+        <!-- PANEL KIRI -->
+        <div class="left-section">
             
-            <!-- REFERRAL LINK GENERATOR -->
+            <!-- BANNER ATURAN VALIDASI KEPATUHAN (ANTI-SYBIL) -->
+            <div class="sybil-rules-banner">
+                <h4>🛡️ Syarat Perlindungan Komunitas (Anti-Sybil Exploits)</h4>
+                <ul class="sybil-rules-list">
+                    <li>▪ Teman yang diundang wajib melakukan **Swap Minimal senilai $10** di DEX, ATAU</li>
+                    <li>▪ Mengunci aset di **Yield Optimizer minimal selama 7 hari berturut-turut**.</li>
+                    <li>⚠️ *Alamat dompet palsu atau dompet tanpa riwayat transaksi aktif tidak akan dihitung dalam hadiah Milestone.*</li>
+                </ul>
+            </div>
+
+            <!-- TAUTAN RUJUKAN -->
             <div class="card">
                 <div class="card-title">🔗 Tautan Rujukan Anda</div>
-                <p style="font-size: 13px; color: var(--text-muted);">Bagikan tautan ini ke komunitas Anda untuk mendapatkan komisi 10% dari Fee DEX & 5% dari Yield Optimizer secara otomatis.</p>
                 <div class="input-group">
                     <input type="text" class="input-field" value="https://zoniqfi.com" readonly id="refLink">
-                    <button class="btn-action btn-copy" onclick="copyReferralLink()">Copy Link</button>
-                </div>
-
-                <div class="card-title" style="margin-top: 30px;">✍️ Kustomisasi Kode (Khusus Tier 2+)</div>
-                <p style="font-size: 13px; color: var(--text-muted);">Ubah akhiran kode rujukan Anda agar lebih menarik (Maksimal 15 karakter).</p>
-                <div class="input-group">
-                    <input type="text" class="input-field" placeholder="Masukkan kode kustom Anda (Contoh: CUANMAX)">
-                    <button class="btn-action">Update Kode</button>
+                    <button class="btn-copy" onclick="copyLink()">Copy Link</button>
                 </div>
             </div>
 
-            <!-- GAMIFICATION MILESTONE PROGRESS -->
+            <!-- GAMIFIKASI MILESTONE (HANYA MENGHITUNG TEMAN YANG AKTIF SAH) -->
             <div class="card">
-                <div class="card-title">🎁 Pencapaian Rujukan (Milestone)</div>
-                <p style="font-size: 13px; color: var(--text-muted);">Undang lebih banyak pengguna aktif untuk membuka hadiah langsung dalam bentuk token $ZNF!</p>
+                <div class="card-title">🎁 Klaim Hadiah Berbasis Milestone</div>
+                <p style="font-size: 12px; color: var(--text-muted);">Kemajuan di bawah ini hanya berjalan berdasarkan jumlah teman yang statusnya terverifikasi **Aktif**.</p>
                 
-                <div class="milestone-container">
-                    <div class="progress-bar-wrapper">
-                        <div class="progress-fill"></div>
-                        
-                        <!-- Checkpoint 1 -->
-                        <div class="checkpoint claimed" style="left: 0%;">
-                            <div class="checkpoint-dot">✔</div>
-                            <span>Mulai</span>
-                        </div>
-                        <!-- Checkpoint 2 -->
-                        <div class="checkpoint claimed" style="left: 20%;">
-                            <div class="checkpoint-dot">🎁</div>
-                            <span>3 Teman</span>
-                        </div>
-                        <!-- Checkpoint 3 -->
-                        <div class="checkpoint active" style="left: 60%;">
-                            <div class="checkpoint-dot">🔒</div>
-                            <span>10 Teman</span>
-                        </div>
-                        <!-- Checkpoint 4 -->
-                        <div class="checkpoint" style="left: 100%;">
-                            <div class="checkpoint-dot">🔒</div>
-                            <span>25 Teman</span>
-                        </div>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-fill"></div>
+                    
+                    <div class="checkpoint claimed" style="left: 0%;">
+                        <div class="checkpoint-dot">✓</div>
+                        <span>Mulai</span>
+                    </div>
+                    <div class="checkpoint claimed" style="left: 30%;">
+                        <div class="checkpoint-dot">🎁</div>
+                        <span>3 Aktif</span>
+                    </div>
+                    <div class="checkpoint active" style="left: 65%;">
+                        <div class="checkpoint-dot">🔒</div>
+                        <span>10 Aktif</span>
+                    </div>
+                    <div class="checkpoint" style="left: 100%;">
+                        <div class="checkpoint-dot">🔒</div>
+                        <span>25 Aktif</span>
                     </div>
                 </div>
             </div>
 
-            <!-- LEADERBOARD COMPONENT -->
+            <!-- TABEL PEMBEDAH STATUS DOMPET TEMAN (SANGAT KRUSIAL BAGI USER & CTO) -->
             <div class="card">
-                <div class="card-title">🏆 Papan Peringkat Bulan Ini (Leaderboard)</div>
-                <table class="leaderboard-table">
+                <div class="card-title">👥 Riwayat Dompet yang Diundang</div>
+                <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Peringkat</th>
                             <th>Alamat Dompet</th>
-                            <th>Total Undangan</th>
-                            <th>Estimasi Bonus</th>
+                            <th>Nilai Swap DEX</th>
+                            <th>Durasi Yield</th>
+                            <th>Status Validasi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>🥇 1</td>
-                            <td>0x9f...38da</td>
-                            <td>142 orang</td>
-                            <td>+$500 $ZNF</td>
+                            <td>0x3b...89f1</td>
+                            <td>$25.50</td>
+                            <td>9 Hari</td>
+                            <td><span class="status-badge status-active">Aktif (Valid)</span></td>
                         </tr>
                         <tr>
-                            <td>🥈 2</td>
-                            <td>0x4b...92ee</td>
-                            <td>98 orang</td>
-                            <td>+$250 $ZNF</td>
+                            <td>0x9e...41aa</td>
+                            <td>$14.00</td>
+                            <td>2 Hari</td>
+                            <td><span class="status-badge status-active">Aktif (Valid)</span></td>
                         </tr>
                         <tr>
-                            <td>🥉 3</td>
-                            <td>0x1a...71bc</td>
-                            <td>55 orang</td>
-                            <td>+$100 $ZNF</td>
+                            <td>0x5c...22dd</td>
+                            <td>$0.00</td>
+                            <td>12 Hari</td>
+                            <td><span class="status-badge status-active">Aktif (Valid)</span></td>
                         </tr>
-                        <!-- Baris Posisi Pengguna Sendiri -->
-                        <tr class="my-rank">
-                            <td># 24</td>
-                            <td>0x7a...2b9d (Anda)</td>
-                            <td>4 orang</td>
-                            <td>Kejar Peringkat!</td>
+                        <!-- INDIKATOR STATUS PENDING KARENA SYARAT BELUM TERPENUHI -->
+                        <tr>
+                            <td>0x8d...55bb</td>
+                            <td>$1.50</td>
+                            <td>0 Hari</td>
+                            <td><span class="status-badge status-pending">Pending (Syarat < $10)</span></td>
+                        </tr>
+                        <tr>
+                            <td>0xf2...66cc</td>
+                            <td>$0.00</td>
+                            <td>3 Hari</td>
+                            <td><span class="status-badge status-pending">Pending (Yield < 7 Hari)</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -441,53 +421,61 @@
 
         </div>
 
-        <!-- RIGHT COLUMN -->
-        <div class="right-panel">
-            
-            <!-- STATS & CLAIM PANEL -->
+        <!-- PANEL KANAN (STATISTIK DAN KLAIM) -->
+        <div class="right-section">
             <div class="card">
-                <div class="card-title">📊 Statistik Akumulasi</div>
+                <div class="card-title">📊 Rangkuman Akun</div>
                 
-                <div class="stats-grid">
+                <div class="stats-list">
                     <div class="stat-box">
-                        <div class="stat-label">Total Teman Diundang</div>
-                        <div class="stat-value">4 orang</div>
+                        <div class="stat-label">Total Tautan Diklik</div>
+                        <div class="stat-value">5 Dompet</div>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-label">Total Volume Transaksi Teman</div>
-                        <div class="stat-value">$12,450.00</div>
+                    
+                    <!-- MEMISAHKAN ANTARA DOMPET YANG MASUK VS YANG AKTIF SAH -->
+                    <div class="stat-box" style="border-left: 3px solid var(--primary);">
+                        <div class="stat-label">Teman Terverifikasi Aktif</div>
+                        <div class="stat-value" style="color: var(--primary);">3 Dompet</div>
+                        <div class="stat-label" style="font-size:11px; margin-top:5px;">2 Dompet lainnya berstatus pending.</div>
                     </div>
-                    <div class="stat-box unclaimed-box">
-                        <div class="stat-label">Komisi Belum Diklaim</div>
-                        <div class="stat-value">340.50 $ZNF</div>
+
+                    <div class="stat-box" style="border-left: 3px solid var(--warning);">
+                        <div class="stat-label">Total Komisi Tertahan</div>
+                        <div class="stat-value" style="color: var(--warning);">75.00 $ZNF</div>
                     </div>
                 </div>
 
-                <button class="btn-claim" onclick="simulateClaim()">Claim Rewards</button>
-                <div class="gas-warning">⚠️ Pastikan Anda memiliki saldo koin asli jaringan yang cukup untuk membayar Gas Fee klaim transaksi ini.</div>
+                <!-- Tombol dinonaktifkan jika tidak ada saldo klaim yang lolos filter anti-sybil -->
+                <button class="btn-claim" id="claimBtn" onclick="executeClaim()">Claim Rewards</button>
+                <div class="info-note">Aktivitas klaim on-chain akan menyinkronkan data smart contract Anda dan mendistribusikan token langsung ke dompet Anda.</div>
             </div>
-
         </div>
 
     </main>
 
-    <!-- SCRIPT SEDERHANA UNTUK INTERAKSI PENGGUNA -->
     <script>
-        function copyReferralLink() {
+        // Simulasi fungsi copy link
+        function copyLink() {
             var copyText = document.getElementById("refLink");
             copyText.select();
-            copyText.setSelectionRange(0, 99999); /* Untuk perangkat seluler */
             navigator.clipboard.writeText(copyText.value);
             
-            var copyButton = document.querySelector(".btn-copy");
-            copyButton.innerText = "Copied! ✔";
-            setTimeout(function() {
-                copyButton.innerText = "Copy Link";
-            }, 2000);
+            var copyBtn = document.querySelector(".btn-copy");
+            copyBtn.innerText = "Copied! ✔";
+            setTimeout(function() { copyBtn.innerText = "Copy Link"; }, 2000);
         }
 
-        function simulateClaim() {
-            alert("Memulai koneksi smart contract... Pastikan Anda menyetujui transaksi pop-up yang muncul di ekstensi dompet Anda (Simulasi).");
+        // Simulasi logika backend CTO: Jika tidak ada dompet aktif baru yang divalidasi, kunci tombol klaim
+        const temanAktif = 3; 
+        const claimButton = document.getElementById("claimBtn");
+
+        if (temanAktif < 3) {
+            // Jika di bawah batas minimum pencapaian hadiah, tombol otomatis terkunci
+            claimButton.disabled = true;
+        }
+
+        function executeClaim() {
+            alert("Memicu Verifikasi Keamanan Protokol... Smart contract mendeteksi 3 dompet aktif valid. Transaksi sukses dikirim ke blockchain!");
         }
     </script>
 </body>
