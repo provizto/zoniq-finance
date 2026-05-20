@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZoniqFi ($ZNF) - Coming Soon</title>
+    <!-- Google Fonts -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        /* --- RESET & VARIABLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --bg-color: #05070b;
+            --primary: #00ffcc; /* Neon Cyan */
+            --secondary: #9d4edd; /* Electric Purple */
+            --text-main: #ffffff;
+            --text-muted: #8892b0;
+            --shadow-glow: rgba(0, 255, 204, 0.25);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(157, 78, 221, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(0, 255, 204, 0.08) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        /* --- BACKGROUND CONTENT MOCKUP (DEX/YIELD PREVIEW) --- */
+        .bg-mockup {
+            position: absolute;
+            width: 100%;
+            max-width: 1000px;
+            opacity: 0.15;
+            filter: blur(2px);
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* --- POP UP OVERLAY CONTAINER --- */
+        .popup-card {
+            background: rgba(21, 26, 36, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 
+                        inset 0 0 20px rgba(255, 255, 255, 0.02);
+            position: relative;
+            z-index: 10;
+            animation: popupAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes popupAppear {
+            0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* --- KUSTOM TOMBOL BAHASA (PERSI KAYA GAMBAR) --- */
+        .lang-wrapper {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+        }
+
+        .dropdown-btn {
+            background-color: #1a2230;
+            color: #ffffff;
+            border: 1px solid #232d3f;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color 0.2s;
+        }
+
+        .dropdown-btn:hover { border-color: var(--primary); }
+
+        .icon-globe {
+            width: 14px; height: 14px;
+            border: 1.5px solid var(--primary);
+            border-radius: 50%;
+            position: relative;
+            display: inline-block;
+        }
+        .icon-globe::before {
+            content: ''; position: absolute; top: 0; left: 3px;
+            width: 5px; height: 11px;
+            border-left: 1.5px solid var(--primary);
+            border-right: 1.5px solid var(--primary);
+            border-radius: 50%;
+        }
+
+        .icon-arrow {
+            width: 0; height: 0; 
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 4px solid #ffffff;
+            margin-left: 2px;
+            transition: transform 0.2s;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #151a24;
+            min-width: 100%;
+            border: 1px solid #232d3f;
+            border-radius: 8px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+            z-index: 15;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-content div {
+            color: var(--text-muted);
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-content div:hover { background-color: #1a2230; color: #ffffff; }
+        .dropdown-content div.active { background-color: #0077ff; color: #ffffff; }
+
+        .show { display: block; }
+        .rotate-arrow { transform: rotate(180deg); }
+
+        /* --- POP UP TEXT & CONTENT --- */
+        .brand-badge {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .main-heading {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--text-main), var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* --- INPUT NOTIFICATION EMAIL --- */
+        .notify-form {
+            display: flex;
+            gap: 10px;
+            background: rgba(11, 14, 20, 0.6);
+            border: 1px solid #232d3f;
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .notify-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .notify-input:focus { outline: none; }
+
+        .btn-submit {
+            background: linear-gradient(45deg, var(--primary), #00b395);
+            color: #05070b;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--shadow-glow);
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px var(--shadow-glow);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- REPRODUKSI PREVIEW BLURRED DI BELAKANG (BIAR KEREN) -->
+    <div class="bg-mockup">
+        <h2 style="font-size:50px;">ZoniqFi DEX / Yield Optimizer App Dashboard</h2>
+        <p style="margin-top:20px;">0x7a...2b9d | Total Value Locked: $12,450,000</p>
+    </div>
+
+    <!-- POP UP BOX -->
+    <div class="popup-card">
+        
+        <!-- CUSTOM LANGUAGE MENU -->
+        <div class="lang-wrapper">
+            <button class="dropdown-btn" onclick="toggleDropdown()">
+                <span class="icon-globe"></span>
+                <span id="currentLangTxt">EN</span>
+                <span class="icon-arrow" id="arrowIcon"></span>
+            </button>
+            <div class="dropdown-content" id="langMenu">
+                <div id="opt-en" class="active" onclick="changeLanguage('en')"><span class="icon-globe"></span> EN</div>
+                <div id="opt-id" onclick="changeLanguage('id')"><span class="icon-globe"></span> ID</div>
+            </div>
+        </div>
+
+        <!-- TEXT CONTENT (DEFAULT ENGLISH) -->
+        <div class="brand-badge">ZoniqFi Protocol</div>
+        <h1 class="main-heading" id="txtHeading">Coming Soon!</h1>
+        <p class="sub-text" id="txtSub">Our high-performance DEX and automated Yield Optimizer are undergoing final security audits. Leave your email to get notified exactly when we launch on Mainnet.</p>
+        
+        <!-- EMAIL NOTIFICATION BAR -->
+        <div class="notify-form">
+            <input type="email" class="notify-input" placeholder="Enter your email address" id="inputEmail">
+            <button class="btn-submit" id="btnSubmit" onclick="submitEmail()">Notify Me</button>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT TRANSLATION LOGIC -->
+    <script>
+        // Kamus Bahasa (EN secara default di awal)
+        const dictionary = {
+            en: {
+                heading: "Coming Soon!",
+                sub: "Our high-performance DEX and automated Yield Optimizer are undergoing final security audits. Leave your email to get notified exactly when we launch on Mainnet.",
+                placeholder: "Enter your email address",
+                btn: "Notify Me",
+                alert: "Thank you! We will notify you at: "
+            },
+            id: {
+                heading: "Segera Hadir!",
+                sub: "Platform DEX berkinerja tinggi dan Yield Optimizer otomatis kami sedang dalam tahap audit keamanan akhir. Tinggalkan email Anda untuk mendapatkan notifikasi instan saat kami resmi meluncur di Mainnet.",
+                placeholder: "Masukkan alamat email Anda",
+                btn: "Kabari Saya",
+                alert: "Terima kasih! Kami akan mengabari Anda di: "
+            }
+        };
+
+        let currentLang = 'en';
+
+        function toggleDropdown() {
+            document.getElementById("langMenu").classList.toggle("show");
+            document.getElementById("arrowIcon").classList.toggle("rotate-arrow");
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            document.getElementById("currentLangTxt").innerText = lang.toUpperCase();
+            
+            // Set Highlight Menu Aktif (Warna Biru Khas)
+            document.getElementById("opt-en").classList.remove("active");
+            document.getElementById("opt-id").classList.remove("active");
+            document.getElementById("opt-" + lang).classList.add("active");
+
+            // Update Teks Dom Halaman
+            document.getElementById("txtHeading").innerText = dictionary[lang].heading;
+            document.getElementById("txtSub").innerText = dictionary[lang].sub;
+            document.getElementById("inputEmail").placeholder = dictionary[lang].placeholder;
+            document.getElementById("btnSubmit").innerText = dictionary[lang].btn;
+
+            toggleDropdown();
+        }
+
+        function submitEmail() {
+            const email = document.getElementById("inputEmail").value;
+            if(email) {
+                alert(dictionary[currentLang].alert + email);
+                document.getElementById("inputEmail").value = "";
+            } else {
+                alert(currentLang === 'en' ? "Please enter a valid email." : "Mohon masukkan email yang valid.");
+            }
+        }
+
+        // Auto Close Dropdown Click Outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn') && !event.target.matches('.icon-globe') && !event.target.matches('#currentLangTxt') && !event.target.matches('.icon-arrow')) {
+                const menu = document.getElementById("langMenu");
+                const arrow = document.getElementById("arrowIcon");
+                if (menu.classList.contains('show')) {
+                    menu.classList.remove('show');
+                    arrow.classList.remove('rotate-arrow');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
