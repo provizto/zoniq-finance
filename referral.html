@@ -30,6 +30,8 @@
             color: var(--text-main);
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
         }
 
         /* --- HEADER & LANGUAGE TOGGLE --- */
@@ -38,6 +40,7 @@
             justify-content: space-between;
             align-items: center;
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto 30px auto;
             padding-bottom: 15px;
             border-bottom: 1px solid #232d3f;
@@ -73,7 +76,7 @@
             border-color: var(--primary);
         }
 
-        /* --- ADDED: PREMIUM TIER BADGE STYLE --- */
+        /* --- PREMIUM TIER BADGE STYLE --- */
         .tier-badge {
             background: linear-gradient(135deg, rgba(0, 255, 204, 0.08) 0%, rgba(157, 78, 221, 0.05) 100%);
             border: 1px solid rgba(0, 255, 204, 0.4);
@@ -81,22 +84,17 @@
             border-radius: 30px;
             font-size: 12px;
             font-weight: 700;
-            color: #00ffcc; /* Warna teks Neon Cyan */
+            color: #00ffcc; 
             letter-spacing: 0.5px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            
-            /* Efek Bersinar / Neon Glow Box Shadow */
             box-shadow: 0 0 12px rgba(0, 255, 204, 0.15), 
                         inset 0 0 8px rgba(0, 255, 204, 0.05);
-            
-            /* Animasi denyut halus agar terkesan hidup */
             animation: badgePulse 3s infinite ease-in-out;
             transition: all 0.3s ease;
         }
 
-        /* Efek interaksi saat kursor menyentuh badge */
         .tier-badge:hover {
             border-color: #00ffcc;
             box-shadow: 0 0 18px rgba(0, 255, 204, 0.4), 
@@ -104,7 +102,6 @@
             transform: translateY(-1px);
         }
 
-        /* Logika Animasi Denyut Cahaya */
         @keyframes badgePulse {
             0% { border-color: rgba(0, 255, 204, 0.4); box-shadow: 0 0 12px rgba(0, 255, 204, 0.15); }
             50% { border-color: rgba(0, 255, 204, 0.7); box-shadow: 0 0 20px rgba(0, 255, 204, 0.35); }
@@ -114,6 +111,7 @@
         /* --- TOGGLE ACCOUNT ROLE (REGULAR VS KOL) --- */
         .role-switch-container {
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto 20px auto;
             display: flex;
             gap: 10px;
@@ -144,7 +142,9 @@
             grid-template-columns: 2fr 1fr;
             gap: 25px;
             max-width: 1200px;
+            width: 100%;
             margin: 0 auto;
+            flex: 1; /* Membuat container mengambil sisa ruang agar footer terdorong ke bawah */
         }
 
         .card {
@@ -300,7 +300,39 @@
             box-shadow: 0 0 10px rgba(157, 78, 221, 0.1);
         }
 
-        @media (max-width: 900px) { .dashboard-container { grid-template-columns: 1fr; } }
+        /* --- ADDED: FOOTER STYLES --- */
+        footer {
+            max-width: 1200px;
+            width: 100%;
+            margin: 40px auto 10px auto;
+            padding-top: 20px;
+            border-top: 1px solid #232d3f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn-back-home {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .btn-back-home:hover {
+            color: var(--primary);
+            transform: translateX(-3px);
+        }
+
+        @media (max-width: 900px) { 
+            .dashboard-container { grid-template-columns: 1fr; } 
+            footer { flex-direction: column; gap: 15px; text-align: center; }
+        }
     </style>
 </head>
 <body>
@@ -312,7 +344,7 @@
                 <option value="en" selected>🌐 EN</option>
                 <option value="id">🌐 ID</option>
             </select>
-            <div class="tier-badge" id="txtTier">💎 Tier 1</div>
+            <div class="tier-badge" id="txtTier">Tier 1</div>
             <button style="background:#151a24; color:white; border:1px solid #232d3f; padding:8px 15px; border-radius:8px; font-size:13px;">0x7a...2b9d</button>
         </div>
     </header>
@@ -335,7 +367,7 @@
             <div class="card">
                 <div class="card-title" id="lblCardLink">🔗 Tautan Rujukan Anda</div>
                 <div class="input-group">
-                    <input type="text" class="input-field" value="https://zoniqfinance.com/referral.com" readonly id="refLink">
+                    <input type="text" class="input-field" value="https://zoniqfi.com" readonly id="refLink">
                     <button class="btn-copy" onclick="copyLink()" id="btnCopy">Copy Link</button>
                 </div>
             </div>
@@ -377,11 +409,16 @@
                     </div>
                 </div>
                 <button class="btn-claim" id="lblBtnClaim" onclick="alert('Claim success!')">Claim Rewards</button>
-                <button class="btn-faq" id="lblBtnFaq" onclick="window.location.href='referral.html'">FAQ & Project Info</button>
+                <button class="btn-faq" id="lblBtnFaq" onclick="alert('FAQ Page coming soon!')">FAQ & Project Info</button>
             </div>
         </div>
 
     </main>
+
+    <footer>
+        <a href="/" class="btn-back-home" id="lblBackHome">← Back to Home</a>
+        <div id="lblCopyright">© 2026 ZoniqFi. All rights reserved.</div>
+    </footer>
 
     <script>
         const dictionary = {
@@ -402,6 +439,8 @@
                 statPending: "Komisi Tertahan (Pending)",
                 btnClaim: "Klaim Hadiah",
                 btnFaq: "ℹ️ FAQ Proyek",
+                backHome: "← Kembali ke Beranda",
+                copyright: "© 2026 ZoniqFi. Hak Cipta Dilindungi.",
                 copy: "Salin Link",
                 copied: "Tersalin! ✔",
                 mStart: "Mulai",
@@ -424,6 +463,8 @@
                 statPending: "Pending Commission",
                 btnClaim: "Claim Rewards",
                 btnFaq: "ℹ️ Project FAQ",
+                backHome: "← Back to Home",
+                copyright: "© 2026 ZoniqFi. All rights reserved.",
                 copy: "Copy Link",
                 copied: "Copied! ✔",
                 mStart: "Start",
@@ -493,6 +534,8 @@
             document.getElementById("lblStatPending").innerText = langData.statPending;
             document.getElementById("lblBtnClaim").innerText = langData.btnClaim;
             document.getElementById("lblBtnFaq").innerText = langData.btnFaq;
+            document.getElementById("lblBackHome").innerText = langData.backHome; // Update teks tombol footer
+            document.getElementById("lblCopyright").innerText = langData.copyright; // Update hak cipta footer
 
             if (currentRole === 'regular') {
                 document.getElementById("lblSybilTitle").innerHTML = langData.sybilRegTitle;
