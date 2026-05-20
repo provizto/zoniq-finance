@@ -73,6 +73,44 @@
             border-color: var(--primary);
         }
 
+        /* --- ADDED: PREMIUM TIER BADGE STYLE --- */
+        .tier-badge {
+            background: linear-gradient(135deg, rgba(0, 255, 204, 0.08) 0%, rgba(157, 78, 221, 0.05) 100%);
+            border: 1px solid rgba(0, 255, 204, 0.4);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #00ffcc; /* Warna teks Neon Cyan */
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            
+            /* Efek Bersinar / Neon Glow Box Shadow */
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.15), 
+                        inset 0 0 8px rgba(0, 255, 204, 0.05);
+            
+            /* Animasi denyut halus agar terkesan hidup */
+            animation: badgePulse 3s infinite ease-in-out;
+            transition: all 0.3s ease;
+        }
+
+        /* Efek interaksi saat kursor menyentuh badge */
+        .tier-badge:hover {
+            border-color: #00ffcc;
+            box-shadow: 0 0 18px rgba(0, 255, 204, 0.4), 
+                        inset 0 0 12px rgba(0, 255, 204, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Logika Animasi Denyut Cahaya */
+        @keyframes badgePulse {
+            0% { border-color: rgba(0, 255, 204, 0.4); box-shadow: 0 0 12px rgba(0, 255, 204, 0.15); }
+            50% { border-color: rgba(0, 255, 204, 0.7); box-shadow: 0 0 20px rgba(0, 255, 204, 0.35); }
+            100% { border-color: rgba(0, 255, 204, 0.4); box-shadow: 0 0 12px rgba(0, 255, 204, 0.15); }
+        }
+
         /* --- TOGGLE ACCOUNT ROLE (REGULAR VS KOL) --- */
         .role-switch-container {
             max-width: 1200px;
@@ -244,12 +282,11 @@
             background: linear-gradient(45deg, var(--primary), #00b395);
             color: #0b0e14; font-size: 15px; font-weight: 700; cursor: pointer;
             box-shadow: 0 0 15px var(--shadow-glow);
-            margin-bottom: 12px; /* Ditambahkan jeda bawah untuk memisahkan dengan tombol FAQ */
+            margin-bottom: 12px;
         }
 
         .btn-claim:disabled { background: #232d3f; color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
 
-        /* Gaya Khusus untuk Tombol FAQ */
         .btn-faq {
             width: 100%; padding: 12px; border-radius: 8px;
             background: transparent;
@@ -292,13 +329,13 @@
             <div class="sybil-banner">
                 <h4 id="lblSybilTitle">🛡️ Aturan Perlindungan Anti-Sybil (Reguler)</h4>
                 <ul id="lblSybilList">
-                    </ul>
+                </ul>
             </div>
 
             <div class="card">
                 <div class="card-title" id="lblCardLink">🔗 Tautan Rujukan Anda</div>
                 <div class="input-group">
-                    <input type="text" class="input-field" value="https://zoniqfinance.com/referral.html" readonly id="refLink">
+                    <input type="text" class="input-field" value="https://zoniqfi.com" readonly id="refLink">
                     <button class="btn-copy" onclick="copyLink()" id="btnCopy">Copy Link</button>
                 </div>
             </div>
@@ -317,7 +354,7 @@
             <div class="card">
                 <div class="card-title" id="lblCardHistory">👥 Riwayat Rujukan Terdeteksi</div>
                 <div id="tableContainer">
-                    </div>
+                </div>
             </div>
 
         </div>
@@ -340,7 +377,7 @@
                     </div>
                 </div>
                 <button class="btn-claim" id="lblBtnClaim" onclick="alert('Claim success!')">Claim Rewards</button>
-                <button class="btn-faq" id="lblBtnFaq" onclick="window.location.href='referral-faq.html'">FAQ & Project Info</button>
+                <button class="btn-faq" id="lblBtnFaq" onclick="alert('FAQ Page coming soon!')">FAQ & Project Info</button>
             </div>
         </div>
 
@@ -364,7 +401,7 @@
                 statActive: "Terverifikasi Valid/Aktif",
                 statPending: "Komisi Tertahan (Pending)",
                 btnClaim: "Klaim Hadiah",
-                btnFaq: "ℹ️ FAQ Proyek", // Terjemahan tombol FAQ Bahasa Indonesia
+                btnFaq: "ℹ️ FAQ Proyek",
                 copy: "Salin Link",
                 copied: "Tersalin! ✔",
                 mStart: "Mulai",
@@ -386,7 +423,7 @@
                 statActive: "Verified Valid/Active",
                 statPending: "Pending Commission",
                 btnClaim: "Claim Rewards",
-                btnFaq: "ℹ️ Project FAQ", // Terjemahan tombol FAQ Bahasa Inggris
+                btnFaq: "ℹ️ Project FAQ",
                 copy: "Copy Link",
                 copied: "Copied! ✔",
                 mStart: "Start",
@@ -455,7 +492,7 @@
             document.getElementById("lblStatActive").innerText = langData.statActive;
             document.getElementById("lblStatPending").innerText = langData.statPending;
             document.getElementById("lblBtnClaim").innerText = langData.btnClaim;
-            document.getElementById("lblBtnFaq").innerText = langData.btnFaq; // Memperbarui teks tombol FAQ secara dinamis
+            document.getElementById("lblBtnFaq").innerText = langData.btnFaq;
 
             if (currentRole === 'regular') {
                 document.getElementById("lblSybilTitle").innerHTML = langData.sybilRegTitle;
