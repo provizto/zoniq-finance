@@ -253,40 +253,33 @@
 </head>
 <body>
 
-    <!-- HEADER & LANG ACCENT -->
     <header>
         <div class="logo">ZoniqFi</div>
         <div class="header-controls">
-            <!-- Dropdown Pilihan Bahasa -->
             <select class="lang-select" id="langSelect" onchange="switchLanguage()">
-                <option value="en" selected>🌐 EN</option>
-                <option value="id">🌐 ID</option>
+                <option value="en" selected>🇬🇧 EN</option>
+                <option value="id">🇮🇩 ID</option>
             </select>
             <div class="tier-badge" id="txtTier">Tier 1</div>
             <button style="background:#151a24; color:white; border:1px solid #232d3f; padding:8px 15px; border-radius:8px; font-size:13px;">0x7a...2b9d</button>
         </div>
     </header>
 
-    <!-- SWITCH SIMULASI PERAN (REGULER VS KOL) -->
     <div class="role-switch-container">
         <button class="btn-role active" id="btnRoleReg" onclick="setRole('regular')">User Reguler</button>
         <button class="btn-role" id="btnRoleKOL" onclick="setRole('kol')">KOL / Influencer</button>
     </div>
 
-    <!-- MAIN CONTAINER -->
     <main class="dashboard-container">
         
         <div class="left-section">
             
-            <!-- DYNAMIC SYBIL BANNER -->
             <div class="sybil-banner">
                 <h4 id="lblSybilTitle">🛡️ Aturan Perlindungan Anti-Sybil (Reguler)</h4>
                 <ul id="lblSybilList">
-                    <!-- Teks diinjeksikan secara dinamis via JS -->
-                </ul>
+                    </ul>
             </div>
 
-            <!-- LINK -->
             <div class="card">
                 <div class="card-title" id="lblCardLink">🔗 Tautan Rujukan Anda</div>
                 <div class="input-group">
@@ -295,7 +288,6 @@
                 </div>
             </div>
 
-            <!-- MILESTONE -->
             <div class="card">
                 <div class="card-title" id="lblCardMilestone">🎁 Klaim Hadiah Berbasis Milestone</div>
                 <div class="progress-bar-wrapper">
@@ -307,17 +299,14 @@
                 </div>
             </div>
 
-            <!-- DYNAMIC DATA TABLE -->
             <div class="card">
                 <div class="card-title" id="lblCardHistory">👥 Riwayat Rujukan Terdeteksi</div>
                 <div id="tableContainer">
-                    <!-- Tabel disuntikkan dinamis berdasarkan peran yang aktif -->
-                </div>
+                    </div>
             </div>
 
         </div>
 
-        <!-- RIGHT PANEL -->
         <div class="right-section">
             <div class="card">
                 <div class="card-title" id="lblCardSummary">📊 Rangkuman Akun</div>
@@ -341,7 +330,6 @@
 
     </main>
 
-    <!-- DATA DICTIONARY UNTUK ID & EN -->
     <script>
         const dictionary = {
             id: {
@@ -388,7 +376,8 @@
             }
         };
 
-        let currentLang = 'id';
+        // Mengubah inisialisasi awal ke 'en'
+        let currentLang = 'en';
         let currentRole = 'regular';
 
         // DATABASE SIMULASI DATA UNTUK DITAMPILKAN DI TABEL
