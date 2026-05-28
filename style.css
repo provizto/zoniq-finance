@@ -358,31 +358,37 @@ body {
     padding-top: 70px;
 }
 
-/* ==========================================
-   RESPONSIF LAYAR HP / TABLET (MOBILE MENU)
-   ========================================== */
+/* =======================================================
+   PERBAIKAN TOTAL RESPONSIVE MOBILE MENU (ANTI-BERTABRAKAN)
+   ======================================================= */
 @media screen and (max-width: 768px) {
     .menu-toggle {
         display: flex;
     }
 
+    /* Memperbaiki wadah menu agar menutup/membuka dengan rapi di HP */
     .nav-links {
         position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
-        background: rgba(9, 13, 26, 0.95);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        flex-direction: column;
-        gap: 0;
-        padding: 10px 0;
+        background: #090d1a; /* Menggunakan warna solid pekat agar tulisan di belakang tidak membayang */
+        border-bottom: 2px solid rgba(0, 242, 254, 0.2); /* Memberi batas neon tipis di bawah menu */
+        display: flex;
+        flex-direction: column; /* Menyusun menu ke bawah secara rapi */
+        align-items: center;
+        gap: 10px;
+        padding: 0;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        box-sizing: border-box;
     }
 
+    /* Ketika menu aktif (tombol hamburger diklik) */
     .nav-links.active {
-        max-height: 300px;
+        max-height: 350px; /* Memberikan ruang vertikal yang cukup */
+        padding: 20px 0; /* Memberi jarak bantalan atas dan bawah */
     }
 
     .nav-links li {
@@ -390,20 +396,32 @@ body {
         text-align: center;
     }
 
+    /* Memberikan jarak renggang yang pas untuk setiap teks menu */
     .nav-links a {
-        display: block;
-        padding: 15px 0;
-        width: 100%;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        display: inline-block;
+        padding: 12px 24px;
+        width: auto;
+        font-size: 15px;
+    }
+
+    /* Memperbaiki susunan ikon medsos di bagian paling bawah menu lipat */
+    .nav-socials-top {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 25px; /* Memberikan jarak horizontal antar-ikon agar tidak menempel */
+        width: 80%;
+        margin: 15px auto 5px auto;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1); /* Garis pembatas tipis antara teks menu dan ikon */
     }
     
-    .nav-links .nav-btn {
-        border: none;
-        border-radius: 0;
-        background: none;
+    .nav-socials-top a {
+        font-size: 22px; /* Ukuran ikon yang pas untuk disentuh jari di HP */
+        padding: 5px;
     }
-    
-    /* Efek Animasi Tombol Hamburger Menjadi Tanda Silang (X) */
+
+    /* Efek animasi tombol hamburger silang (X) tetap dipertahankan */
     .menu-toggle.open .bar:nth-child(1) {
         transform: translateY(7px) rotate(45deg);
         background-color: #00f2fe;
