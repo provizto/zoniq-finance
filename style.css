@@ -359,82 +359,88 @@ body {
 }
 
 /* =======================================================
-   PERBAIKAN TOTAL RESPONSIVE MOBILE MENU (ANTI-BERTABRAKAN)
+   KODE PAMUNGKAS: FIX MENU MOBILE ZONIQFI (ANTI-CACHING)
    ======================================================= */
 @media screen and (max-width: 768px) {
     .menu-toggle {
-        display: flex;
+        display: flex !important;
     }
 
-    /* Memperbaiki wadah menu agar menutup/membuka dengan rapi di HP */
+    /* Paksa kotak menu menjadi satu kolom ke bawah, bukan menyamping */
     .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: #090d1a; /* Menggunakan warna solid pekat agar tulisan di belakang tidak membayang */
-        border-bottom: 2px solid rgba(0, 242, 254, 0.2); /* Memberi batas neon tipis di bawah menu */
-        display: flex;
-        flex-direction: column; /* Menyusun menu ke bawah secara rapi */
-        align-items: center;
-        gap: 10px;
-        padding: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: all 0.4s ease-in-out;
-        box-sizing: border-box;
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        width: 100% !important;
+        background: #090d1a !important; /* Warna hitam pekat anti tembus pandang */
+        display: flex !important;
+        flex-direction: column !important; /* WAJIB berbaris ke bawah */
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        max-height: 0 !important;
+        overflow: hidden !important;
+        transition: max-height 0.4s ease-in-out !important;
+        border-bottom: none !important;
+        box-sizing: border-box !important;
     }
 
-    /* Ketika menu aktif (tombol hamburger diklik) */
+    /* Ketika menu dibuka (Aktif) */
     .nav-links.active {
-        max-height: 350px; /* Memberikan ruang vertikal yang cukup */
-        padding: 20px 0; /* Memberi jarak bantalan atas dan bawah */
+        max-height: 380px !important; /* Beri ruang vertikal super lega */
+        padding: 20px 0 !important;
+        border-bottom: 2px solid #00f2fe !important; /* Garis neon bawah */
     }
 
+    /* Mengatur setiap baris teks menu agar berjarak aman */
     .nav-links li {
-        width: 100%;
-        text-align: center;
+        width: 100% !important;
+        display: block !important;
+        text-align: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    /* Memberikan jarak renggang yang pas untuk setiap teks menu */
     .nav-links a {
-        display: inline-block;
-        padding: 12px 24px;
-        width: auto;
-        font-size: 15px;
+        display: block !important;
+        padding: 15px 0 !important; /* Jarak aman antar tulisan agar tidak menempel */
+        width: 100% !important;
+        font-size: 16px !important;
+        box-sizing: border-box !important;
     }
 
-    /* Memperbaiki susunan ikon medsos di bagian paling bawah menu lipat */
+    /* PAKSA Ikon Medsos sejajar ke samping di baris paling bawah */
     .nav-socials-top {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 25px; /* Memberikan jarak horizontal antar-ikon agar tidak menempel */
-        width: 80%;
-        margin: 15px auto 5px auto;
-        padding-top: 15px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1); /* Garis pembatas tipis antara teks menu dan ikon */
+        display: flex !important;
+        flex-direction: row !important; /* PAKSA SEJAJAR HORIZONTAL */
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 30px !important; /* Jarak renggang antar ikon */
+        width: 100% !important;
+        margin-top: 15px !important;
+        padding-top: 20px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
     
+    /* Atur ulang semua ikon di dalam nav-socials-top agar tidak ikut mewarisi gaya text menu */
+    .nav-socials-top li {
+        width: auto !important;
+        display: inline !important;
+    }
+
     .nav-socials-top a {
-        font-size: 22px; /* Ukuran ikon yang pas untuk disentuh jari di HP */
-        padding: 5px;
+        display: inline-block !important;
+        width: auto !important;
+        padding: 10px !important;
+        font-size: 24px !important; /* Ukuran ikon diperbesar agar pas */
     }
 
-    /* Efek animasi tombol hamburger silang (X) tetap dipertahankan */
-    .menu-toggle.open .bar:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-        background-color: #00f2fe;
-    }
-    .menu-toggle.open .bar:nth-child(2) {
-        opacity: 0;
-    }
-    .menu-toggle.open .bar:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
-        background-color: #00f2fe;
-    }
+    /* Animasi hamburger jadi tombol (X) */
+    .menu-toggle.open .bar:nth-child(1) { transform: translateY(7px) rotate(45deg) !important; background-color: #00f2fe !important; }
+    .menu-toggle.open .bar:nth-child(2) { opacity: 0 !important; }
+    .menu-toggle.open .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg) !important; background-color: #00f2fe !important; }
 }
-
 /* Styling Baru untuk Ikon Medsos di Navigasi Atas */
 .nav-socials-top {
     display: flex;
