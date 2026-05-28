@@ -416,3 +416,42 @@ body {
         background-color: #00f2fe;
     }
 }
+
+/* Styling Baru untuk Ikon Medsos di Navigasi Atas */
+.nav-socials-top {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.nav-socials-top a {
+    font-size: 18px;
+    color: #9ca3af;
+    transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.nav-socials-top a:hover {
+    color: #00f2fe;
+    transform: translateY(-2px);
+    text-shadow: 0 0 10px #00f2fe;
+}
+
+/* Penyesuaian Responsif untuk Layar HP */
+@media screen and (max-width: 768px) {
+    .nav-socials-top {
+        justify-content: center;
+        padding: 15px 0;
+        width: 100%;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin-left: 0;
+        gap: 30px; /* Jarak lebih longgar saat dibuka di HP */
+    }
+    
+    .nav-socials-top a {
+        font-size: 22px; /* Ikon sedikit lebih besar di HP agar mudah ditekan jari */
+    }
+}
