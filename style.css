@@ -52,6 +52,26 @@ body {
     gap: 8px;
     margin-bottom: 12px;
 }
+/* ==========================================
+   DESAIN LOGO KOTAK ZF FUTURISTIK (NEON GLOW)
+   ========================================== */
+.zf-logo-box {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(79, 172, 254, 0.05));
+    border: 2px solid #00f2fe;
+    color: #00f2fe;
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 1px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    text-shadow: 0 0 8px #00f2fe;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.3), 
+                inset 0 0 8px rgba(0, 242, 254, 0.2);
+    animation: pulse 2s infinite alternate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 .logo-icon {
     font-size: 24px;
     color: #00f2fe;
