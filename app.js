@@ -31,3 +31,34 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+
+// --- KODE LOGIKA JAVASCRIPT NAVIGASI MENU ZONIQFI ---
+
+const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+const navLinksMenu = document.getElementById("nav-links-menu");
+const menuTosLink = document.getElementById("menu-tos-link");
+const tosModal = document.getElementById("tos-modal"); // Menghubungkan ke modal lama
+
+// 1. Fungsi Buka-Tutup Menu Lipat di Layar HP
+if (mobileMenuBtn && navLinksMenu) {
+    mobileMenuBtn.addEventListener("click", () => {
+        mobileMenuBtn.classList.toggle("open");
+        navLinksMenu.classList.toggle("active");
+    });
+}
+
+// 2. Otomatis Menutup Menu jika Salah Satu Link Diklik (Khusus Mobile)
+document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+        mobileMenuBtn.classList.remove("open");
+        navLinksMenu.classList.remove("active");
+    });
+});
+
+// 3. Menghubungkan Menu "Terms of Service" Langsung ke Pop-up Modal Hukum Lama Anda
+if (menuTosLink && tosModal) {
+    menuTosLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        tosModal.classList.add("active");
+    });
+}
