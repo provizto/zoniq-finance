@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Zoniq Finance Interface initialized.");
+    const yearElement = document.getElementById("current-year");
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+});
 
     // Mengambil Elemen DOM untuk Operasional Modal ToS
     const modal = document.getElementById("tos-modal");
