@@ -63,3 +63,6 @@ if (menuTosLink && tosModal) {
         tosModal.style.display = "flex";
     });
 }
+
+// Otomatis memperbarui tahun hak cipta di footer
+document.getElementById("current-year").textContent = new Date().getFullYear();
