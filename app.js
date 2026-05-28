@@ -60,5 +60,6 @@ if (menuTosLink && tosModal) {
     menuTosLink.addEventListener("click", (e) => {
         e.preventDefault();
         tosModal.classList.add("active");
+        tosModal.style.display = "flex";
     });
 }
